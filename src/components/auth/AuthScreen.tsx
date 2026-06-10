@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../store/authStore'
 import styles from './AuthScreen.module.css'
 
+import char1Idle from '../../assets/sprites/char1_idle.png'
+import char2Idle from '../../assets/sprites/char2_idle.png'
+import fireWorldBg from '../../assets/backgrounds/bg_fire_world.png'
+import natureWorldBg from '../../assets/backgrounds/bg_nature_world.png'
+
 /** Экран входа — два персонажа идут навстречу друг другу при вводе. */
 export default function AuthScreen() {
   const auth = useAuth()
@@ -13,7 +18,6 @@ export default function AuthScreen() {
   const [phase, setPhase]             = useState<'login' | 'password' | 'success' | 'error'>('login')
   const [shake, setShake]             = useState(false)
 
-  const loginRef    = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
   function triggerShake() {
@@ -55,8 +59,16 @@ export default function AuthScreen() {
   return (
     <div className={styles.screen}>
       {/* Фоны двух миров */}
-      <div className={styles.worldFire}  aria-hidden />
-      <div className={styles.worldNature} aria-hidden />
+      <div
+        className={styles.worldFire}
+        style={{ backgroundImage: `url(${fireWorldBg})` }}
+        aria-hidden
+      />
+      <div
+        className={styles.worldNature}
+        style={{ backgroundImage: `url(${natureWorldBg})` }}
+        aria-hidden
+      />
 
       {/* Персонажи */}
       <div className={styles.characters} aria-hidden>
@@ -71,18 +83,12 @@ export default function AuthScreen() {
           ].join(' ')}
         >
           <img
-            src="/assets/sprites/char1_idle.gif"
+            src={char1Idle}
             alt=""
-            width={64}
-            height={64}
-            onError={(e) => {
-              // Fallback: рисуем emoji если спрайт не загрузился
-              ;(e.target as HTMLImageElement).style.display = 'none'
-              ;(e.target as HTMLImageElement).nextElementSibling!.removeAttribute('hidden')
-            }}
+            width={96}
+            height={96}
+            loading="eager"
           />
-          {/* Emoji fallback */}
-          <span hidden style={{ fontSize: '3rem', lineHeight: 1 }}>🔥</span>
         </div>
 
         {/* Пиксельное сердце в центре */}
@@ -107,16 +113,12 @@ export default function AuthScreen() {
           ].join(' ')}
         >
           <img
-            src="/assets/sprites/char2_idle.gif"
+            src={char2Idle}
             alt=""
-            width={64}
-            height={64}
-            onError={(e) => {
-              ;(e.target as HTMLImageElement).style.display = 'none'
-              ;(e.target as HTMLImageElement).nextElementSibling!.removeAttribute('hidden')
-            }}
+            width={96}
+            height={96}
+            loading="eager"
           />
-          <span hidden style={{ fontSize: '3rem', lineHeight: 1 }}>🌿</span>
         </div>
       </div>
 
@@ -137,7 +139,6 @@ export default function AuthScreen() {
               &gt; Enter the key word
             </label>
             <input
-              ref={loginRef}
               id="login"
               className={`pixel-input ${styles.input}`}
               type="text"
