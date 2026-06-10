@@ -31,7 +31,7 @@
   box-shadow: inset 24px 0 48px rgba(0, 0, 0, 0.18);
 }
 
-/* Вертикальный разделитель по центру */
+/* Разделитель */
 .screen::before {
   content: '';
   position: absolute;
@@ -43,8 +43,8 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    var(--color-divider-pixel) 20%,
-    var(--color-divider-pixel) 80%,
+    rgba(255, 255, 255, 0.18) 20%,
+    rgba(255, 255, 255, 0.18) 80%,
     transparent
   );
   z-index: 1;
@@ -58,9 +58,10 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 80px;
+  /* gap нет — translateX персонажей управляет расстоянием */
+  gap: 64px;
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
   padding-bottom: var(--space-4);
 }
 
@@ -70,9 +71,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   image-rendering: pixelated;
   animation: idle-bob 1.2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 .character img {
@@ -83,59 +84,70 @@
   filter: drop-shadow(0 8px 0 rgba(0, 0, 0, 0.28));
 }
 
-/* Персонаж 1 — идёт вправо при шагах */
-.char1.step1 { transform: translateX(28px); }
-.char1.step2 { transform: translateX(56px); }
+/* char2 — зеркальный (scaleX через CSS,
+   translateX через Framer Motion — значения отрицательные) */
+.char2 {
+  transform: scaleX(-1);
+}
+/* Framer Motion применяет style.transform поверх CSS — чтобы
+   scaleX(-1) сохранился, оборачиваем char2 в wrapper
+   с CSS-зеркальностью, а Framer двигает саму motion.div */
 
-/* Персонаж 2 — повёрнут и идёт влево */
-.char2 { transform: scaleX(-1); }
-.char2.step1 { transform: scaleX(-1) translateX(28px); }
-.char2.step2 { transform: scaleX(-1) translateX(56px); }
-
-/* Остановка idle-bob при успехе */
-.character.idle {
-  animation-play-state: paused;
+/* ---- Сердце + частицы ---- */
+.heartWrapper {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  z-index: 4;
 }
 
-/* ---- Сердце в центре ---- */
 .heartCenter {
   position: absolute;
-  top: -36px;
+  top: 0;
   left: 50%;
-  transform: translateX(-50%) scale(0);
-  font-size: 2.4rem;
-  color: var(--color-heart);
-  font-family: var(--font-pixel);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 3;
+  transform: translateX(-50%);
+  font-size: 2.6rem;
+  color: #e84855;
+  line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(232, 72, 85, 0.6));
   pointer-events: none;
+  animation: heart-pulse 1s ease-in-out infinite;
 }
 
-.heartCenter.heartVisible {
-  transform: translateX(-50%) scale(1);
-  animation: heart-pulse 0.8s ease-in-out 2;
+.particle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #e84855;
+  pointer-events: none;
+  line-height: 1;
+  filter: drop-shadow(0 0 4px rgba(232, 72, 85, 0.5));
 }
 
 /* ---- Форма ---- */
 .formBox {
   position: relative;
   z-index: 2;
-  background: var(--color-bg-card);
-  border: 2px solid var(--color-border-pixel);
-  box-shadow: var(--shadow-pixel), var(--shadow-lg);
+  background: rgba(20, 16, 12, 0.88);
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.5), 0 16px 48px rgba(0,0,0,0.4);
   padding: var(--space-8) var(--space-10);
   width: min(420px, calc(100vw - 2rem));
   text-align: center;
 }
 
 .shake {
-  animation: input-shake 0.3s ease;
+  animation: input-shake 0.35s ease;
 }
 
 .formTitle {
   font-family: var(--font-pixel);
   font-size: var(--text-xs);
-  color: var(--color-gold);
+  color: #f0c040;
   margin-bottom: var(--space-6);
   letter-spacing: 0.1em;
   max-width: none;
@@ -150,8 +162,8 @@
 
 .label {
   font-family: var(--font-pixel);
-  font-size: calc(var(--text-xs) * 0.85);
-  color: var(--color-text-muted);
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.55);
   text-align: left;
   letter-spacing: 0.06em;
 }
@@ -168,7 +180,54 @@
 .successMsg {
   font-family: var(--font-pixel);
   font-size: var(--text-xs);
-  color: var(--color-gold);
-  animation: pixel-blink 0.8s ease infinite;
+  color: #f0c040;
+  animation: pixel-blink 0.8s step-end infinite;
   max-width: none;
+  padding: var(--space-4) 0;
+}
+
+/* ==================== keyframes ==================== */
+
+/* Idle-покачивание персонажей */
+@keyframes idle-bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* char2 покачивается зеркально */
+.char2 {
+  animation: idle-bob-flip 1.2s ease-in-out infinite;
+}
+
+@keyframes idle-bob-flip {
+  0%, 100% { transform: scaleX(-1) translateY(0); }
+  50%       { transform: scaleX(-1) translateY(-6px); }
+}
+
+/* Пульс сердца */
+@keyframes heart-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50%       { transform: translateX(-50%) scale(1.15); }
+}
+
+/* Тряска формы при ошибке */
+@keyframes input-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-5px); }
+  80%       { transform: translateX(5px); }
+}
+
+/* Мерцание текста в стиле пиксель */
+@keyframes pixel-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Адаптив */
+@media (max-width: 480px) {
+  .character { width: 100px; height: 100px; }
+  .characters { gap: 40px; }
+  .formBox { padding: var(--space-6) var(--space-6); }
 }
