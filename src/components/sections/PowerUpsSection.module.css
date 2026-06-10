@@ -1,98 +1,162 @@
 .section {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: var(--space-6);
-  padding: var(--space-12) var(--space-8);
-  background: var(--color-bg);
-  border-top: 2px solid var(--color-border);
-}
-
-.col {
-  padding: var(--space-6);
-}
-
-.colTitle {
+  background: var(--color-bg-parchment);
+  padding: 0 0 var(--space-8);
   font-family: var(--font-pixel);
-  font-size: var(--text-xs);
-  color: var(--color-text);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--space-5);
 }
 
-.list {
+/* ── 3-column grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8);
+  max-width: var(--content-wide);
+  margin: 0 auto;
+}
+
+/* ── Side panels ── */
+.panel {
+  border: 3px solid var(--color-border-pixel);
+  background: var(--color-bg-card);
+  padding: var(--space-4);
+}
+
+.panelTitle {
+  font-size: 0.6rem;
+  color: var(--color-text-dark);
+  letter-spacing: 0.12em;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--color-border-pixel);
+}
+
+/* ── Power-ups list ── */
+.powerList {
+  list-style: none;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
 
-.powerupsCard {
-  border-color: var(--fire-primary);
-  box-shadow: 4px 4px 0 var(--fire-dark);
+.powerItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
-.extrasCard {
-  border-color: var(--nature-primary);
-  box-shadow: 4px 4px 0 var(--nature-dark);
+.powerIcon { font-size: 1.3rem; flex-shrink: 0; }
+
+.powerLabel {
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+}
+
+/* ── Extras list ── */
+.extraList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .extraLink {
-  cursor: pointer;
-  transition: color var(--transition-fast);
-  border-radius: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-dark);
+  text-decoration: none;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: var(--space-2);
+  border: 2px solid transparent;
+  transition: border-color 180ms ease, background 180ms ease;
 }
 
 .extraLink:hover {
-  color: var(--color-gold);
+  border-color: var(--color-border-pixel);
+  background: var(--color-bg-parchment);
 }
 
-/* ---- Центральная цитата ---- */
-.quoteCard {
-  background: var(--color-bg-dark-card);
-  border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel-lg);
-  padding: var(--space-8);
+.extraIcon { font-size: 1.1rem; flex-shrink: 0; }
+
+/* ── Center panel ── */
+.centerPanel {
+  background: var(--color-bg-dark);
+  border: 3px solid var(--color-brown-dark);
+  padding: var(--space-6) var(--space-4);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
   text-align: center;
 }
 
-.quoteMain {
-  font-family: var(--font-body);
-  font-size: var(--text-lg);
-  color: var(--color-text);
-  font-weight: 500;
-  max-width: none;
+.centerQuote {
+  font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+  color: var(--color-text-light);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  max-width: 28ch;
 }
 
-.quoteHeart {
+.centerHeart {
+  font-size: 1.2rem;
   color: var(--color-heart);
-  font-size: 1.25rem;
-  animation: heart-pulse 1.5s ease-in-out infinite;
+  text-shadow: 0 0 10px var(--color-heart);
+}
+
+.centerSub {
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  max-width: 30ch;
+}
+
+/* ── Campfire scene ── */
+.campfireScene {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-size: 2rem;
+}
+
+.campfireChar { font-size: 1.6rem; }
+.campfireFlame { font-size: 1.8rem; display: inline-block; transform-origin: bottom center; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: var(--space-6) var(--space-4) var(--space-4);
+  border-top: 3px solid var(--color-border-pixel);
+  font-size: 0.55rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.footerLinks { display: flex; gap: var(--space-6); }
+
+.footerIcon {
+  font-size: 1.4rem;
+  text-decoration: none;
+  transition: transform 180ms ease;
   display: inline-block;
 }
 
-.quoteSub {
-  font-family: var(--font-body);
-  color: var(--color-text-muted);
-  font-size: var(--text-base);
-  max-width: none;
-}
+.footerIcon:hover { transform: scale(1.2) translateY(-2px); }
 
-.campfire {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 1.5rem;
-  margin-top: var(--space-4);
-}
-
+/* ── Mobile ── */
 @media (max-width: 768px) {
-  .section {
+  .grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
+    padding: var(--space-4);
   }
+
+  .centerPanel { order: -1; }
 }

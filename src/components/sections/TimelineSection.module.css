@@ -1,147 +1,264 @@
 .section {
-  padding: var(--space-16) var(--space-6);
   background: var(--color-bg-parchment);
-  text-align: center;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  margin-bottom: var(--space-2);
-}
-
-.title {
+  padding: var(--space-16) 0 var(--space-12);
+  overflow: hidden;
   font-family: var(--font-pixel);
-  font-size: var(--text-lg);
-  color: var(--color-text-dark);
-  text-transform: uppercase;
 }
 
-.deco {
-  color: var(--color-gold-dark);
-  font-size: 1rem;
+/* ── Header ── */
+.header {
+  text-align: center;
+  padding: 0 var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.sectionTitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--color-text-dark);
+  letter-spacing: 0.08em;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
 }
 
 .subtitle {
-  font-family: var(--font-body);
+  font-size: clamp(0.55rem, 1.1vw, 0.7rem);
   color: var(--color-text-muted);
-  font-size: var(--text-base);
-  /* override p max-width */
-  max-width: none;
-  color: #6B4E2A;
+  margin-top: var(--space-2);
+  letter-spacing: 0.06em;
 }
 
 .heart {
   color: var(--color-heart);
-  font-size: 1.25rem;
-  margin: var(--space-2) auto var(--space-8);
-  animation: heart-pulse 1.5s ease-in-out infinite;
+  font-size: 1.1rem;
+  margin-top: var(--space-2);
 }
 
-/* ---- Горизонтальный скролл ---- */
-.scrollWrapper {
-  overflow-x: auto;
-  overflow-y: visible;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
-  padding-block: var(--space-16);
+/* ── Progress bar ── */
+.progressTrack {
+  height: 3px;
+  background: rgba(0,0,0,0.08);
+  margin: 0 var(--space-8) var(--space-4);
+  border-radius: 0;
+  overflow: hidden;
 }
 
+.progressBar {
+  height: 100%;
+  background: var(--color-heart);
+  transform-origin: left;
+}
+
+/* ── Scroll track ── */
 .track {
   display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  min-width: max-content;
-  padding-inline: var(--space-8);
+  align-items: flex-end;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  padding: var(--space-8) var(--space-12) var(--space-8);
+  cursor: grab;
   position: relative;
+  /* Hide scrollbar — navigated via drag or hint */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.track::-webkit-scrollbar { display: none; }
+.track:active { cursor: grabbing; }
 
-/* Горизонтальная линия */
-.track::before {
-  content: '';
+/* ── Connector line ── */
+.connectorLine {
   position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--color-border);
-  transform: translateY(-50%);
+  bottom: calc(var(--space-8) + 64px);
+  left: var(--space-12);
+  right: var(--space-12);
+  height: 3px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--color-divider-pixel) 0px,
+    var(--color-divider-pixel) 10px,
+    transparent 10px,
+    transparent 18px
+  );
   pointer-events: none;
+  z-index: 0;
 }
 
-.startBadge {
-  font-family: var(--font-pixel);
-  font-size: var(--text-xs);
-  color: var(--color-text-dark);
-  background: var(--color-gold);
-  padding: var(--space-2) var(--space-3);
-  border: 2px solid var(--color-gold-dark);
-  box-shadow: 2px 2px 0 var(--color-gold-dark);
+/* ── Card wrapper (card + connector together) ── */
+.cardWrapper {
+  display: flex;
+  align-items: flex-end;
   flex-shrink: 0;
-  z-index: 1;
+  scroll-snap-align: start;
 }
 
-.levelCard {
+/* ── Connector heart between cards ── */
+.connector {
+  font-size: 1rem;
+  color: var(--color-heart);
+  padding: 0 var(--space-2);
+  margin-bottom: var(--space-10);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* ── Level card ── */
+.card {
+  position: relative;
+  z-index: 2;
+  width: clamp(140px, 20vw, 190px);
+  background: var(--color-bg-card);
+  border: 3px solid var(--color-border-pixel);
+  padding: var(--space-4) var(--space-3) var(--space-3);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
-  position: relative;
-  flex-shrink: 0;
-  z-index: 1;
+  cursor: default;
+  transition: box-shadow 200ms ease;
+  image-rendering: pixelated;
 }
 
-/* Чередование: над/под линией */
-.above { flex-direction: column-reverse; }
-.below { flex-direction: column; }
-
-.badge { flex-shrink: 0; }
-
-.connector {
-  width: 2px;
-  height: 24px;
-  background: var(--color-border);
-  flex-shrink: 0;
+.card:hover {
+  box-shadow: 4px 4px 0 var(--color-border-pixel);
 }
 
-.eventName {
-  font-family: var(--font-pixel);
-  font-size: calc(var(--text-xs) * 0.85);
-  color: var(--color-text-dark);
+.cardFinal {
+  background: var(--color-bg-final);
+  border-color: var(--color-gold);
+}
+
+.cardFinal:hover {
+  box-shadow: 4px 4px 0 var(--color-gold);
+}
+
+/* ── Level badge ── */
+.levelBadge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-brown-dark);
+  color: var(--color-text-light);
+  font-size: 0.5rem;
+  padding: 3px 8px;
+  letter-spacing: 0.1em;
   white-space: nowrap;
-  max-width: none;
+  border: 2px solid var(--color-brown-mid);
 }
 
-.eventDate {
-  font-family: var(--font-pixel);
-  font-size: calc(var(--text-xs) * 0.75);
-  color: #8B6040;
-  display: block;
-  margin-top: var(--space-1);
-}
-
-.finalLevel .badge,
-.finalBadge {
-  background: var(--color-heart) !important;
-  border-color: #a3243c !important;
-  box-shadow: 2px 2px 0 #a3243c !important;
+.badgeFinal {
+  background: var(--color-gold-dark);
+  border-color: var(--color-gold);
   color: #fff;
 }
 
-/* CTA */
-.cta {
-  margin-top: var(--space-12);
+/* ── Scene area ── */
+.scene {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.sceneEmoji {
+  font-size: 2.8rem;
+  image-rendering: pixelated;
+  user-select: none;
+}
+
+.sceneIcon {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+  font-size: 1.4rem;
+  opacity: 0.6;
+}
+
+/* ── Info ── */
+.info { text-align: center; }
+
+.title {
+  font-size: 0.6rem;
+  color: var(--color-text-dark);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.date {
+  font-size: 0.55rem;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+  letter-spacing: 0.04em;
+}
+
+.loadingText {
+  font-size: 0.55rem;
+  color: var(--color-nature);
+  margin-top: var(--space-1);
+  animation: blink 1.4s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── START badge ── */
+.startBadge {
+  position: absolute;
+  left: -52px;
+  bottom: 20px;
+  background: var(--color-fire);
+  color: #fff;
+  font-size: 0.55rem;
+  padding: 4px 10px;
+  border: 2px solid #c0392b;
+  letter-spacing: 0.1em;
+}
+
+/* ── Continue button ── */
+.continueWrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4) 0;
+}
+
+.continueBtn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-1);
+  border: 3px solid var(--color-border-pixel);
+  background: var(--color-bg-card);
+  color: var(--color-text-dark);
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  padding: var(--space-3) var(--space-8);
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: background 180ms ease, transform 180ms ease;
 }
 
-.ctaText {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: #6B4E2A;
-  max-width: none;
+.continueBtn:hover {
+  background: var(--color-brown-dark);
+  color: var(--color-text-light);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 var(--color-border-pixel);
+}
+
+.continueSub {
+  font-size: 0.5rem;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .track { padding: var(--space-8) var(--space-6); }
+  .progressTrack { margin: 0 var(--space-4) var(--space-3); }
+  .card { width: clamp(120px, 55vw, 160px); }
 }

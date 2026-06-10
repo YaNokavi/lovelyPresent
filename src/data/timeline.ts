@@ -1,34 +1,54 @@
-/**
- * Данные таймлайна — замени на реальные даты и события!
- * Формат даты: DD.MM.YYYY
- */
-export interface TimelineItem {
+export interface TimelineEvent {
+  id: string
   title: string
-  date: string
-  description?: string
+  date?: string
+  emoji?: string        // большой emoji-персонаж для сцены
+  sceneIcon?: string    // маленький icon внизу (облако, замок...)
+  isFinal?: boolean
 }
 
-export const TIMELINE: TimelineItem[] = [
+// ── Заполни своими реальными данными! ──
+export const timelineEvents: TimelineEvent[] = [
   {
+    id: 'level-1',
     title: 'The First Meet',
     date: '05.12.2022',
-    description: 'Всё началось здесь.',
+    emoji: '👫',
+    sceneIcon: '💬',
   },
   {
+    id: 'level-2',
     title: 'First Date',
-    date: '20.05.2022',
+    date: '05.20.2022',
+    emoji: '🌹',
+    sceneIcon: '✨',
   },
   {
+    id: 'level-3',
     title: 'Adventures',
-    date: '15.07.2022',
+    date: '07.15.2022',
+    emoji: '🗺️',
+    sceneIcon: '🌟',
   },
   {
+    id: 'level-4',
     title: 'Hard Times',
     date: '10.10.2022',
-    description: 'Мы справились вместе.',
+    emoji: '🌧️',
+    sceneIcon: '☁️',
   },
   {
+    id: 'level-5',
     title: 'Stronger Together',
-    date: '14.02.2023',
+    date: '02.14.2023',
+    emoji: '💑',
+    sceneIcon: '💖',
+  },
+  {
+    id: 'final',
+    title: 'Forever & Always',
+    isFinal: true,
+    emoji: '🏰',
+    sceneIcon: '🚩',
   },
 ]
