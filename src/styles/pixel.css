@@ -8,7 +8,7 @@
   font-size: var(--text-xs);
   padding: var(--space-3) var(--space-6);
   background: var(--color-bg-card);
-  color: var(--color-text);
+  color: var(--color-text-dark);
   border: 2px solid var(--color-border-light);
   box-shadow: var(--shadow-pixel);
   cursor: pointer;
@@ -31,23 +31,31 @@
 
 .btn-pixel.btn-fire {
   background: var(--fire-primary);
-  color: var(--color-bg);
+  color: #fff;
   border-color: var(--fire-dark);
-  box-shadow: 4px 4px 0px var(--fire-dark);
+  box-shadow: 4px 4px 0 var(--fire-dark);
+}
+
+.btn-pixel.btn-fire:hover {
+  background: var(--fire-light);
 }
 
 .btn-pixel.btn-nature {
   background: var(--nature-primary);
-  color: var(--color-bg);
+  color: #fff;
   border-color: var(--nature-dark);
-  box-shadow: 4px 4px 0px var(--nature-dark);
+  box-shadow: 4px 4px 0 var(--nature-dark);
 }
 
 .btn-pixel.btn-gold {
   background: var(--color-gold);
-  color: var(--color-bg);
+  color: var(--color-bg-dark);
   border-color: var(--color-gold-dark);
-  box-shadow: 4px 4px 0px var(--color-gold-dark);
+  box-shadow: 4px 4px 0 var(--color-gold-dark);
+}
+
+.btn-pixel.btn-gold:hover {
+  filter: brightness(1.08);
 }
 
 /* === PIXEL CARD === */
@@ -59,7 +67,6 @@
   position: relative;
 }
 
-/* "Уголки" пиксельной карточки */
 .pixel-card::before,
 .pixel-card::after {
   content: '';
@@ -85,14 +92,12 @@
   max-width: 240px;
 }
 
-/* Треугольник внизу пузыря */
 .speech-bubble::after {
   content: '';
   position: absolute;
   bottom: -10px;
   left: 24px;
-  width: 0;
-  height: 0;
+  width: 0; height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-top: 10px solid var(--color-border);
@@ -103,8 +108,7 @@
   position: absolute;
   bottom: -7px;
   left: 26px;
-  width: 0;
-  height: 0;
+  width: 0; height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 8px solid var(--color-bg-parchment);
@@ -118,7 +122,7 @@
   background: var(--color-bg-card);
   color: var(--color-gold);
   border: 2px solid var(--color-gold-dark);
-  box-shadow: 2px 2px 0px var(--color-gold-dark);
+  box-shadow: 2px 2px 0 var(--color-gold-dark);
   padding: var(--space-1) var(--space-3);
   text-transform: uppercase;
   white-space: nowrap;
@@ -129,19 +133,26 @@
 .pixel-input {
   font-family: var(--font-pixel);
   font-size: var(--text-xs);
-  background: var(--color-bg-dark-card);
-  color: var(--color-text);
-  border: 2px solid var(--color-border);
-  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.4);
+  /* тёмный фон + светлый текст — всегда контрастно */
+  background: #1a1008;
+  color: #f5e6c8;
+  caret-color: var(--color-gold);
+  border: 2px solid var(--color-border-pixel);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.5);
   padding: var(--space-3) var(--space-4);
   outline: none;
   width: 100%;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
+.pixel-input::placeholder {
+  color: rgba(245, 230, 200, 0.3);
+  letter-spacing: 0.2em;
+}
+
 .pixel-input:focus {
   border-color: var(--color-gold);
-  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.4), 0 0 0 1px var(--color-gold);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.5), 0 0 0 1px var(--color-gold);
 }
 
 .pixel-input.error {
@@ -151,8 +162,8 @@
 
 @keyframes input-shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX( 4px); }
+  25%       { transform: translateX(-4px); }
+  75%       { transform: translateX( 4px); }
 }
 
 /* === HEART ICON === */
@@ -160,6 +171,11 @@
   display: inline-block;
   color: var(--color-heart);
   animation: heart-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.2); }
 }
 
 /* === POWER-UP ITEM === */
@@ -182,7 +198,7 @@
   height: 12px;
   background: var(--color-bg-dark-card);
   border: 2px solid var(--color-border);
-  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.3);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
   overflow: hidden;
 }
 

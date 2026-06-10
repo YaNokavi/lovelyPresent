@@ -9,10 +9,8 @@ import char2Idle from '../../assets/sprites/char2_idle.png'
 import fireWorldBg from '../../assets/backgrounds/bg_fire_world.png'
 import natureWorldBg from '../../assets/backgrounds/bg_nature_world.png'
 
-// Шаг персонажа по оси X на каждой фазе (px)
 const CHAR_STEPS = [0, 60, 120] as const
 
-// Частицы сердечек при успехе
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
   id: i,
   x: Math.cos((i / 12) * Math.PI * 2) * (50 + Math.random() * 60),
@@ -32,40 +30,20 @@ export default function AuthScreen() {
   const [showParticles, setShowParticles] = useState(false)
 
   const passwordRef = useRef<HTMLInputElement>(null)
-
   const char1Controls = useAnimation()
   const char2Controls = useAnimation()
 
-  // Марш персонажей по фазам
   useEffect(() => {
     if (phase === 'password') {
-      // Оба делают первый шаг
-      char1Controls.start({
-        x: CHAR_STEPS[1],
-        transition: { type: 'spring', stiffness: 120, damping: 18 },
-      })
-      char2Controls.start({
-        x: -CHAR_STEPS[1],
-        transition: { type: 'spring', stiffness: 120, damping: 18 },
-      })
+      char1Controls.start({ x: CHAR_STEPS[1], transition: { type: 'spring', stiffness: 120, damping: 18 } })
+      char2Controls.start({ x: -CHAR_STEPS[1], transition: { type: 'spring', stiffness: 120, damping: 18 } })
     } else if (phase === 'success') {
-      // Сходятся полностью
-      char1Controls.start({
-        x: CHAR_STEPS[2],
-        transition: { type: 'spring', stiffness: 100, damping: 14, delay: 0.1 },
-      })
-      char2Controls.start({
-        x: -CHAR_STEPS[2],
-        transition: { type: 'spring', stiffness: 100, damping: 14, delay: 0.1 },
-      })
+      char1Controls.start({ x: CHAR_STEPS[2], transition: { type: 'spring', stiffness: 100, damping: 14, delay: 0.1 } })
+      char2Controls.start({ x: -CHAR_STEPS[2], transition: { type: 'spring', stiffness: 100, damping: 14, delay: 0.1 } })
       setTimeout(() => setShowParticles(true), 400)
       setTimeout(() => navigate('/home'), 2200)
     } else if (phase === 'error') {
-      // Персонаж 2 отшагивает назад
-      char2Controls.start({
-        x: [-CHAR_STEPS[1], -CHAR_STEPS[1] + 12, -CHAR_STEPS[1]],
-        transition: { duration: 0.3 },
-      })
+      char2Controls.start({ x: [-CHAR_STEPS[1], -CHAR_STEPS[1] + 14, -CHAR_STEPS[1]], transition: { duration: 0.3 } })
       setTimeout(() => setPhase('password'), 800)
     }
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -97,45 +75,38 @@ export default function AuthScreen() {
 
   return (
     <div className={styles.screen}>
-      {/* Фоны двух миров */}
-      <div
-        className={styles.worldFire}
-        style={{ backgroundImage: `url(${fireWorldBg})` }}
-        aria-hidden
-      />
-      <div
-        className={styles.worldNature}
-        style={{ backgroundImage: `url(${natureWorldBg})` }}
-        aria-hidden
-      />
+      {/* Фоны */}
+      <div className={styles.worldFire}   style={{ backgroundImage: `url(${fireWorldBg})` }}   aria-hidden />
+      <div className={styles.worldNature} style={{ backgroundImage: `url(${natureWorldBg})` }} aria-hidden />
 
       {/* Персонажи */}
       <div className={styles.characters} aria-hidden>
-        {/* Персонаж 1 — огонь (слева) */}
+
+        {/* Char1 — Framer двигает по X, inner div делает idle-bob */}
         <motion.div
-          className={`${styles.character} ${styles.char1}`}
+          className={styles.charOuter}
           animate={char1Controls}
           initial={{ x: 0 }}
         >
-          <img src={char1Idle} alt="" width={148} height={148} loading="eager" />
+          <div className={styles.charBob}>
+            <img src={char1Idle} alt="" width={148} height={148} loading="eager" className={styles.charImg} />
+          </div>
         </motion.div>
 
-        {/* Сердце в центре + частицы */}
+        {/* Сердце + частицы */}
         <div className={styles.heartWrapper}>
           <AnimatePresence>
             {phase === 'success' && (
               <motion.div
                 className={styles.heartCenter}
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: [0, 1.4, 1], opacity: 1 }}
+                animate={{ scale: [0, 1.5, 1], opacity: 1 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 ♥
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Частицы сердечек */}
           <AnimatePresence>
             {showParticles && PARTICLES.map((p) => (
               <motion.span
@@ -143,7 +114,6 @@ export default function AuthScreen() {
                 className={styles.particle}
                 initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
                 animate={{ x: p.x, y: p.y, scale: 1, opacity: 0 }}
-                exit={{ opacity: 0 }}
                 transition={{ duration: 0.8, delay: p.delay, ease: 'easeOut' }}
                 style={{ fontSize: p.size }}
               >
@@ -153,17 +123,21 @@ export default function AuthScreen() {
           </AnimatePresence>
         </div>
 
-        {/* Персонаж 2 — природа (справа), зеркальный */}
+        {/* Char2 — зеркальный: outer зеркалит через CSS, Framer двигает outer по X отрицательно */}
         <motion.div
-          className={`${styles.character} ${styles.char2}`}
+          className={styles.charOuter}
+          style={{ scaleX: -1 }}   /* зеркало через inline style, не CSS-класс */
           animate={char2Controls}
           initial={{ x: 0 }}
         >
-          <img src={char2Idle} alt="" width={148} height={148} loading="eager" />
+          <div className={styles.charBob}>
+            <img src={char2Idle} alt="" width={148} height={148} loading="eager" className={styles.charImg} />
+          </div>
         </motion.div>
+
       </div>
 
-      {/* Форма входа */}
+      {/* Форма */}
       <motion.div
         className={`${styles.formBox} ${shake ? styles.shake : ''}`}
         initial={{ opacity: 0, y: 20 }}
@@ -172,12 +146,12 @@ export default function AuthScreen() {
       >
         <AnimatePresence mode="wait">
           <motion.p
-            key={phase}
+            key={phase + '-title'}
             className={styles.formTitle}
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.2 }}
           >
             {phase === 'success' ? '♥ Welcome Back ♥' : '~ Our Story ~'}
           </motion.p>
@@ -189,14 +163,12 @@ export default function AuthScreen() {
               key="login-form"
               onSubmit={handleLoginSubmit}
               className={styles.form}
-              initial={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              transition={{ duration: 0.25 }}
+              exit={{ opacity: 0, x: 12 }}
+              transition={{ duration: 0.22 }}
             >
-              <label className={styles.label} htmlFor="login">
-                &gt; Enter the key word
-              </label>
+              <label className={styles.label} htmlFor="login">&gt; Enter the key word</label>
               <input
                 id="login"
                 className={`pixel-input ${styles.input}`}
@@ -218,14 +190,12 @@ export default function AuthScreen() {
               key="password-form"
               onSubmit={handlePasswordSubmit}
               className={styles.form}
-              initial={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              transition={{ duration: 0.25 }}
+              exit={{ opacity: 0, x: 12 }}
+              transition={{ duration: 0.22 }}
             >
-              <label className={styles.label} htmlFor="password">
-                &gt; One more secret...
-              </label>
+              <label className={styles.label} htmlFor="password">&gt; One more secret...</label>
               <input
                 ref={passwordRef}
                 id="password"

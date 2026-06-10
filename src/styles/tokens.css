@@ -20,20 +20,40 @@
   --color-world-fire:   #2d1a0e;
   --color-world-nature: #0d2218;
 
+  /* ── Fire world palette ── */
+  --fire-primary: #e67e22;
+  --fire-dark:    #a04000;
+  --fire-light:   #f5a623;
+
+  /* ── Nature world palette ── */
+  --nature-primary: #27ae60;
+  --nature-dark:    #1a6b3a;
+  --nature-light:   #52d68a;
+
   /* ── UI Surfaces ── */
+  --color-bg:           #f5ede0;
+  --color-bg-warm:      #f5ede0;
   --color-bg-parchment: #f5ede0;
   --color-bg-card:      #fdf6ee;
   --color-bg-dark:      #1e1208;
+  --color-bg-dark-card: #2a1c10;
   --color-bg-final:     #2b1d08;
+  --color-surface:      #fdf6ee;
+  --color-surface-offset: #ede5d8;
+  --color-surface-dynamic: #d9cfc3;
 
   /* ── Text ── */
+  --color-text:        #2c1a0e;
   --color-text-dark:   #2c1a0e;
   --color-text-muted:  #7a6a5a;
   --color-text-light:  #f5ede0;
   --color-text-fire:   #f5e6d0;
 
   /* ── Borders / pixel art ── */
+  --color-border:        #c8b49a;
+  --color-border-light:  #d4c4ae;
   --color-border-pixel:  #6b4c2a;
+  --color-divider:       #d4c4ae;
   --color-divider-pixel: #a0785a;
   --color-brown-dark:    #3d2510;
   --color-brown-mid:     #6b4c2a;
@@ -42,12 +62,12 @@
   --color-gold-dark: #a0780a;
 
   /* ── Type scale ── */
-  --text-xs:   clamp(0.75rem, 0.7rem  + 0.25vw, 0.875rem);
-  --text-sm:   clamp(0.875rem,0.8rem  + 0.35vw, 1rem);
-  --text-base: clamp(1rem,    0.95rem + 0.25vw, 1.125rem);
-  --text-lg:   clamp(1.125rem,1rem   + 0.75vw, 1.5rem);
-  --text-xl:   clamp(1.5rem,  1.2rem + 1.25vw, 2.25rem);
-  --text-2xl:  clamp(2rem,    1.2rem + 2.5vw,  3.5rem);
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+  --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+  --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+  --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+  --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
 
   /* ── Spacing (4px base) ── */
   --space-1:  0.25rem;
@@ -75,11 +95,14 @@
   --content-wide:    1200px;
 
   /* ── Transitions ── */
+  --transition-fast:        120ms cubic-bezier(0.16, 1, 0.3, 1);
   --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ── Shadows ── */
-  --shadow-pixel: 4px 4px 0 var(--color-border-pixel);
-  --shadow-sm: 0 2px 8px rgba(44,26,14,0.10);
+  --shadow-pixel:    4px 4px 0 var(--color-border-pixel);
+  --shadow-pixel-sm: 2px 2px 0 var(--color-border-pixel);
+  --shadow-pixel-lg: 6px 6px 0 var(--color-border-pixel);
+  --shadow-sm: 0 2px 8px  rgba(44,26,14,0.10);
   --shadow-md: 0 4px 16px rgba(44,26,14,0.14);
   --shadow-lg: 0 8px 32px rgba(44,26,14,0.18);
 }
