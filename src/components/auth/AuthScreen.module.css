@@ -1,0 +1,170 @@
+.screen {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  gap: var(--space-8);
+}
+
+/* ---- Два фона ---- */
+.worldFire,
+.worldNature {
+  position: absolute;
+  inset: 0;
+  width: 50%;
+  pointer-events: none;
+}
+
+.worldFire {
+  left: 0;
+  background: linear-gradient(135deg, var(--fire-bg) 0%, var(--fire-dark) 100%);
+  /* Закат */
+  background-image:
+    radial-gradient(ellipse 40% 30% at 25% 60%, rgba(232,116,12,0.3) 0%, transparent 60%),
+    linear-gradient(to bottom, #1a0600 0%, #3a1200 60%, #1a0600 100%);
+}
+
+.worldNature {
+  left: 50%;
+  background-image:
+    radial-gradient(ellipse 40% 30% at 75% 60%, rgba(74,140,63,0.3) 0%, transparent 60%),
+    linear-gradient(to bottom, #040d02 0%, #0d2108 60%, #040d02 100%);
+}
+
+/* Вертикальный разделитель по центру */
+.screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ---- Персонажи ---- */
+.characters {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 120px;
+  width: 100%;
+  max-width: 480px;
+  padding-bottom: var(--space-4);
+}
+
+.character {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  image-rendering: pixelated;
+  /* Покачивание в простое */
+  animation: idle-bob 1.2s ease-in-out infinite;
+}
+
+/* Персонаж 1 — идёт вправо при шагах */
+.char1.step1 { transform: translateX(24px); }
+.char1.step2 { transform: translateX(48px); }
+
+/* Персонаж 2 — повёрнут и идёт влево */
+.char2 { transform: scaleX(-1); }
+.char2.step1 { transform: scaleX(-1) translateX(24px); }
+.char2.step2 { transform: scaleX(-1) translateX(48px); }
+
+/* Остановка idle-bob при успехе */
+.character.idle {
+  animation-play-state: paused;
+}
+
+/* ---- Сердце в центре ---- */
+.heartCenter {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  font-size: 2rem;
+  color: var(--color-heart);
+  font-family: var(--font-pixel);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.heartCenter.heartVisible {
+  transform: translateX(-50%) scale(1);
+  animation: heart-pulse 0.8s ease-in-out 2;
+}
+
+/* ---- Форма ---- */
+.formBox {
+  position: relative;
+  z-index: 2;
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-pixel-lg);
+  padding: var(--space-8) var(--space-10);
+  width: min(420px, calc(100vw - 2rem));
+  text-align: center;
+}
+
+.shake {
+  animation: input-shake 0.3s ease;
+}
+
+.formTitle {
+  font-family: var(--font-pixel);
+  font-size: var(--text-xs);
+  color: var(--color-gold);
+  margin-bottom: var(--space-6);
+  letter-spacing: 0.1em;
+  max-width: none;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: stretch;
+}
+
+.label {
+  font-family: var(--font-pixel);
+  font-size: calc(var(--text-xs) * 0.85);
+  color: var(--color-text-muted);
+  text-align: left;
+  letter-spacing: 0.06em;
+}
+
+.input {
+  letter-spacing: 0.12em;
+}
+
+.btn {
+  margin-top: var(--space-2);
+  align-self: flex-end;
+}
+
+.successMsg {
+  font-family: var(--font-pixel);
+  font-size: var(--text-xs);
+  color: var(--color-gold);
+  animation: pixel-blink 0.8s ease infinite;
+  max-width: none;
+}

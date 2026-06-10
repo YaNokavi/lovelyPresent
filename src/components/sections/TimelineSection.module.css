@@ -1,0 +1,147 @@
+.section {
+  padding: var(--space-16) var(--space-6);
+  background: var(--color-bg-parchment);
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-pixel);
+  font-size: var(--text-lg);
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+}
+
+.deco {
+  color: var(--color-gold-dark);
+  font-size: 1rem;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  /* override p max-width */
+  max-width: none;
+  color: #6B4E2A;
+}
+
+.heart {
+  color: var(--color-heart);
+  font-size: 1.25rem;
+  margin: var(--space-2) auto var(--space-8);
+  animation: heart-pulse 1.5s ease-in-out infinite;
+}
+
+/* ---- Горизонтальный скролл ---- */
+.scrollWrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  padding-block: var(--space-16);
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-width: max-content;
+  padding-inline: var(--space-8);
+  position: relative;
+}
+
+/* Горизонтальная линия */
+.track::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-border);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.startBadge {
+  font-family: var(--font-pixel);
+  font-size: var(--text-xs);
+  color: var(--color-text-dark);
+  background: var(--color-gold);
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--color-gold-dark);
+  box-shadow: 2px 2px 0 var(--color-gold-dark);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.levelCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  position: relative;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+/* Чередование: над/под линией */
+.above { flex-direction: column-reverse; }
+.below { flex-direction: column; }
+
+.badge { flex-shrink: 0; }
+
+.connector {
+  width: 2px;
+  height: 24px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+.eventName {
+  font-family: var(--font-pixel);
+  font-size: calc(var(--text-xs) * 0.85);
+  color: var(--color-text-dark);
+  white-space: nowrap;
+  max-width: none;
+}
+
+.eventDate {
+  font-family: var(--font-pixel);
+  font-size: calc(var(--text-xs) * 0.75);
+  color: #8B6040;
+  display: block;
+  margin-top: var(--space-1);
+}
+
+.finalLevel .badge,
+.finalBadge {
+  background: var(--color-heart) !important;
+  border-color: #a3243c !important;
+  box-shadow: 2px 2px 0 #a3243c !important;
+  color: #fff;
+}
+
+/* CTA */
+.cta {
+  margin-top: var(--space-12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ctaText {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: #6B4E2A;
+  max-width: none;
+}

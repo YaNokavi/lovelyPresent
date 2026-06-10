@@ -1,0 +1,193 @@
+/* =============================================
+   PIXEL-ART COMPONENT STYLES
+   ============================================= */
+
+/* === PIXEL BUTTON === */
+.btn-pixel {
+  font-family: var(--font-pixel);
+  font-size: var(--text-xs);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  border: 2px solid var(--color-border-light);
+  box-shadow: var(--shadow-pixel);
+  cursor: pointer;
+  position: relative;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  image-rendering: pixelated;
+}
+
+.btn-pixel:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-pixel-lg);
+}
+
+.btn-pixel:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-pixel-sm);
+}
+
+.btn-pixel.btn-fire {
+  background: var(--fire-primary);
+  color: var(--color-bg);
+  border-color: var(--fire-dark);
+  box-shadow: 4px 4px 0px var(--fire-dark);
+}
+
+.btn-pixel.btn-nature {
+  background: var(--nature-primary);
+  color: var(--color-bg);
+  border-color: var(--nature-dark);
+  box-shadow: 4px 4px 0px var(--nature-dark);
+}
+
+.btn-pixel.btn-gold {
+  background: var(--color-gold);
+  color: var(--color-bg);
+  border-color: var(--color-gold-dark);
+  box-shadow: 4px 4px 0px var(--color-gold-dark);
+}
+
+/* === PIXEL CARD === */
+.pixel-card {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-pixel);
+  padding: var(--space-4);
+  position: relative;
+}
+
+/* "Уголки" пиксельной карточки */
+.pixel-card::before,
+.pixel-card::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-bg);
+}
+.pixel-card::before { top: -2px;  left: -2px; }
+.pixel-card::after  { top: -2px; right: -2px; }
+
+/* === SPEECH BUBBLE === */
+.speech-bubble {
+  background: var(--color-bg-parchment);
+  color: var(--color-text-dark);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-pixel);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  position: relative;
+  border-radius: var(--radius-sm);
+  max-width: 240px;
+}
+
+/* Треугольник внизу пузыря */
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 24px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid var(--color-border);
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 26px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--color-bg-parchment);
+  z-index: 1;
+}
+
+/* === LEVEL BADGE === */
+.level-badge {
+  font-family: var(--font-pixel);
+  font-size: var(--text-xs);
+  background: var(--color-bg-card);
+  color: var(--color-gold);
+  border: 2px solid var(--color-gold-dark);
+  box-shadow: 2px 2px 0px var(--color-gold-dark);
+  padding: var(--space-1) var(--space-3);
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* === PIXEL INPUT === */
+.pixel-input {
+  font-family: var(--font-pixel);
+  font-size: var(--text-xs);
+  background: var(--color-bg-dark-card);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.4);
+  padding: var(--space-3) var(--space-4);
+  outline: none;
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.pixel-input:focus {
+  border-color: var(--color-gold);
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.4), 0 0 0 1px var(--color-gold);
+}
+
+.pixel-input.error {
+  border-color: var(--color-heart);
+  animation: input-shake 0.3s ease;
+}
+
+@keyframes input-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX( 4px); }
+}
+
+/* === HEART ICON === */
+.pixel-heart {
+  display: inline-block;
+  color: var(--color-heart);
+  animation: heart-pulse 1.5s ease-in-out infinite;
+}
+
+/* === POWER-UP ITEM === */
+.powerup-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.powerup-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* === PIXEL PROGRESS BAR === */
+.pixel-progress {
+  height: 12px;
+  background: var(--color-bg-dark-card);
+  border: 2px solid var(--color-border);
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.pixel-progress-fill {
+  height: 100%;
+  background: var(--fire-primary);
+  transition: width 0.8s ease;
+}

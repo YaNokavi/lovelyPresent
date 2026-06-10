@@ -1,0 +1,139 @@
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  min-height: 400px;
+  overflow: hidden;
+  border-bottom: 2px solid var(--color-border);
+}
+
+/* ---- Фоны ---- */
+.worldLeft,
+.worldRight {
+  position: relative;
+  overflow: hidden;
+}
+
+.worldBgFire {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 70%, rgba(232,116,12,0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 10% 90%, rgba(192,57,43,0.25) 0%, transparent 60%),
+    linear-gradient(to bottom, #200800 0%, #3d1100 60%, #1a0600 100%);
+}
+
+.worldBgNature {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 70%, rgba(74,140,63,0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 90% 90%, rgba(45,106,35,0.25) 0%, transparent 60%),
+    linear-gradient(to bottom, #051002 0%, #0d2108 60%, #040d02 100%);
+}
+
+/* ---- Текст в мирах ---- */
+.leftContent {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-12) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.rightContent {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-12) var(--space-8);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: var(--space-16);
+}
+
+.headline {
+  font-family: var(--font-pixel);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+
+.accent {
+  color: var(--color-gold);
+}
+
+.subtext {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  max-width: 240px;
+}
+
+/* ---- Персонажи ---- */
+.characters {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: var(--space-8);
+  gap: 0;
+  width: 180px;
+  /* Тонкий разделитель */
+  border-left: 2px solid var(--color-border);
+  border-right: 2px solid var(--color-border);
+  background:
+    linear-gradient(to bottom, transparent, var(--color-bg) 80%);
+}
+
+.heartTop {
+  position: absolute;
+  top: var(--space-8);
+  font-size: 2rem;
+  color: var(--color-heart);
+  font-family: var(--font-pixel);
+  animation: heart-pulse 1.5s ease-in-out infinite;
+}
+
+.char1,
+.char2 {
+  image-rendering: pixelated;
+  animation: idle-bob 1.4s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.char1 { animation-delay: 0s; }
+.char2 { animation-delay: 0.3s; transform: scaleX(-1); }
+
+@media (max-width: 640px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .characters {
+    width: 100%;
+    border: none;
+    border-top: 2px solid var(--color-border);
+    border-bottom: 2px solid var(--color-border);
+    padding: var(--space-6) 0;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-12);
+  }
+
+  .leftContent, .rightContent {
+    padding: var(--space-8) var(--space-6);
+  }
+
+  .rightContent {
+    justify-content: center;
+    padding-top: var(--space-8);
+  }
+}
