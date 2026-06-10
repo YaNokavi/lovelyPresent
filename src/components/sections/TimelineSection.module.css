@@ -1,204 +1,215 @@
 .section {
-  background: var(--color-bg-parchment);
   padding: var(--space-16) 0 var(--space-12);
+  background: var(--color-bg-warm);
   overflow: hidden;
-  font-family: var(--font-pixel);
 }
 
-/* ── Header ── */
 .header {
   text-align: center;
-  padding: 0 var(--space-4);
-  margin-bottom: var(--space-8);
+  padding: 0 var(--space-4) var(--space-8);
 }
 
 .sectionTitle {
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-family: var(--font-pixel);
+  font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+  letter-spacing: 0.12em;
   color: var(--color-text-dark);
-  letter-spacing: 0.08em;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  margin-bottom: var(--space-3);
 }
 
 .subtitle {
-  font-size: clamp(0.55rem, 1.1vw, 0.7rem);
+  font-family: var(--font-pixel);
+  font-size: clamp(0.5rem, 1vw, 0.65rem);
   color: var(--color-text-muted);
-  margin-top: var(--space-2);
   letter-spacing: 0.06em;
+  margin-bottom: var(--space-2);
 }
 
 .heart {
   color: var(--color-heart);
-  font-size: 1.1rem;
-  margin-top: var(--space-2);
+  font-size: 1rem;
+  animation: heartbeat 1.4s ease-in-out infinite;
 }
 
-/* ── Progress bar ── */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.22); }
+}
+
+/* Прогресс-бар */
 .progressTrack {
-  height: 3px;
-  background: rgba(0,0,0,0.08);
-  margin: 0 var(--space-8) var(--space-4);
-  border-radius: 0;
+  height: 4px;
+  background: var(--color-divider);
+  margin: 0 var(--space-8) var(--space-6);
+  border-radius: var(--radius-full);
   overflow: hidden;
 }
 
 .progressBar {
   height: 100%;
-  background: var(--color-heart);
-  transform-origin: left;
+  background: linear-gradient(90deg, var(--color-fire), var(--color-heart), var(--color-nature));
+  border-radius: var(--radius-full);
+  will-change: width;
 }
 
-/* ── Scroll track ── */
+/* Горизонтальная полоса */
 .track {
   display: flex;
   align-items: flex-end;
   gap: 0;
+  padding: var(--space-8) var(--space-8) var(--space-10);
   overflow-x: auto;
-  overflow-y: hidden;
   scroll-snap-type: x proximity;
-  padding: var(--space-8) var(--space-12) var(--space-8);
-  cursor: grab;
+  -webkit-overflow-scrolling: touch;
   position: relative;
-  /* Hide scrollbar — navigated via drag or hint */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-heart) transparent;
 }
-.track::-webkit-scrollbar { display: none; }
-.track:active { cursor: grabbing; }
 
-/* ── Connector line ── */
+.track::-webkit-scrollbar { height: 4px; }
+.track::-webkit-scrollbar-track { background: transparent; }
+.track::-webkit-scrollbar-thumb {
+  background: var(--color-heart);
+  border-radius: var(--radius-full);
+}
+
+/* Даширная линия-путь */
 .connectorLine {
   position: absolute;
-  bottom: calc(var(--space-8) + 64px);
-  left: var(--space-12);
-  right: var(--space-12);
+  left: var(--space-8);
+  right: var(--space-8);
+  bottom: calc(var(--space-10) + 80px);
   height: 3px;
   background: repeating-linear-gradient(
     to right,
-    var(--color-divider-pixel) 0px,
-    var(--color-divider-pixel) 10px,
+    var(--color-heart) 0px,
+    var(--color-heart) 10px,
     transparent 10px,
-    transparent 18px
+    transparent 20px
   );
+  opacity: 0.35;
   pointer-events: none;
-  z-index: 0;
 }
 
-/* ── Card wrapper (card + connector together) ── */
 .cardWrapper {
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
 }
 
-/* ── Connector heart between cards ── */
-.connector {
-  font-size: 1rem;
-  color: var(--color-heart);
-  padding: 0 var(--space-2);
-  margin-bottom: var(--space-10);
-  flex-shrink: 0;
-  opacity: 0.7;
-}
-
-/* ── Level card ── */
+/* Карточка уровня */
 .card {
-  position: relative;
-  z-index: 2;
-  width: clamp(140px, 20vw, 190px);
-  background: var(--color-bg-card);
-  border: 3px solid var(--color-border-pixel);
-  padding: var(--space-4) var(--space-3) var(--space-3);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  width: 160px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  position: relative;
   cursor: default;
-  transition: box-shadow 200ms ease;
-  image-rendering: pixelated;
+  will-change: transform;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: 4px 4px 0 var(--color-border-pixel);
+  box-shadow: var(--shadow-md);
 }
 
 .cardFinal {
-  background: var(--color-bg-final);
+  width: 180px;
   border-color: var(--color-gold);
+  background: var(--color-surface-2);
+  box-shadow: 0 0 24px rgba(209,153,0,0.2), var(--shadow-md);
 }
 
-.cardFinal:hover {
-  box-shadow: 4px 4px 0 var(--color-gold);
-}
-
-/* ── Level badge ── */
+/* Бэдж уровня */
 .levelBadge {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-brown-dark);
-  color: var(--color-text-light);
+  font-family: var(--font-pixel);
   font-size: 0.5rem;
-  padding: 3px 8px;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-  border: 2px solid var(--color-brown-mid);
+  letter-spacing: 0.08em;
+  background: var(--color-bg-dark);
+  color: var(--color-text-fire);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
 }
 
 .badgeFinal {
-  background: var(--color-gold-dark);
-  border-color: var(--color-gold);
-  color: #fff;
+  background: var(--color-gold);
+  color: var(--color-bg-dark);
 }
 
-/* ── Scene area ── */
+/* Сцена с персонажами */
 .scene {
-  width: 100%;
-  height: 80px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
+  align-items: flex-end;
+  min-height: 64px;
 }
 
-.sceneEmoji {
-  font-size: 2.8rem;
-  image-rendering: pixelated;
-  user-select: none;
+.sceneSprites {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-2);
+  position: relative;
+  width: 100%;
+}
+
+.sceneImg {
+  display: block;
+  filter: drop-shadow(0 4px 0 rgba(0,0,0,0.2));
 }
 
 .sceneIcon {
   position: absolute;
-  bottom: 0;
-  right: 8px;
-  font-size: 1.4rem;
-  opacity: 0.6;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  pointer-events: none;
 }
 
-/* ── Info ── */
-.info { text-align: center; }
+.sceneEmoji {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+/* Инфо */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
 
 .title {
-  font-size: 0.6rem;
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
   color: var(--color-text-dark);
-  letter-spacing: 0.06em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.12);
   line-height: 1.5;
-  text-transform: uppercase;
 }
 
 .date {
-  font-size: 0.55rem;
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
   color: var(--color-text-muted);
-  margin-top: var(--space-1);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .loadingText {
-  font-size: 0.55rem;
-  color: var(--color-nature);
-  margin-top: var(--space-1);
-  animation: blink 1.4s step-end infinite;
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+  animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
@@ -206,20 +217,33 @@
   50%       { opacity: 0; }
 }
 
-/* ── START badge ── */
+/* START бэдж */
 .startBadge {
   position: absolute;
-  left: -52px;
-  bottom: 20px;
-  background: var(--color-fire);
+  bottom: calc(100% + var(--space-3));
+  left: -8px;
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
+  background: var(--color-nature);
   color: #fff;
-  font-size: 0.55rem;
-  padding: 4px 10px;
-  border: 2px solid #c0392b;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
   letter-spacing: 0.1em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  white-space: nowrap;
 }
 
-/* ── Continue button ── */
+/* Соединитель между карточками */
+.connector {
+  font-size: 0.85rem;
+  color: var(--color-heart);
+  padding: 0 var(--space-3);
+  align-self: center;
+  flex-shrink: 0;
+  margin-bottom: 24px;
+}
+
+/* Кнопка продолжения */
 .continueWrap {
   display: flex;
   justify-content: center;
@@ -227,38 +251,30 @@
 }
 
 .continueBtn {
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-dark);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-8);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
-  border: 3px solid var(--color-border-pixel);
-  background: var(--color-bg-card);
-  color: var(--color-text-dark);
-  font-family: var(--font-pixel);
-  font-size: 0.65rem;
-  padding: var(--space-3) var(--space-8);
-  cursor: pointer;
   text-decoration: none;
-  letter-spacing: 0.08em;
-  transition: background 180ms ease, transform 180ms ease;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
 
 .continueBtn:hover {
-  background: var(--color-brown-dark);
-  color: var(--color-text-light);
-  transform: translate(-2px, -2px);
-  box-shadow: 3px 3px 0 var(--color-border-pixel);
+  background: var(--color-surface-2);
+  border-color: var(--color-heart);
+  transform: translateY(-3px);
 }
 
 .continueSub {
-  font-size: 0.5rem;
-  opacity: 0.7;
-  letter-spacing: 0.1em;
-}
-
-/* ── Mobile ── */
-@media (max-width: 640px) {
-  .track { padding: var(--space-8) var(--space-6); }
-  .progressTrack { margin: 0 var(--space-4) var(--space-3); }
-  .card { width: clamp(120px, 55vw, 160px); }
+  font-size: 0.45rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
 }
