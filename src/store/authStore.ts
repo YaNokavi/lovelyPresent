@@ -13,14 +13,18 @@ export interface AuthState {
   isAuthenticated: boolean
   loginStep: LoginStep
   login: (value: string) => boolean
+  /** Проверяет пароль, НЕ выставляет isAuthenticated сразу.
+   *  Возвращает true если пароль верный.
+   *  Вызывающий код сам решает когда звать confirmAuth() — после анимации. */
   authenticate: (password: string) => boolean
+  /** Финально выставляет isAuthenticated: true. Вызывать ПОСЛЕ анимации. */
+  confirmAuth: () => void
   logout: () => void
 }
 
 const DEV_LOGIN    = import.meta.env.VITE_AUTH_LOGIN    ?? 'dev'
 const DEV_PASSWORD = import.meta.env.VITE_AUTH_PASSWORD ?? 'dev'
 
-/** Используется внутри AuthProvider — реактивный хук */
 export function useAuthStore(): AuthState {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loginStep, setLoginStep]             = useState<LoginStep>('idle')
@@ -34,14 +38,20 @@ export function useAuthStore(): AuthState {
     return false
   }, [])
 
+  /** Только проверяет пароль — НЕ трогает isAuthenticated */
   const authenticate = useCallback((password: string): boolean => {
     if (password.trim().toLowerCase() === DEV_PASSWORD.toLowerCase()) {
-      setIsAuthenticated(true)
-      setLoginStep('authenticated')
+      // НЕ ставим isAuthenticated здесь — ждём confirmAuth из AuthScreen
       return true
     }
     setLoginStep('error')
     return false
+  }, [])
+
+  /** Вызывается из AuthScreen когда анимация завершена */
+  const confirmAuth = useCallback(() => {
+    setIsAuthenticated(true)
+    setLoginStep('authenticated')
   }, [])
 
   const logout = useCallback(() => {
@@ -49,7 +59,7 @@ export function useAuthStore(): AuthState {
     setLoginStep('idle')
   }, [])
 
-  return { isAuthenticated, loginStep, login, authenticate, logout }
+  return { isAuthenticated, loginStep, login, authenticate, confirmAuth, logout }
 }
 
 export const AuthContext = createContext<AuthState | null>(null)

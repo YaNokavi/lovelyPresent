@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { useAuth } from '../../store/authStore'
 import styles from './AuthScreen.module.css'
@@ -9,55 +8,95 @@ import char2Idle from '../../assets/sprites/char2_idle.png'
 import fireWorldBg from '../../assets/backgrounds/bg_fire_world.png'
 import natureWorldBg from '../../assets/backgrounds/bg_nature_world.png'
 
-const CHAR_STEPS = [0, 60, 120] as const
+// Шаги сближения персонажей в пикселях (по X)
+const STEP_AFTER_LOGIN    = 60   // после логина — шаг навстречу
+const STEP_AFTER_PASSWORD = 120  // после пароля — встреча
 
-const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
+// Тайминги анимации успеха (мс)
+const CHARS_MEET_DURATION  = 700   // время сближения
+const HEART_APPEAR_DELAY   = 500   // сердце появляется
+const PARTICLES_DELAY      = 500   // частицы
+const NAVIGATE_DELAY       = 2400  // переход на /home
+
+const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
   id: i,
-  x: Math.cos((i / 12) * Math.PI * 2) * (50 + Math.random() * 60),
-  y: Math.sin((i / 12) * Math.PI * 2) * (50 + Math.random() * 60) - 20,
-  delay: i * 0.04,
-  size: 10 + Math.random() * 12,
+  x: Math.cos((i / 14) * Math.PI * 2) * (55 + (i % 3) * 20),
+  y: Math.sin((i / 14) * Math.PI * 2) * (55 + (i % 3) * 20) - 20,
+  delay: i * 0.035,
+  size: 10 + (i % 4) * 4,
 }))
 
 export default function AuthScreen() {
-  const auth     = useAuth()
-  const navigate = useNavigate()
+  const auth = useAuth()
 
   const [loginVal,    setLoginVal]    = useState('')
   const [passwordVal, setPasswordVal] = useState('')
-  const [phase, setPhase]             = useState<'login' | 'password' | 'success' | 'error'>('login')
+  const [phase, setPhase] = useState<'login' | 'password' | 'success' | 'error'>('login')
   const [shake, setShake]             = useState(false)
+  const [showHeart,     setShowHeart]     = useState(false)
   const [showParticles, setShowParticles] = useState(false)
 
-  const passwordRef = useRef<HTMLInputElement>(null)
+  const passwordRef   = useRef<HTMLInputElement>(null)
   const char1Controls = useAnimation()
   const char2Controls = useAnimation()
 
+  // Реагируем на смену фазы
   useEffect(() => {
     if (phase === 'password') {
-      char1Controls.start({ x: CHAR_STEPS[1], transition: { type: 'spring', stiffness: 120, damping: 18 } })
-      char2Controls.start({ x: -CHAR_STEPS[1], transition: { type: 'spring', stiffness: 120, damping: 18 } })
-    } else if (phase === 'success') {
-      char1Controls.start({ x: CHAR_STEPS[2], transition: { type: 'spring', stiffness: 100, damping: 14, delay: 0.1 } })
-      char2Controls.start({ x: -CHAR_STEPS[2], transition: { type: 'spring', stiffness: 100, damping: 14, delay: 0.1 } })
-      setTimeout(() => setShowParticles(true), 400)
-      setTimeout(() => navigate('/home'), 2200)
-    } else if (phase === 'error') {
-      char2Controls.start({ x: [-CHAR_STEPS[1], -CHAR_STEPS[1] + 14, -CHAR_STEPS[1]], transition: { duration: 0.3 } })
-      setTimeout(() => setPhase('password'), 800)
+      // Персонажи делают первый шаг навстречу
+      char1Controls.start({
+        x: STEP_AFTER_LOGIN,
+        transition: { type: 'spring', stiffness: 120, damping: 18 },
+      })
+      char2Controls.start({
+        x: -STEP_AFTER_LOGIN,
+        transition: { type: 'spring', stiffness: 120, damping: 18 },
+      })
+      setTimeout(() => passwordRef.current?.focus(), 200)
+      return
     }
-  }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    if (phase === 'success') {
+      // Персонажи сходятся до конца
+      char1Controls.start({
+        x: STEP_AFTER_PASSWORD,
+        transition: { type: 'spring', stiffness: 90, damping: 14 },
+      })
+      char2Controls.start({
+        x: -STEP_AFTER_PASSWORD,
+        transition: { type: 'spring', stiffness: 90, damping: 14 },
+      })
+
+      // Сердце — чуть позже сближения
+      setTimeout(() => setShowHeart(true),     HEART_APPEAR_DELAY)
+      // Частицы — одновременно с сердцем
+      setTimeout(() => setShowParticles(true), PARTICLES_DELAY)
+
+      // Только ПОСЛЕ анимации — подтверждаем auth → роутер перенаправляет
+      setTimeout(() => auth.confirmAuth(), NAVIGATE_DELAY)
+      return
+    }
+
+    if (phase === 'error') {
+      // Второй персонаж отшатывается
+      char2Controls.start({
+        x: [-STEP_AFTER_LOGIN, -STEP_AFTER_LOGIN + 16, -STEP_AFTER_LOGIN],
+        transition: { duration: 0.35 },
+      })
+      setTimeout(() => setPhase('password'), 900)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase])
 
   function triggerShake() {
     setShake(true)
-    setTimeout(() => setShake(false), 400)
+    setTimeout(() => setShake(false), 420)
   }
 
   function handleLoginSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (auth.login(loginVal)) {
       setPhase('password')
-      setTimeout(() => passwordRef.current?.focus(), 150)
     } else {
       triggerShake()
     }
@@ -66,7 +105,7 @@ export default function AuthScreen() {
   function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (auth.authenticate(passwordVal)) {
-      setPhase('success')
+      setPhase('success')   // запускает анимацию; auth.confirmAuth() вызовется через 2400мс
     } else {
       triggerShake()
       setPhase('error')
@@ -82,26 +121,23 @@ export default function AuthScreen() {
       {/* Персонажи */}
       <div className={styles.characters} aria-hidden>
 
-        {/* Char1 — Framer двигает по X, inner div делает idle-bob */}
-        <motion.div
-          className={styles.charOuter}
-          animate={char1Controls}
-          initial={{ x: 0 }}
-        >
+        {/* Char1 — outer двигается по X (Framer), inner делает bob (CSS) */}
+        <motion.div className={styles.charOuter} animate={char1Controls} initial={{ x: 0 }}>
           <div className={styles.charBob}>
             <img src={char1Idle} alt="" width={148} height={148} loading="eager" className={styles.charImg} />
           </div>
         </motion.div>
 
-        {/* Сердце + частицы */}
+        {/* Сердце + частицы — центральная точка */}
         <div className={styles.heartWrapper}>
           <AnimatePresence>
-            {phase === 'success' && (
+            {showHeart && (
               <motion.div
                 className={styles.heartCenter}
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: [0, 1.5, 1], opacity: 1 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                animate={{ scale: [0, 1.6, 1], opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               >
                 ♥
               </motion.div>
@@ -114,7 +150,7 @@ export default function AuthScreen() {
                 className={styles.particle}
                 initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
                 animate={{ x: p.x, y: p.y, scale: 1, opacity: 0 }}
-                transition={{ duration: 0.8, delay: p.delay, ease: 'easeOut' }}
+                transition={{ duration: 0.9, delay: p.delay, ease: 'easeOut' }}
                 style={{ fontSize: p.size }}
               >
                 ♥
@@ -123,10 +159,10 @@ export default function AuthScreen() {
           </AnimatePresence>
         </div>
 
-        {/* Char2 — зеркальный: outer зеркалит через CSS, Framer двигает outer по X отрицательно */}
+        {/* Char2 — зеркальный: scaleX через inline style на motion.div */}
         <motion.div
           className={styles.charOuter}
-          style={{ scaleX: -1 }}   /* зеркало через inline style, не CSS-класс */
+          style={{ scaleX: -1 }}
           animate={char2Controls}
           initial={{ x: 0 }}
         >
@@ -151,9 +187,9 @@ export default function AuthScreen() {
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.22 }}
           >
-            {phase === 'success' ? '♥ Welcome Back ♥' : '~ Our Story ~'}
+            {phase === 'success' ? '♥ Our Story ♥' : '~ Our Story ~'}
           </motion.p>
         </AnimatePresence>
 
@@ -163,9 +199,9 @@ export default function AuthScreen() {
               key="login-form"
               onSubmit={handleLoginSubmit}
               className={styles.form}
-              initial={{ opacity: 0, x: -12 }}
+              initial={{ opacity: 0, x: -14 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 12 }}
+              exit={{ opacity: 0, x: 14 }}
               transition={{ duration: 0.22 }}
             >
               <label className={styles.label} htmlFor="login">&gt; Enter the key word</label>
@@ -190,9 +226,9 @@ export default function AuthScreen() {
               key="password-form"
               onSubmit={handlePasswordSubmit}
               className={styles.form}
-              initial={{ opacity: 0, x: -12 }}
+              initial={{ opacity: 0, x: -14 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 12 }}
+              exit={{ opacity: 0, x: 14 }}
               transition={{ duration: 0.22 }}
             >
               <label className={styles.label} htmlFor="password">&gt; One more secret...</label>
@@ -218,7 +254,7 @@ export default function AuthScreen() {
               className={styles.successMsg}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
             >
               Loading our adventure...
             </motion.p>
