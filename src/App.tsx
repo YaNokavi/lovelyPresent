@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import {
   BrowserRouter,
   Routes,
@@ -8,7 +7,7 @@ import {
 } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { AuthContext, useAuthStore } from './store/authStore'
+import { AuthContext, useAuthStore, useAuth } from './store/authStore'
 import AuthScreen  from './components/auth/AuthScreen'
 import Home        from './components/pages/Home'
 import OurJourney from './components/pages/OurJourney'
@@ -23,8 +22,6 @@ const pageVariants = {
 }
 
 function AnimatedRoutes() {
-  // Читаем из контекста напрямую
-  const ctx = useMemo(() => ({ useIsAuth: () => false }), []) // placeholder
   const location = useLocation()
 
   return (
@@ -44,7 +41,7 @@ function AnimatedRoutes() {
 }
 
 function AuthRoutes() {
-  const { isAuthenticated } = require('./store/authStore').useAuth()
+  const { isAuthenticated } = useAuth()
   const location = useLocation()
 
   return (

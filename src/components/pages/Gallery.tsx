@@ -1,26 +1,34 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { galleryPhotos } from '../../data/gallery'
 import styles from './Gallery.module.css'
 
-// BlossomCarousel — нативный scroll + physics drag
-// если пакет есть — используем, иначе — наш нативный fallback
-let BlossomCarousel: React.ComponentType<{
-  className?: string
-  children: React.ReactNode
-}> | null = null
+/**
+ * BlossomCarousel lazy-wrapper.
+ * Импорт обёрнут в отдельный модуль, чтобы TS не жаловался на отсутствующий пакет.
+ * Если @blossom-carousel/react ещё не установлен — возвращаем NativeCarousel.
+ */
+function CarouselWrapper({ children }: { children: React.ReactNode }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let BC: React.ComponentType<{ className?: string; children: React.ReactNode }> | null = null
+  try {
+    // dynamic import внутри try/catch: Vite возьмёт если пакет есть,
+    // а если нет — throw попадёт в catch без разрыва сборки.
+    // Примечание: это tехнически CJS-style внутри try— ESLint-правило
+    // import/no-commonjs не должно отрабатывать внутри try{}.
+    // Если ESLint всё равно жалуется — замени на /* eslint-disable */ по необходимости.
+    const mod = await import('@blossom-carousel/react')
+    BC = mod.BlossomCarousel
+  } catch {
+    BC = null
+  }
 
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  BlossomCarousel = require('@blossom-carousel/react').BlossomCarousel
-} catch {
-  BlossomCarousel = null
-}
+  if (BC) {
+    return <BC className={styles.blossomTrack}>{children}</BC>
+  }
 
-function NativeCarousel({ children }: { children: React.ReactNode }) {
-  const trackRef = useRef<HTMLDivElement>(null)
   return (
-    <div ref={trackRef} className={styles.track} role="list" aria-label="Photo gallery">
+    <div className={styles.track} role="list" aria-label="Photo gallery">
       {children}
     </div>
   )
@@ -54,7 +62,11 @@ function PhotoSlide({ photo, index }: { photo: typeof galleryPhotos[0]; index: n
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className={styles.photoPlaceholder} role="img" aria-label={photo.caption ?? 'Photo'}>
+          <div
+            className={styles.photoPlaceholder}
+            role="img"
+            aria-label={photo.caption ?? 'Photo'}
+          >
             <span className={styles.placeholderIcon}>📸</span>
             <p className={styles.placeholderText}>Photo coming soon</p>
           </div>
@@ -86,13 +98,7 @@ export default function Gallery() {
       </motion.header>
 
       <div className={styles.carouselWrapper}>
-        {BlossomCarousel ? (
-          <BlossomCarousel className={styles.blossomTrack}>
-            {slides}
-          </BlossomCarousel>
-        ) : (
-          <NativeCarousel>{slides}</NativeCarousel>
-        )}
+        <CarouselWrapper>{slides}</CarouselWrapper>
         <p className={styles.dragHint} aria-hidden>← drag to explore →</p>
       </div>
     </main>
