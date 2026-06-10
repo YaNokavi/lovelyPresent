@@ -51,7 +51,7 @@ export default function AuthScreen() {
 
   const char1Step = phase === 'login'    ? 0
                   : phase === 'password' ? 1
-                  : 2  // success / error
+                  : 2
   const char2Step = phase === 'success'  ? 2
                   : phase === 'password' ? 1
                   : 0
@@ -85,8 +85,8 @@ export default function AuthScreen() {
           <img
             src={char1Idle}
             alt=""
-            width={96}
-            height={96}
+            width={148}
+            height={148}
             loading="eager"
           />
         </div>
@@ -115,8 +115,8 @@ export default function AuthScreen() {
           <img
             src={char2Idle}
             alt=""
-            width={96}
-            height={96}
+            width={148}
+            height={148}
             loading="eager"
           />
         </div>

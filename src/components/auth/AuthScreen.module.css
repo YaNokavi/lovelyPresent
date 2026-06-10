@@ -23,7 +23,6 @@
 
 .worldFire {
   left: 0;
-  /* Тень от разделителя */
   box-shadow: inset -24px 0 48px rgba(0, 0, 0, 0.25);
 }
 
@@ -59,21 +58,20 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 120px;
+  gap: 80px;
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   padding-bottom: var(--space-4);
 }
 
 .character {
-  width: 96px;
-  height: 96px;
+  width: 148px;
+  height: 148px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   image-rendering: pixelated;
-  /* Покачивание в простое */
   animation: idle-bob 1.2s ease-in-out infinite;
 }
 
@@ -82,17 +80,17 @@
   height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
-  filter: drop-shadow(0 6px 0 rgba(0, 0, 0, 0.22));
+  filter: drop-shadow(0 8px 0 rgba(0, 0, 0, 0.28));
 }
 
 /* Персонаж 1 — идёт вправо при шагах */
-.char1.step1 { transform: translateX(24px); }
-.char1.step2 { transform: translateX(48px); }
+.char1.step1 { transform: translateX(28px); }
+.char1.step2 { transform: translateX(56px); }
 
 /* Персонаж 2 — повёрнут и идёт влево */
 .char2 { transform: scaleX(-1); }
-.char2.step1 { transform: scaleX(-1) translateX(24px); }
-.char2.step2 { transform: scaleX(-1) translateX(48px); }
+.char2.step1 { transform: scaleX(-1) translateX(28px); }
+.char2.step2 { transform: scaleX(-1) translateX(56px); }
 
 /* Остановка idle-bob при успехе */
 .character.idle {
@@ -102,10 +100,10 @@
 /* ---- Сердце в центре ---- */
 .heartCenter {
   position: absolute;
-  top: -32px;
+  top: -36px;
   left: 50%;
   transform: translateX(-50%) scale(0);
-  font-size: 2rem;
+  font-size: 2.4rem;
   color: var(--color-heart);
   font-family: var(--font-pixel);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
