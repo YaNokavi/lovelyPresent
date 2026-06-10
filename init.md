@@ -6,12 +6,12 @@
 
 ## 🧠 Концепция
 
-**lovelyPresent** — это личный веб-сайт-подарок для девушки, выполненный в стиле пиксельной RPG-игры. Идея: наша история — это приключение двух персонажей из разных миров, каждый этап отношений — это уровень игры.
+**lovelyPresent** — личный веб-сайт-подарок для девушки, выполненный в стиле пиксельной RPG-игры. Наша история — приключение двух персонажей из разных миров. Каждый этап отношений — уровень игры.
 
-### Визуальная идея (референс — прикреплённый скриншот в репозитории)
-- **Hero-секция:** экран разделён на две части — слева тёплый мир (вулканы, огонь, оранжевые тона), справа зелёный мир (лес, трава, природа). По центру два пиксельных персонажа стоят рядом, между ними пиксельное сердце. Слоган: *"Two different worlds. One beautiful adventure."*
-- **Timeline "Our Adventure":** горизонтальная прокрутка уровней (Level 1 → Level 2 → ... → Final Level), каждый уровень — дата и событие из реальной жизни пары, пиксельный арт-момент.
-- **Power-ups секция:** три колонки — слева "Power-ups" (качества отношений: Passion, Growth, Trust, Laughter), центр — тёмная карточка с тёплой цитатой, справа "Extras" (ссылки: Gallery, Letters, About Us).
+### Визуальная идея (референс — скриншот в корне репозитория `fd9ae9de...jpg`)
+- **Hero-секция:** экран разделён на две части — слева тёплый мир (вулканы, огонь, оранжевые тона), справа зелёный мир (лес, трава, природа). По центру два пиксельных персонажа рядом, между ними пиксельное сердце. Слоган: *"Two different worlds. One beautiful adventure."*
+- **Timeline "Our Adventure":** горизонтальная прокрутка уровней (Level 1 → ... → Final Level), каждый уровень — дата и событие из реальной жизни пары.
+- **Power-ups секция:** три колонки — слева "Power-ups" (Passion, Growth, Trust, Laughter), центр — тёмная карточка с цитатой, справа "Extras" (Gallery, Letters, About Us).
 - **Footer:** `MADE WITH ♥ BY US, FOR US` + иконки Instagram, Spotify, Email.
 
 ### Навигация
@@ -23,293 +23,301 @@
 
 ### Стек технологий
 
-| Слой | Технология | Версия |
+| Слой | Технология | Статус |
 |------|-----------|--------|
-| Frontend framework | React | 19.x |
-| Language | TypeScript | 6.x |
-| Build tool | Vite | 8.x |
-| Carousel/Gallery | @blossom-carousel/react | 1.1.1 |
-| Routing | React Router v6 | (добавить) |
-| Анимация (базовый стек) | CSS Animations + Framer Motion | — |
-| Анимация (расширенный стек) | GSAP + PixiJS / Spine | — |
-| Pixel-шрифт | Press Start 2P (Google Fonts) | — |
-| Стилизация | CSS Modules + CSS Variables | — |
-| Хостинг | Amvera / Vercel / Netlify | — |
+| Frontend framework | React 19 + TypeScript | ✅ настроен |
+| Build tool | Vite 8 | ✅ настроен |
+| Routing | React Router v6 | ✅ реализован |
+| Аутентификация | React Context (`authStore.ts`) | ✅ реализована |
+| Carousel/Gallery | @blossom-carousel/react 1.1.1 | ✅ установлен |
+| Анимации | Framer Motion + CSS @keyframes | ✅ в auth |
+| Pixel-шрифт | Press Start 2P (Google Fonts) | ✅ подключён |
+| Body-шрифт | Satoshi (Fontshare) | ✅ подключён |
+| Стилизация | CSS Modules + CSS Variables | ✅ реализована |
+| Хостинг | Amvera / Vercel / Netlify | ⬜ не задеплоен |
+| Расширенный стек | GSAP + PixiJS | ⬜ не начат |
 
-### Структура папок (целевая)
+### Структура папок (актуальная)
 
 ```
 lovelyPresent/
 ├── public/
-│   ├── assets/
-│   │   ├── sprites/          # Пиксельные персонажи, тайлы
-│   │   ├── backgrounds/      # Фоны секций
-│   │   └── sounds/           # Фоновая музыка, эффекты
 │   └── favicon.ico
 ├── src/
+│   ├── assets/
+│   │   ├── sprites/
+│   │   │   ├── char1_idle.png        ✅ сгенерирован (огненный персонаж)
+│   │   │   └── char2_idle.png        ✅ сгенерирован (природный персонаж)
+│   │   └── backgrounds/
+│   │       ├── bg_fire_world.png     ✅ сгенерирован (вулканический пейзаж)
+│   │       └── bg_nature_world.png   ✅ сгенерирован (лесной пейзаж)
 │   ├── components/
 │   │   ├── auth/
-│   │   │   └── AuthScreen.tsx        # Экран входа с персонажами
+│   │   │   ├── AuthScreen.tsx        ✅ реализован полностью
+│   │   │   └── AuthScreen.module.css ✅ реализован полностью
 │   │   ├── layout/
-│   │   │   ├── Navbar.tsx
-│   │   │   └── Footer.tsx
+│   │   │   ├── Navbar.tsx            ⬜ заготовка
+│   │   │   └── Footer.tsx            ⬜ заготовка
 │   │   ├── sections/
-│   │   │   ├── HeroSection.tsx       # Два мира, два персонажа
-│   │   │   ├── TimelineSection.tsx   # "Our Adventure" уровни
-│   │   │   ├── PowerUpsSection.tsx   # Power-ups / Extras
-│   │   │   └── GallerySection.tsx    # BlossomCarousel с фото
+│   │   │   ├── HeroSection.tsx       ⬜ не начат
+│   │   │   ├── TimelineSection.tsx   ⬜ не начат
+│   │   │   ├── PowerUpsSection.tsx   ⬜ не начат
+│   │   │   └── GallerySection.tsx    ⬜ не начат
 │   │   ├── pages/
-│   │   │   ├── Home.tsx
-│   │   │   ├── OurJourney.tsx
-│   │   │   ├── Gallery.tsx
-│   │   │   ├── Letters.tsx
-│   │   │   └── AboutUs.tsx
-│   │   └── ui/
-│   │       ├── PixelButton.tsx
-│   │       ├── PixelCard.tsx
-│   │       ├── PixelHeart.tsx
-│   │       └── SpeechBubble.tsx
-│   ├── hooks/
-│   │   ├── useAuth.ts                # Логика аутентификации
-│   │   ├── usePixelAnimation.ts      # Хук для спрайт-анимаций
-│   │   └── useSound.ts               # Управление звуком
+│   │   │   ├── Home.tsx              ⬜ заготовка
+│   │   │   ├── OurJourney.tsx        ⬜ заготовка
+│   │   │   ├── Gallery.tsx           ⬜ заготовка
+│   │   │   ├── Letters.tsx           ⬜ заготовка
+│   │   │   └── AboutUs.tsx           ⬜ заготовка
+│   │   └── ui/                       ⬜ компоненты не вынесены отдельно
 │   ├── store/
-│   │   └── authStore.ts              # Zustand или Context для auth
+│   │   └── authStore.ts              ✅ реализован (React Context)
 │   ├── data/
-│   │   ├── timeline.ts               # Данные уровней (даты, события)
-│   │   ├── letters.ts                # Письма / сообщения
-│   │   └── gallery.ts                # Список фото для карусели
+│   │   ├── timeline.ts               ⬜ нужно создать
+│   │   ├── letters.ts                ⬜ нужно создать
+│   │   └── gallery.ts                ⬜ нужно создать
 │   ├── styles/
-│   │   ├── tokens.css                # CSS переменные (цвета, шрифты)
-│   │   ├── base.css
-│   │   └── pixel.css                 # Pixel-art утилиты
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── types.d.ts
-├── init.md                           # ЭТОТ ФАЙЛ
+│   │   ├── tokens.css                ✅ все переменные определены
+│   │   ├── base.css                  ✅ реализован
+│   │   └── pixel.css                 ✅ компоненты: btn-pixel, pixel-input, pixel-card и др.
+│   ├── App.tsx                       ✅ роутинг + AuthContext провайдер
+│   ├── main.tsx                      ✅
+│   └── types.d.ts                    ✅
+├── init.md                           ← ЭТОТ ФАЙЛ
 ├── package.json
 └── vite.config.ts
 ```
 
 ---
 
-## 🎭 Система аутентификации
+## 🎭 Система аутентификации — РЕАЛИЗОВАНА ✅
 
 ### Концепция: "Two Worlds Login"
 
-Вместо стандартной формы — интерактивная сцена с пиксельными персонажами.
+**Сценарий входа (реализован):**
+1. Экран загружается: два персонажа стоят по разные стороны. Разделитель по центру. Оба персонажа делают idle-bob (CSS `@keyframes idle-bob`, работает на **внутреннем div**, не конфликтует с Framer Motion).
+2. Вводится логин → `auth.login()` проверяет без изменения `isAuthenticated` → при успехе `setPhase('password')`, персонажи делают первый шаг навстречу через `useAnimation` (Framer Motion по оси X).
+3. Вводится пароль → `auth.authenticate()` проверяет, **не трогает** `isAuthenticated` → при успехе `setPhase('success')`.
+4. Фаза `success`: персонажи сходятся (второй шаг), через 500ms появляется сердце ❤️ + частицы, через **2400ms** вызывается `auth.confirmAuth()` — только тогда `isAuthenticated = true` → роутер переходит на `/home`.
 
-**Сценарий входа:**
-1. Экран загружается: два персонажа стоят по разные стороны экрана, спиной друг к другу, миры разделены.
-2. Поле "login" — вводится что-то личное (например, дата первого сообщения, кличка питомца, место первой встречи — в формате кода). При правильном вводе — персонаж слева делает шаг к центру.
-3. Поле "password" — второй личный факт. При правильном вводе — персонаж справа делает шаг к центру.
-4. Когда оба поля верны — персонажи встречаются по центру, над ними появляется пиксельное сердце, играет звуковой эффект, и происходит переход на главную страницу с анимацией "Start Game".
+**Важный архитектурный паттерн (исправлен баг):**
+```ts
+// authStore.ts
+authenticate(password)  // только проверяет → return true/false, НЕ меняет isAuthenticated
+confirmAuth()           // ставит isAuthenticated=true — вызывать ТОЛЬКО после анимации
+```
+Роутер в `App.tsx` смотрит только на `isAuthenticated`. Если вызвать `confirmAuth()` до анимации — роутер моментально перекинет на `/home`.
 
-**Технически:**
-- Данные логина/пароля хранятся как env-переменные (Vite: `VITE_AUTH_LOGIN`, `VITE_AUTH_PASSWORD`) — без бэкенда.
-- Состояние хранится в памяти (sessionStorage или React Context), без localStorage (если проект на Amvera — там доступен).
-- Роут `/` = AuthScreen, после успеха — React Router redirect на `/home`.
+**Хранение credentials:**
+```
+.env.local   (в .gitignore)
+VITE_AUTH_LOGIN=<личное>
+VITE_AUTH_PASSWORD=<личное>
+# Без .env — заглушка 'dev'/'dev'
+```
 
-**Альтернативный вариант с картинками:**
-- Показать фото двух людей (пиксельный стиль), игрок "выбирает" персонажа кликом, потом вводит пароль.
+**Известная проблема с `scaleX` у Framer Motion:**
+Зеркальный персонаж (char2) — `scaleX: -1` задаётся через **inline `style={}`** на `motion.div`, а не через CSS-класс. Framer управляет `transform` через `style`, CSS-класс будет перезаписан.
+
+---
+
+## 🎨 Дизайн-токены (`src/styles/tokens.css`) — РЕАЛИЗОВАНЫ ✅
+
+Все переменные определены. Ключевые:
+
+```css
+:root {
+  /* Шрифты */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-body:  'Satoshi', 'Inter', sans-serif;
+
+  /* Миры */
+  --fire-primary: #e67e22;   --fire-dark: #a04000;   --fire-light: #f5a623;
+  --nature-primary: #27ae60; --nature-dark: #1a6b3a;  --nature-light: #52d68a;
+
+  /* UI поверхности */
+  --color-bg: #f5ede0;           /* светлый пергамент */
+  --color-bg-dark: #1e1208;      /* тёмный фон (auth, footer) */
+  --color-bg-dark-card: #2a1c10; /* тёмная карточка */
+  --color-bg-card: #fdf6ee;
+
+  /* Текст */
+  --color-text: #2c1a0e;         /* тёмный на светлом */
+  --color-text-light: #f5ede0;   /* светлый на тёмном */
+
+  /* Пиксельные утилиты */
+  --shadow-pixel: 4px 4px 0 var(--color-border-pixel);
+  --shadow-pixel-sm: 2px 2px 0 var(--color-border-pixel);
+  --shadow-pixel-lg: 6px 6px 0 var(--color-border-pixel);
+  --transition-fast: 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+```
+
+**Критично для pixel-input:** фон захардкожен `#1a1008`, текст `#f5e6c8` — это сознательное решение для стабильного контраста на любом фоне.
+
+---
+
+## 🖼 Ассеты — СГЕНЕРИРОВАНЫ ✅
+
+### Персонажи (`src/assets/sprites/`)
+- **`char1_idle.png`** — огненный персонаж (рыжие волосы, оранжевый наряд, огненные мотивы)
+- **`char2_idle.png`** — природный персонаж (зелёные волосы с листиком, белый наряд с сердцем)
+
+### Фоны (`src/assets/backgrounds/`)
+- **`bg_fire_world.png`** — вулканический пейзаж (лава, вулканы, оранжевое небо)
+- **`bg_nature_world.png`** — лесной пейзаж (деревья, холмы, мягкий зелёный)
+
+Все ассеты в пиксельном стиле 16-bit, тайловый вид снизу (character standing on ground).
 
 ---
 
 ## 📄 Страницы и их содержимое
 
-### `/home` — Главная
-- Hero-секция (см. выше)
-- Timeline "Our Adventure" (горизонтальная прокрутка)
-- Power-ups + Quote + Extras
+### `/` — AuthScreen ✅ реализован
+Экран входа с двумя персонажами и анимацией встречи.
 
-### `/our-journey` — Наше путешествие
-- Развёрнутый таймлайн с вертикальной прокруткой
-- Каждый уровень: дата, название события, текст, картинка/спрайт
+### `/home` — Главная ⬜ заготовка
+- HeroSection — два мира, два персонажа (idle-анимация)
+- TimelineSection — горизонтальный скролл уровней
+- PowerUpsSection — три колонки
 
-### `/gallery` — Галерея
-- **BlossomCarousel** — основная библиотека для карусели фото
-- Фотографии пары в пиксельных рамках
-- Возможность fullscreen просмотра
+### `/our-journey` — Путешествие ⬜
+Развёрнутый вертикальный таймлайн. Данные из `src/data/timeline.ts`.
 
-### `/letters` — Письма
-- Страница с "письмами" (сообщениями) друг другу
-- Оформлены как пиксельные свитки или диалоговые окна из RPG
-- Анимация "печатания текста" (typewriter effect)
+### `/gallery` — Галерея ⬜
+**BlossomCarousel** — основная библиотека. Данные из `src/data/gallery.ts`.
 
-### `/about-us` — О нас
-- Профили двух персонажей (как RPG character sheet)
-- Характеристики: Имя, Класс, Сила, Мудрость, Харизма (с юмором)
-- Короткие bio
+### `/letters` — Письма ⬜
+RPG-диалоговые окна, typewriter-эффект. Данные из `src/data/letters.ts`.
+
+### `/about-us` — О нас ⬜
+RPG character sheets для обоих персонажей.
 
 ---
 
-## 🎨 Дизайн-токены
+## 📦 BlossomCarousel — интеграция
 
-```css
-/* Цветовая палитра — тёплый оранжевый + зелёный природный */
-:root {
-  /* Мир персонажа 1 (огонь) */
-  --color-fire-primary: #E8740C;
-  --color-fire-dark: #8B3A00;
-  --color-fire-light: #FFA855;
-  --color-lava: #C0392B;
+Установлен: `@blossom-carousel/react@1.1.1`. **Использовать только его для всех каруселей.**
 
-  /* Мир персонажа 2 (природа) */
-  --color-nature-primary: #4A7C59;
-  --color-nature-dark: #2D5A3D;
-  --color-nature-light: #7EC995;
-  --color-grass: #5B8C3E;
+**Документация:** https://www.blossom-carousel.com/docs/framework-guides/react-nextjs
 
-  /* Нейтральные (UI) */
-  --color-bg-dark: #1A1208;
-  --color-bg-parchment: #F5E6C8;
-  --color-bg-card: #2C1F0E;
-  --color-text-main: #2C1A00;
-  --color-text-light: #F5E6C8;
-  --color-border-pixel: #5C3D1E;
+```tsx
+import { BlossomCarousel } from "@blossom-carousel/react";
+import "@blossom-carousel/core/style.css";
 
-  /* Акцент */
-  --color-heart: #E74C6A;
-  --color-heart-light: #FF8FA3;
-  --color-gold: #F0C040;
-
-  /* Шрифты */
-  --font-pixel: 'Press Start 2P', monospace;  /* заголовки, кнопки */
-  --font-body: 'DM Sans', sans-serif;          /* основной текст */
-
-  /* Пиксельные тени (pixel-perfect) */
-  --shadow-pixel: 4px 4px 0px var(--color-border-pixel);
-  --shadow-pixel-hover: 6px 6px 0px var(--color-border-pixel);
-}
+// CSS: .gallery-slide { width: 300px; scroll-snap-align: center; }
+// ref.current.prev() / ref.current.next() для кастомных кнопок
 ```
 
 ---
 
 ## 🎬 Анимационный стек
 
-### Базовый (MVP — реализовать в первую очередь)
-| Анимация | Технология | Описание |
-|----------|-----------|---------|
-| Hero персонажи | CSS `@keyframes` | Idle-анимация (покачивание) |
-| Scroll reveal | Intersection Observer | Уровни появляются при скролле |
-| Typewriter | CSS animation / JS | Текст печатается в письмах |
-| Auth walk | CSS `@keyframes` | Персонажи идут к центру |
-| Переходы страниц | Framer Motion | `AnimatePresence` + slide |
-| Hover на кнопках | CSS | Pixel-смещение на 2px вниз |
+### Базовый — в работе
+| Анимация | Технология | Статус |
+|----------|-----------| ------|
+| Idle-bob персонажей | CSS `@keyframes idle-bob` на inner div | ✅ auth экран |
+| Auth walk (X-движение) | Framer Motion `useAnimation` на outer div | ✅ auth экран |
+| Auth heart + частицы | Framer Motion `AnimatePresence` | ✅ auth экран |
+| Переходы страниц | Framer Motion `AnimatePresence` + `pageVariants` | ✅ App.tsx |
+| Форма shake при ошибке | CSS `@keyframes form-shake` | ✅ auth экран |
+| Scroll reveal | Intersection Observer | ⬜ не начат |
+| Typewriter (Letters) | CSS / JS | ⬜ не начат |
+| Idle в Hero-секции | CSS `@keyframes` | ⬜ не начат |
 
-### Расширенный (если останется время)
-| Анимация | Технология | Описание |
-|----------|-----------|---------|
-| 2D спрайт-анимация | PixiJS + Spritesheet | Персонажи с множеством кадров |
-| Параллакс фонов | GSAP ScrollTrigger | Слои фона движутся с разной скоростью |
-| Частицы (сердечки) | PixiJS Particles | Эффект конфетти при входе |
-| Spine-анимации | Spine + PixiJS | Профессиональные 2D анимации персонажей |
-| Звук | Howler.js | Фоновая музыка + SFX |
+### Расширенный (Sprint 5)
+| Анимация | Технология | Статус |
+|----------|-----------|--------|
+| 2D спрайт-анимации | PixiJS + Spritesheet | ⬜ |
+| Параллакс фонов | GSAP ScrollTrigger | ⬜ |
+| Частицы-сердечки | PixiJS Particles | ⬜ |
+| Звук | Howler.js | ⬜ |
 
 ---
 
-## 📦 BlossomCarousel — интеграция
+## ⚠️ Известные архитектурные решения и ловушки
 
-Библиотека уже установлена (`@blossom-carousel/react@1.1.1`) и частично интегрирована в `App.tsx`.
+1. **`confirmAuth()` vs `authenticate()`** — см. раздел аутентификации. Никогда не вызывать `confirmAuth()` сразу при вводе пароля — только после завершения анимации.
 
-**Документация:** https://www.blossom-carousel.com/docs/framework-guides/react-nextjs
+2. **Framer Motion + CSS transform конфликт** — если `motion.div` делает `animate={{ x: ... }}`, любые CSS-классы с `transform` будут перезаписаны. Решение: вложенные div-ы — outer для Framer (X/Y), inner для CSS (@keyframes).
 
-**Ключевые возможности для проекта:**
-- Native scroll + physics-based drag на десктопе
-- CSS scroll-snap совместимость
-- `ref.current.prev()` / `ref.current.next()` для кастомных кнопок
-- Overscroll API для кастомных эффектов
-- 0 KB на тач-устройствах (чистый нативный скролл)
+3. **`scaleX: -1` через inline style** — не через CSS-класс, иначе Framer перезапишет.
 
-**Использование в Gallery:**
-```tsx
-import { BlossomCarousel } from "@blossom-carousel/react";
-import "@blossom-carousel/core/style.css";
+4. **`pixel-input` контраст** — фон и цвет текста захардкожены, не через CSS-переменные. Это намеренно: `var(--color-text)` наследует тёмный цвет и пропадает на тёмном фоне формы.
 
-// CSS для слайдов:
-// .gallery-slide { width: 300px; scroll-snap-align: center; }
-// .carousel { scroll-snap-type: x mandatory; }
-```
+5. **localStorage/sessionStorage** — если деплой на Amvera/Vercel, доступны. Если на Perplexity/iframe-среде — заблокированы. Текущая реализация использует React state (в памяти) — безопасно в обоих случаях.
+
+6. **ENV-переменные** — `VITE_AUTH_LOGIN` и `VITE_AUTH_PASSWORD` вшиваются в бандл при сборке. Для production не добавлять в публичный репозиторий, только `.env.local` (он в `.gitignore`).
 
 ---
 
 ## 🗓 План разработки (спринты)
 
-### Sprint 1 — Основа и Auth (2-3 дня)
-- [ ] Настройка React Router v6
-- [ ] AuthScreen компонент (базовый без анимации персонажей)
-- [ ] ENV-переменные для логина/пароля
-- [ ] Дизайн-токены в `tokens.css`
-- [ ] Navbar и Footer компоненты
-- [ ] Базовый роутинг всех страниц
+### Sprint 1 — Основа ✅ ЗАВЕРШЁН
+- [x] React Router v6 настроен
+- [x] AuthScreen с анимацией персонажей
+- [x] ENV-переменные для логина/пароля
+- [x] Дизайн-токены в `tokens.css`
+- [x] Базовый роутинг всех страниц
+- [x] Pixel UI классы (`pixel.css`)
 
-### Sprint 2 — Главная страница (3-4 дня)
-- [ ] HeroSection — два мира, два персонажа (CSS/SVG)
+### Sprint 2 — Главная страница ⬜ В РАБОТЕ
+- [ ] HeroSection — два мира, два персонажа (idle в hero)
 - [ ] TimelineSection — горизонтальный скролл уровней
 - [ ] PowerUpsSection — три колонки
-- [ ] Pixel-компоненты UI (PixelButton, PixelCard, SpeechBubble)
+- [ ] Pixel-компоненты UI вынести в `ui/`
 - [ ] Контентные данные в `data/timeline.ts`
+- [ ] Navbar + Footer компоненты
 
-### Sprint 3 — Галерея и письма (2-3 дня)
-- [ ] Gallery страница с BlossomCarousel
-- [ ] Загрузка реальных фото в `public/assets/`
-- [ ] Letters страница с typewriter-эффектом
-- [ ] About Us страница (RPG character sheets)
+### Sprint 3 — Галерея и письма ⬜
+- [ ] Gallery с BlossomCarousel + реальные фото
+- [ ] Letters с typewriter-эффектом
+- [ ] About Us — RPG character sheets
+- [ ] `data/letters.ts`, `data/gallery.ts`
 
-### Sprint 4 — Анимация Auth + polish (2-3 дня)
-- [ ] Анимация персонажей на AuthScreen (CSS walk)
-- [ ] Framer Motion переходы между страницами
+### Sprint 4 — Polish ⬜
 - [ ] Scroll reveal анимации (Intersection Observer)
-- [ ] Idle-анимации персонажей в Hero
+- [ ] Idle-анимация персонажей в HeroSection
+- [ ] Мобильная адаптация всех страниц
 - [ ] Звук (опционально — Howler.js)
 
-### Sprint 5 — 2D анимация (если есть время)
+### Sprint 5 — 2D анимация ⬜ (если останется время)
 - [ ] PixiJS setup
 - [ ] Spritesheet персонажей
-- [ ] Параллакс фонов с GSAP ScrollTrigger
-- [ ] Частицы-сердечки при входе
+- [ ] Параллакс с GSAP ScrollTrigger
+- [ ] Частицы-сердечки
 
 ---
 
-## 🔑 Важные файлы и их роль
+## 🔑 Ключевые файлы
 
-| Файл | Роль |
-|------|------|
-| `src/App.tsx` | Корневой компонент, роутинг, сейчас там BlossomCarousel демо |
-| `src/data/timeline.ts` | **Нужно создать** — данные уровней (даты, события) |
-| `src/data/letters.ts` | **Нужно создать** — тексты писем |
-| `src/data/gallery.ts` | **Нужно создать** — пути к фото |
-| `src/styles/tokens.css` | **Нужно создать** — CSS переменные |
-| `.env.local` | **Нужно создать** — `VITE_AUTH_LOGIN`, `VITE_AUTH_PASSWORD` |
-| `public/assets/sprites/` | **Нужно создать** — пиксельные спрайты |
-
----
-
-## 🧩 Текущее состояние репозитория
-
-- **Framework:** React 19 + TypeScript 6 + Vite 8
-- **Установлено:** `@blossom-carousel/react@1.1.1`
-- **App.tsx:** содержит демо BlossomCarousel с 12 слайдами
-- **Страницы:** пока нет (только демо)
-- **Роутинг:** не настроен
-- **Аутентификация:** не реализована
-- **Данные:** не добавлены (ни фото, ни тексты)
+| Файл | Роль | Статус |
+|------|------|--------|
+| `src/App.tsx` | Корневой компонент, роутинг, AuthContext провайдер | ✅ |
+| `src/store/authStore.ts` | Auth state: login / authenticate / confirmAuth / logout | ✅ |
+| `src/components/auth/AuthScreen.tsx` | Экран входа, анимация персонажей | ✅ |
+| `src/styles/tokens.css` | Все CSS переменные проекта | ✅ |
+| `src/styles/pixel.css` | Pixel UI классы (btn-pixel, pixel-input и др.) | ✅ |
+| `src/data/timeline.ts` | Данные уровней (даты, события) | ⬜ создать |
+| `src/data/letters.ts` | Тексты писем | ⬜ создать |
+| `src/data/gallery.ts` | Пути к фото | ⬜ создать |
+| `.env.local` | `VITE_AUTH_LOGIN`, `VITE_AUTH_PASSWORD` | ⬜ создать локально |
 
 ---
 
 ## 📝 Контекст для AI-ассистента
 
-Когда ты получаешь этот файл, ты должен знать:
-
-1. **Это личный подарочный сайт**, не коммерческий проект. Содержимое (даты, имена, фото) будет добавлено вручную разработчиком.
-2. **Разработчик — опытный фронтенд-разработчик** (React/TypeScript), поэтому не нужно объяснять базовые концепции.
-3. **Стиль — пиксельная RPG**, всё должно выглядеть как игра, но с современным UX.
-4. **BlossomCarousel уже в проекте** — используй его для всех каруселей/галерей, не предлагай другие библиотеки.
-5. **Аутентификация без бэкенда** — только ENV-переменные Vite, никаких серверов.
-6. **Приоритет:** сначала сделать работающий MVP (Sprint 1-3), потом улучшать анимации.
-7. **Деплой:** скорее всего Amvera (есть поддержка Node.js) или Vercel.
+1. **Личный подарочный сайт**, не коммерческий. Даты, имена, фото добавляются вручную.
+2. **Разработчик — опытный фронтенд** (React/TypeScript), не нужно объяснять базовые концепции.
+3. **Стиль — пиксельная RPG 16-bit**, современный UX внутри пиксельной эстетики.
+4. **BlossomCarousel уже в проекте** — использовать только его для каруселей.
+5. **Аутентификация без бэкенда** — только ENV-переменные Vite.
+6. **Framer Motion + CSS transform** — всегда разделять outer (Framer) и inner (CSS) div.
+7. **`confirmAuth()` вызывается только после анимации** — не сразу при правильном пароле.
+8. **Приоритет:** Sprint 2 (главная страница) — следующий шаг.
+9. **Деплой:** Amvera (предпочтительно) или Vercel.
 
 ---
 
-*Последнее обновление: июнь 2026*
+*Последнее обновление: июнь 2026, после завершения Sprint 1*
 *Репозиторий: https://github.com/YaNokavi/lovelyPresent*
