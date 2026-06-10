@@ -2,6 +2,11 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import styles from './HeroSection.module.css'
 
+import char1Idle from '../../assets/sprites/char1_idle.png'
+import char2Idle from '../../assets/sprites/char2_idle.png'
+import fireWorldBg from '../../assets/backgrounds/bg_fire_world.png'
+import natureWorldBg from '../../assets/backgrounds/bg_nature_world.png'
+
 function PixelParticle({ x, y, delay, color }: { x: number; y: number; delay: number; color: string }) {
   return (
     <motion.div
@@ -37,18 +42,16 @@ export default function HeroSection() {
   const charY        = useTransform(scrollYProgress, [0, 1], ['0px', '40px'])
   const heartScale   = useTransform(scrollYProgress, [0, 0.3], [1, 0.6])
   const heartOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  // Параллакс для фоновых изображений — чуть медленнее чем сами миры
-  const bgLeftY  = useTransform(scrollYProgress, [0, 1], ['0%',  '12%'])
-  const bgRightY = useTransform(scrollYProgress, [0, 1], ['0%',  '12%'])
+  const bgLeftY      = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
+  const bgRightY     = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
 
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
 
-      {/* ── Левый мир — огонь ── */}
+      {/* Левый мир — огонь */}
       <motion.div className={styles.worldLeft} style={{ x: leftX }}>
-        {/* Фон с параллаксом */}
         <motion.img
-          src="/assets/backgrounds/bg_fire_world.png"
+          src={fireWorldBg}
           alt=""
           className={styles.worldBgImg}
           style={{ y: bgLeftY }}
@@ -73,7 +76,7 @@ export default function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* ── Персонажи по центру ── */}
+      {/* Персонажи по центру */}
       <motion.div className={styles.characters} style={{ y: charY }}>
         <motion.div
           className={styles.heartTop}
@@ -90,19 +93,13 @@ export default function HeroSection() {
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
         >
           <img
-            src="/assets/sprites/char1_idle.png"
+            src={char1Idle}
             alt=""
-            width={80} height={96}
-            loading="lazy"
+            width={148}
+            height={148}
+            loading="eager"
             style={{ imageRendering: 'pixelated' }}
-            onError={(e) => {
-              const img = e.target as HTMLImageElement
-              img.style.display = 'none'
-              const fb = img.nextElementSibling as HTMLElement
-              if (fb) fb.removeAttribute('hidden')
-            }}
           />
-          <span hidden style={{ fontSize: '3.5rem', lineHeight: 1 }}>🔥</span>
         </motion.div>
 
         <motion.div
@@ -111,28 +108,22 @@ export default function HeroSection() {
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.35 }}
         >
           <img
-            src="/assets/sprites/char2_idle.png"
+            src={char2Idle}
             alt=""
-            width={80} height={96}
-            loading="lazy"
+            width={148}
+            height={148}
+            loading="eager"
             style={{ imageRendering: 'pixelated' }}
-            onError={(e) => {
-              const img = e.target as HTMLImageElement
-              img.style.display = 'none'
-              const fb = img.nextElementSibling as HTMLElement
-              if (fb) fb.removeAttribute('hidden')
-            }}
           />
-          <span hidden style={{ fontSize: '3.5rem', lineHeight: 1 }}>🌿</span>
         </motion.div>
 
         <div className={styles.divider} />
       </motion.div>
 
-      {/* ── Правый мир — природа ── */}
+      {/* Правый мир — природа */}
       <motion.div className={styles.worldRight} style={{ x: rightX }}>
         <motion.img
-          src="/assets/backgrounds/bg_nature_world.png"
+          src={natureWorldBg}
           alt=""
           className={styles.worldBgImg}
           style={{ y: bgRightY }}

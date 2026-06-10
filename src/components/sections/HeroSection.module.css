@@ -9,7 +9,7 @@
   font-family: var(--font-pixel);
 }
 
-/* ── Worlds ── */
+/* Миры */
 .worldLeft,
 .worldRight {
   position: relative;
@@ -20,22 +20,22 @@
 .worldLeft  { background: var(--color-world-fire); }
 .worldRight { background: var(--color-world-nature); }
 
-/* ── Фоновые изображения ── */
+/* Фоновые изображения */
 .worldBgImg {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 100%;
+  height: 110%; /* чуть выше чтобы параллакс был запас */
   object-fit: cover;
   object-position: center bottom;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  opacity: 0.75;
+  opacity: 0.85;
   pointer-events: none;
   user-select: none;
 }
 
-/* Поверх фона — тёмный градиент сверху чтобы текст читался */
+/* Тёмный градиент поверх фона — текст легче читается */
 .worldLeft::after,
 .worldRight::after {
   content: '';
@@ -83,7 +83,7 @@
   z-index: 1;
 }
 
-/* ── Text areas ── */
+/* Текстовые области */
 .leftContent {
   position: relative;
   z-index: 2;
@@ -127,7 +127,7 @@
   letter-spacing: 0.04em;
 }
 
-/* ── Characters center column ── */
+/* Персонажи — центральная колонка */
 .characters {
   position: relative;
   z-index: 10;
@@ -136,7 +136,7 @@
   align-items: center;
   justify-content: flex-end;
   padding-bottom: var(--space-8);
-  width: clamp(140px, 18vw, 220px);
+  width: clamp(180px, 22vw, 280px);
   will-change: transform;
 }
 
@@ -177,10 +177,16 @@
   bottom: var(--space-8);
 }
 
-.char1 { left: 8%; }
-.char2 { right: 8%; }
+/* Персонажи стоят по обе стороны центральной колонки */
+.char1 { left: -52px; }
+.char2 { right: -52px; transform: scaleX(-1); }
 
-/* ── Pixel floating particles ── */
+.char1 img,
+.char2 img {
+  filter: drop-shadow(0 8px 0 rgba(0,0,0,0.28));
+}
+
+/* Пиксельные частицы */
 .particle {
   position: absolute;
   width: 6px;
@@ -191,7 +197,7 @@
   z-index: 3;
 }
 
-/* ── Scroll hint ── */
+/* Scroll hint */
 .scrollHint {
   position: absolute;
   bottom: var(--space-4);
@@ -211,7 +217,7 @@
 
 .scrollHint span { font-size: 0.9rem; }
 
-/* ── Responsive ── */
+/* Мобайл */
 @media (max-width: 640px) {
   .hero {
     grid-template-columns: 1fr;
@@ -231,6 +237,7 @@
   }
 
   .char1, .char2 { position: static; margin: 0; }
+  .char2 { transform: scaleX(-1); }
   .divider { display: none; }
   .heartTop { margin-bottom: 0; }
 
