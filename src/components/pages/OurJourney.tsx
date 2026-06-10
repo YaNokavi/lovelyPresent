@@ -1,12 +1,11 @@
-import { useEffect } from 'react'
-import Navbar from '../layout/Navbar'
-import Footer from '../layout/Footer'
-import { TIMELINE } from '../../data/timeline'
-import { useScrollReveal } from '../../hooks/useScrollReveal'
-import styles from './OurJourney.module.css'
+import Navbar from "../layout/Navbar";
+import Footer from "../layout/Footer";
+import { timelineEvents } from "../../data/timeline";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
+import styles from "./OurJourney.module.css";
 
 export default function OurJourney() {
-  useScrollReveal()
+  useScrollReveal();
 
   return (
     <div>
@@ -18,7 +17,7 @@ export default function OurJourney() {
         </header>
 
         <ol className={styles.timeline} role="list">
-          {TIMELINE.map((item, i) => (
+          {timelineEvents.map((item, i) => (
             <li
               key={i}
               className={`reveal ${styles.item} ${i % 2 === 0 ? styles.left : styles.right}`}
@@ -37,5 +36,5 @@ export default function OurJourney() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }
