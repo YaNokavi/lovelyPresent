@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import CampfireScene from '../ui/CampfireScene'
 import styles from './PowerUpsSection.module.css'
 
 const powerUps = [
@@ -18,7 +19,6 @@ const extras = [
 function PowerUpItem({ icon, label, color, index }: { icon: string; label: string; color: string; index: number }) {
   const ref = useRef<HTMLLIElement>(null)
   const inView = useInView(ref, { once: true, margin: '-40px 0px' })
-
   return (
     <motion.li
       ref={ref}
@@ -43,7 +43,6 @@ function PowerUpItem({ icon, label, color, index }: { icon: string; label: strin
 function ExtraItem({ icon, label, href, index }: { icon: string; label: string; href: string; index: number }) {
   const ref = useRef<HTMLLIElement>(null)
   const inView = useInView(ref, { once: true, margin: '-40px 0px' })
-
   return (
     <motion.li
       ref={ref}
@@ -66,7 +65,7 @@ export default function PowerUpsSection() {
   return (
     <section ref={ref} className={styles.section} aria-label="Power-Ups and Extras">
       <div className={styles.grid}>
-        {/* ── Левая колонка: Power-Ups ── */}
+        {/* Левая колонка: Power-Ups */}
         <motion.div
           className={styles.panel}
           initial={{ opacity: 0, y: 30 }}
@@ -75,13 +74,11 @@ export default function PowerUpsSection() {
         >
           <h3 className={styles.panelTitle}>POWER-UPS</h3>
           <ul className={styles.powerList}>
-            {powerUps.map((p, i) => (
-              <PowerUpItem key={p.label} {...p} index={i} />
-            ))}
+            {powerUps.map((p, i) => <PowerUpItem key={p.label} {...p} index={i} />)}
           </ul>
         </motion.div>
 
-        {/* ── Центральная колонка: цитата ── */}
+        {/* Центральная панель — цитата + живая campfire сцена */}
         <motion.div
           className={styles.centerPanel}
           initial={{ opacity: 0, scale: 0.95 }}
@@ -96,22 +93,11 @@ export default function PowerUpsSection() {
           >
             ♥
           </motion.div>
-          <p className={styles.centerSub}>Thanks for being my everyday adventure.</p>
-          {/* Campfire scene */}
-          <div className={styles.campfireScene} aria-hidden>
-            <span className={styles.campfireChar}>🔥</span>
-            <motion.span
-              className={styles.campfireFlame}
-              animate={{ scaleY: [1, 1.3, 0.9, 1.2, 1], scaleX: [1, 0.9, 1.1, 0.95, 1] }}
-              transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              🔥
-            </motion.span>
-            <span className={styles.campfireChar}>🌿</span>
-          </div>
+          {/* Живая сцена с персонажами и костром */}
+          <CampfireScene showCaption />
         </motion.div>
 
-        {/* ── Правая колонка: Extras ── */}
+        {/* Правая колонка: Extras */}
         <motion.div
           className={styles.panel}
           initial={{ opacity: 0, y: 30 }}
@@ -120,9 +106,7 @@ export default function PowerUpsSection() {
         >
           <h3 className={styles.panelTitle}>EXTRAS</h3>
           <ul className={styles.extraList}>
-            {extras.map((e, i) => (
-              <ExtraItem key={e.label} {...e} index={i} />
-            ))}
+            {extras.map((e, i) => <ExtraItem key={e.label} {...e} index={i} />)}
           </ul>
         </motion.div>
       </div>

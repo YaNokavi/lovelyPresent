@@ -1,0 +1,147 @@
+.scene {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-4) var(--space-4);
+  width: 100%;
+}
+
+/* ── Персонажи ── */
+.character {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+  flex-shrink: 0;
+}
+
+.charLeft  { margin-bottom: var(--space-1); }
+.charRight { margin-bottom: var(--space-1); }
+
+.sprite {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.fallbackEmoji {
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+/* ── Костёр ── */
+.campfire {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 52px;
+  flex-shrink: 0;
+}
+
+/* ── Пламя ── */
+.flamesWrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 52px;
+  margin-bottom: -4px;
+}
+
+.flame {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50% 50% 30% 30%;
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+.flameOuter {
+  width: 28px;
+  height: 44px;
+  background: #e67e22;
+  opacity: 0.7;
+}
+
+.flameMid {
+  width: 20px;
+  height: 36px;
+  background: #f39c12;
+  opacity: 0.85;
+}
+
+.flameInner {
+  width: 12px;
+  height: 24px;
+  background: #ffeaa7;
+  opacity: 0.95;
+}
+
+/* ── Дым ── */
+.smoke {
+  position: absolute;
+  bottom: 52px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(200, 180, 160, 0.6);
+  will-change: transform, opacity;
+}
+
+/* ── Поленья ── */
+.logs {
+  position: relative;
+  width: 48px;
+  height: 10px;
+  z-index: 2;
+}
+
+.logLeft,
+.logRight {
+  position: absolute;
+  height: 7px;
+  border-radius: 3px;
+  background: #6b3a1f;
+  border-bottom: 2px solid #3d2010;
+}
+
+.logLeft  { width: 28px; left: 0;   top: 0; transform: rotate(-18deg); }
+.logRight { width: 28px; right: 0;  top: 0; transform: rotate(18deg);  }
+
+/* ── Свечение ── */
+.glow {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 16px;
+  background: radial-gradient(ellipse, rgba(230,126,34,0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: glowPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scaleX(1); }
+  50%       { opacity: 1;   transform: translateX(-50%) scaleX(1.15); }
+}
+
+/* ── Подпись ── */
+.caption {
+  position: absolute;
+  bottom: -var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  bottom: 2px;
+}
