@@ -1,60 +1,186 @@
 .page {
-  padding: var(--space-12) var(--space-6);
-  max-width: var(--content-default);
-  margin-inline: auto;
+  min-height: 100svh;
+  background: var(--color-bg-parchment);
+  font-family: var(--font-pixel);
+  padding-bottom: var(--space-16);
 }
 
 .header {
   text-align: center;
-  margin-bottom: var(--space-12);
+  padding: var(--space-12) var(--space-4) var(--space-8);
+}
+
+.eyebrow {
+  font-size: 0.55rem;
+  color: var(--color-heart);
+  letter-spacing: 0.2em;
+  margin-bottom: var(--space-3);
 }
 
 .title {
-  font-family: var(--font-pixel);
-  font-size: var(--text-xl);
-  color: var(--color-gold);
+  font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+  color: var(--color-text-dark);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
   margin-bottom: var(--space-3);
 }
 
 .subtitle {
-  font-family: var(--font-body);
+  font-size: 0.6rem;
   color: var(--color-text-muted);
-  font-size: var(--text-base);
+  letter-spacing: 0.06em;
+  font-family: var(--font-body);
 }
 
+/* ── Grid ── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
   gap: var(--space-6);
+  padding: 0 var(--space-8) var(--space-8);
+  max-width: var(--content-default);
+  margin: 0 auto;
 }
 
-.letterCard {
+/* ── Конверт ── */
+.envelope {
+  position: relative;
+  border: 3px solid var(--color-border-pixel);
+  background: #f5deb3;
+  overflow: hidden;
+  transition: box-shadow 200ms ease;
+  cursor: default;
+}
+
+.envelope:hover {
+  box-shadow: var(--shadow-pixel);
+}
+
+.envelopeOpen {
+  box-shadow: 5px 5px 0 var(--color-brown-mid);
+}
+
+/* ── Крышка */
+.envelopeFlap {
   width: 100%;
-  text-align: left;
+  background: #e8c99a;
+  border: none;
+  border-bottom: 2px dashed var(--color-border-pixel);
+  cursor: pointer;
+  padding: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 180ms ease;
+}
+
+.envelopeFlap:hover { background: #ddb97a; }
+
+.flapInner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.flapHeart {
+  font-size: 1.4rem;
+  color: var(--color-heart);
+  text-shadow: 0 0 8px var(--color-heart);
+  transition: transform 200ms ease;
+}
+
+.envelopeFlap:hover .flapHeart { transform: scale(1.2); }
+
+/* ── Тело конверта */
+.envelopeBody {
+  padding: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.envelopeMeta {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-6);
-  cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-  background: var(--color-bg-card);
+  gap: var(--space-1);
 }
 
-.letterCard:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow-pixel-lg);
+.letterFrom {
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
 }
 
-.from {
-  font-family: var(--font-pixel);
-  font-size: var(--text-xs);
-  color: var(--color-heart);
+.letterDate {
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
 }
 
-.preview {
+.letterTitle {
+  font-size: 0.6rem;
+  color: var(--color-text-dark);
+  letter-spacing: 0.06em;
+  text-align: right;
+  max-width: 20ch;
+  line-height: 1.5;
+}
+
+/* ── Развернутое письмо */
+.letterContent {
+  overflow: hidden;
+  border-top: 2px solid var(--color-border-pixel);
+}
+
+.letterPaper {
+  position: relative;
+  background: #fffef5;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  overflow: hidden;
+}
+
+/* Линейки */
+.paperLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(180,160,120,0.3);
+  pointer-events: none;
+}
+
+.paperLine:nth-child(1) { top: 36px; }
+.paperLine:nth-child(2) { top: 60px; }
+.paperLine:nth-child(3) { top: 84px; }
+.paperLine:nth-child(4) { top: 108px; }
+.paperLine:nth-child(5) { top: 132px; }
+.paperLine:nth-child(6) { top: 156px; }
+.paperLine:nth-child(7) { top: 180px; }
+.paperLine:nth-child(8) { top: 204px; }
+
+.letterBody {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--color-text);
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 2.0;
+  color: var(--color-text-dark);
   white-space: pre-wrap;
+  max-width: 100%;
+}
+
+.letterSign {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  color: var(--color-heart);
+  text-align: right;
+  margin-top: var(--space-4);
+  letter-spacing: 0.08em;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .grid { padding: 0 var(--space-4) var(--space-8); gap: var(--space-4); }
 }

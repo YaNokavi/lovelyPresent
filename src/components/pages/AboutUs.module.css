@@ -1,75 +1,110 @@
 .page {
-  padding: var(--space-12) var(--space-6);
-  max-width: var(--content-default);
-  margin-inline: auto;
+  min-height: 100svh;
+  background: var(--color-bg-parchment);
+  font-family: var(--font-pixel);
+  padding-bottom: var(--space-16);
 }
 
 .header {
   text-align: center;
-  margin-bottom: var(--space-12);
+  padding: var(--space-12) var(--space-4) var(--space-8);
+}
+
+.eyebrow {
+  font-size: 0.55rem;
+  color: var(--color-nature);
+  letter-spacing: 0.2em;
+  margin-bottom: var(--space-3);
 }
 
 .title {
-  font-family: var(--font-pixel);
-  font-size: var(--text-xl);
-  color: var(--color-gold);
+  font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+  color: var(--color-text-dark);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
   margin-bottom: var(--space-3);
 }
 
 .subtitle {
-  font-family: var(--font-body);
+  font-size: 0.6rem;
   color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  font-family: var(--font-body);
 }
 
-.cards {
+/* ── Character sheets layout ── */
+.sheets {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
-  gap: var(--space-8);
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  padding: 0 var(--space-8);
+  max-width: var(--content-default);
+  margin: 0 auto;
 }
 
-.charCard {
+/* ── Sheet card ── */
+.sheet {
+  border: 3px solid var(--color-border-pixel);
+  background: var(--color-bg-card);
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-8);
-}
-
-.charCard.fire  { border-color: var(--fire-primary);   box-shadow: 4px 4px 0 var(--fire-dark); }
-.charCard.nature { border-color: var(--nature-primary); box-shadow: 4px 4px 0 var(--nature-dark); }
-
-.charHeader {
-  display: flex;
-  align-items: center;
   gap: var(--space-4);
 }
 
-.charEmoji { font-size: 2.5rem; line-height: 1; }
+.sheetFire   { border-color: var(--color-fire);   }
+.sheetNature { border-color: var(--color-nature); }
 
-.charName {
-  font-family: var(--font-pixel);
-  font-size: var(--text-sm);
-  color: var(--color-text);
-  max-width: none;
+/* ── Sheet header ── */
+.sheetHeader {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.charPortrait {
+  border: 2px solid var(--color-border-pixel);
+  background: var(--color-bg-parchment);
+  padding: var(--space-2);
+  flex-shrink: 0;
+}
+
+.charInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .charClass {
-  font-family: var(--font-pixel);
-  font-size: calc(var(--text-xs) * 0.85);
+  font-size: 0.45rem;
   color: var(--color-text-muted);
-  max-width: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.bio {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--color-text-muted);
-  line-height: 1.6;
+.charName {
+  font-size: clamp(0.7rem, 1.5vw, 0.95rem);
+  color: var(--color-text-dark);
+  letter-spacing: 0.04em;
 }
 
-.stats {
+.charLevel {
+  font-size: 0.5rem;
+  color: var(--color-gold);
+  letter-spacing: 0.08em;
+}
+
+/* ── Stats ── */
+.statsSection, .bioSection, .specialSection {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
+}
+
+.statsTitle {
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.12em;
+  margin-bottom: var(--space-1);
 }
 
 .stat {
@@ -78,10 +113,93 @@
   gap: var(--space-1);
 }
 
-.statLabel {
+.statHeader {
   display: flex;
   justify-content: space-between;
-  font-family: var(--font-pixel);
-  font-size: calc(var(--text-xs) * 0.8);
+  align-items: center;
+}
+
+.statLabel {
+  font-size: 0.5rem;
+  color: var(--color-text-dark);
+  letter-spacing: 0.06em;
+}
+
+.statValue {
+  font-size: 0.45rem;
   color: var(--color-text-muted);
+}
+
+.statTrack {
+  height: 8px;
+  background: var(--color-bg-parchment);
+  border: 2px solid var(--color-border-pixel);
+  overflow: hidden;
+}
+
+.statBar {
+  height: 100%;
+  transition: width 0.8s ease;
+}
+
+/* ── Bio ── */
+.bio {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-text-dark);
+  line-height: 1.7;
+  max-width: 100%;
+}
+
+/* ── Special ── */
+.specialLabel {
+  font-size: 0.45rem;
+  color: var(--color-gold);
+  letter-spacing: 0.14em;
+}
+
+.special {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-text-dark);
+  font-style: italic;
+  line-height: 1.6;
+  max-width: 100%;
+}
+
+/* ── Together section ── */
+.together {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-4) var(--space-4);
+}
+
+.togetherChars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-6);
+}
+
+.togetherHeart {
+  font-size: 2rem;
+  color: var(--color-heart);
+  text-shadow: 0 0 12px var(--color-heart);
+  margin-bottom: var(--space-3);
+  display: inline-block;
+}
+
+.togetherText {
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .sheets {
+    grid-template-columns: 1fr;
+    padding: 0 var(--space-4);
+  }
 }

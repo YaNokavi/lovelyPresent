@@ -1,26 +1,36 @@
-/**
- * Данные писем — замени на реальные сообщения!
- */
 export interface Letter {
+  id: string
   from: string
-  preview: string   // Короткий превью (показывается свёрнутым)
-  text: string      // Полный текст (показывается при открытии)
+  date: string
+  title: string
+  body: string
+  sign: string
 }
 
-export const LETTERS: Letter[] = [
+// ── Замени тексты на свои настоящие письма! ──
+export const letters: Letter[] = [
   {
-    from: 'From Player 1',
-    preview: 'Знаешь, я до сих пор помню тот день...',
-    text: 'Знаешь, я до сих пор помню тот день. Напиши здесь что-то настоящее — слова, которые ты хочешь, чтобы она прочитала и улыбнулась.',
+    id: 'letter-1',
+    from: 'Me',
+    date: '05.12.2022',
+    title: 'The Day We Met',
+    body: `I still remember the exact moment I saw you.\n\nSomething just clicked. Like the universe quietly whispered: "pay attention, this one matters."\n\nThank you for walking into my world.`,
+    sign: 'Always yours',
   },
   {
-    from: 'From Player 2',
-    preview: 'Это место для её слов...',
-    text: 'Это место для её слов — можно оставить пустым или добавить её любимую цитату.',
+    id: 'letter-2',
+    from: 'Me',
+    date: '02.14.2023',
+    title: 'What I Love About You',
+    body: `Where do I even start?\n\nYour laugh. The way you get excited about little things. How you make everything feel a bit more magical just by being there.\n\nI could write a thousand pages and still not get it all down.`,
+    sign: 'Forever',
   },
   {
-    from: 'A Note',
-    preview: 'Some things are better said in pixels...',
-    text: 'Some things are better said in pixels. Add more letters here as your story grows.',
+    id: 'letter-3',
+    from: 'Me',
+    date: 'Today',
+    title: 'This Is For You',
+    body: `I built this whole thing just so you could see how I see us.\n\nTwo worlds. One beautiful adventure.\n\nThis is our story — and my favorite one.`,
+    sign: 'Your Player One',
   },
 ]

@@ -20,22 +20,67 @@
 .worldLeft  { background: var(--color-world-fire); }
 .worldRight { background: var(--color-world-nature); }
 
+/* ── Фоновые изображения ── */
+.worldBgImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  opacity: 0.75;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Поверх фона — тёмный градиент сверху чтобы текст читался */
+.worldLeft::after,
+.worldRight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.worldLeft::after {
+  background: linear-gradient(
+    to right,
+    rgba(45,26,14,0.72) 0%,
+    rgba(45,26,14,0.35) 60%,
+    transparent 100%
+  );
+}
+
+.worldRight::after {
+  background: linear-gradient(
+    to left,
+    rgba(13,34,24,0.72) 0%,
+    rgba(13,34,24,0.35) 60%,
+    transparent 100%
+  );
+}
+
 .worldBgFire {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 40% at 20% 80%, #ff6b0044 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 80% 20%, #ff9f4322 0%, transparent 70%);
+    radial-gradient(ellipse 60% 40% at 20% 80%, #ff6b0033 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 20%, #ff9f4318 0%, transparent 70%);
   pointer-events: none;
+  z-index: 1;
 }
 
 .worldBgNature {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 40% at 80% 80%, #4caf5033 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 20% 20%, #78e08f22 0%, transparent 70%);
+    radial-gradient(ellipse 60% 40% at 80% 80%, #4caf5025 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 20%, #78e08f18 0%, transparent 70%);
   pointer-events: none;
+  z-index: 1;
 }
 
 /* ── Text areas ── */
@@ -61,10 +106,10 @@
 }
 
 .headline {
-  font-size: clamp(1.1rem, 2.2vw, 1.7rem);
-  line-height: 1.35;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  line-height: 1.4;
   color: var(--color-text-fire);
-  text-shadow: 3px 3px 0 rgba(0,0,0,0.35);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
   letter-spacing: 0.02em;
 }
 
@@ -75,10 +120,10 @@
 }
 
 .subtext {
-  font-size: clamp(0.6rem, 1.1vw, 0.75rem);
+  font-size: clamp(0.55rem, 1vw, 0.7rem);
   color: var(--color-text-fire);
-  opacity: 0.8;
-  line-height: 1.8;
+  opacity: 0.75;
+  line-height: 1.9;
   letter-spacing: 0.04em;
 }
 
@@ -108,14 +153,14 @@
     transparent 6px,
     transparent 12px
   );
-  opacity: 0.6;
+  opacity: 0.5;
   pointer-events: none;
 }
 
 .heartTop {
   font-size: clamp(2rem, 5vw, 3.5rem);
   color: var(--color-heart);
-  text-shadow: 0 0 12px var(--color-heart), 3px 3px 0 rgba(0,0,0,0.4);
+  text-shadow: 0 0 16px var(--color-heart), 3px 3px 0 rgba(0,0,0,0.5);
   margin-bottom: var(--space-6);
   cursor: default;
   user-select: none;
@@ -128,19 +173,12 @@
   flex-direction: column;
   align-items: center;
   will-change: transform;
-}
-
-.char1 { margin-right: var(--space-3); }
-.char2 { margin-left:  var(--space-3); }
-
-/* put chars side by side */
-.characters > .char1,
-.characters > .char2 {
   position: absolute;
   bottom: var(--space-8);
 }
-.char1 { left: 12%; }
-.char2 { right: 12%; }
+
+.char1 { left: 8%; }
+.char2 { right: 8%; }
 
 /* ── Pixel floating particles ── */
 .particle {
@@ -150,6 +188,7 @@
   image-rendering: pixelated;
   pointer-events: none;
   border-radius: 0;
+  z-index: 3;
 }
 
 /* ── Scroll hint ── */
@@ -163,14 +202,14 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
-  color: rgba(255,255,255,0.55);
-  font-size: 0.55rem;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.5rem;
   letter-spacing: 0.1em;
   font-family: var(--font-pixel);
   pointer-events: none;
 }
 
-.scrollHint span { font-size: 1rem; }
+.scrollHint span { font-size: 0.9rem; }
 
 /* ── Responsive ── */
 @media (max-width: 640px) {

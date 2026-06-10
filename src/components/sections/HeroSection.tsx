@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import styles from './HeroSection.module.css'
 
-// Floating pixel particles
 function PixelParticle({ x, y, delay, color }: { x: number; y: number; delay: number; color: string }) {
   return (
     <motion.div
@@ -15,7 +14,7 @@ function PixelParticle({ x, y, delay, color }: { x: number; y: number; delay: nu
 }
 
 const fireParticles = [
-  { x: 10, y: 60, delay: 0, color: 'var(--color-fire)' },
+  { x: 10, y: 60, delay: 0,   color: 'var(--color-fire)' },
   { x: 22, y: 75, delay: 0.4, color: 'var(--color-gold)' },
   { x: 5,  y: 40, delay: 0.8, color: 'var(--color-fire)' },
   { x: 32, y: 55, delay: 1.2, color: '#ff9f43' },
@@ -33,17 +32,28 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
 
-  // Параллакс: левый мир уходит влево, правый — вправо
-  const leftX  = useTransform(scrollYProgress, [0, 1], ['0%', '-6%'])
-  const rightX = useTransform(scrollYProgress, [0, 1], ['0%',  '6%'])
-  const charY  = useTransform(scrollYProgress, [0, 1], ['0px', '40px'])
-  const heartScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.6])
+  const leftX        = useTransform(scrollYProgress, [0, 1], ['0%', '-6%'])
+  const rightX       = useTransform(scrollYProgress, [0, 1], ['0%',  '6%'])
+  const charY        = useTransform(scrollYProgress, [0, 1], ['0px', '40px'])
+  const heartScale   = useTransform(scrollYProgress, [0, 0.3], [1, 0.6])
   const heartOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  // Параллакс для фоновых изображений — чуть медленнее чем сами миры
+  const bgLeftY  = useTransform(scrollYProgress, [0, 1], ['0%',  '12%'])
+  const bgRightY = useTransform(scrollYProgress, [0, 1], ['0%',  '12%'])
 
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
+
       {/* ── Левый мир — огонь ── */}
       <motion.div className={styles.worldLeft} style={{ x: leftX }}>
+        {/* Фон с параллаксом */}
+        <motion.img
+          src="/assets/backgrounds/bg_fire_world.png"
+          alt=""
+          className={styles.worldBgImg}
+          style={{ y: bgLeftY }}
+          draggable={false}
+        />
         <div className={styles.worldBgFire} />
         {fireParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
         <motion.div
@@ -65,7 +75,6 @@ export default function HeroSection() {
 
       {/* ── Персонажи по центру ── */}
       <motion.div className={styles.characters} style={{ y: charY }}>
-        {/* Сердце сверху */}
         <motion.div
           className={styles.heartTop}
           style={{ scale: heartScale, opacity: heartOpacity }}
@@ -75,18 +84,17 @@ export default function HeroSection() {
           ♥
         </motion.div>
 
-        {/* Персонаж 1 */}
         <motion.div
           className={styles.char1}
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
         >
           <img
-            src="/assets/sprites/char1_idle.gif"
+            src="/assets/sprites/char1_idle.png"
             alt=""
-            width={80}
-            height={96}
+            width={80} height={96}
             loading="lazy"
+            style={{ imageRendering: 'pixelated' }}
             onError={(e) => {
               const img = e.target as HTMLImageElement
               img.style.display = 'none'
@@ -97,18 +105,17 @@ export default function HeroSection() {
           <span hidden style={{ fontSize: '3.5rem', lineHeight: 1 }}>🔥</span>
         </motion.div>
 
-        {/* Персонаж 2 */}
         <motion.div
           className={styles.char2}
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.35 }}
         >
           <img
-            src="/assets/sprites/char2_idle.gif"
+            src="/assets/sprites/char2_idle.png"
             alt=""
-            width={80}
-            height={96}
+            width={80} height={96}
             loading="lazy"
+            style={{ imageRendering: 'pixelated' }}
             onError={(e) => {
               const img = e.target as HTMLImageElement
               img.style.display = 'none'
@@ -119,12 +126,18 @@ export default function HeroSection() {
           <span hidden style={{ fontSize: '3.5rem', lineHeight: 1 }}>🌿</span>
         </motion.div>
 
-        {/* Разделитель */}
         <div className={styles.divider} />
       </motion.div>
 
       {/* ── Правый мир — природа ── */}
       <motion.div className={styles.worldRight} style={{ x: rightX }}>
+        <motion.img
+          src="/assets/backgrounds/bg_nature_world.png"
+          alt=""
+          className={styles.worldBgImg}
+          style={{ y: bgRightY }}
+          draggable={false}
+        />
         <div className={styles.worldBgNature} />
         {natureParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
         <motion.div
@@ -149,7 +162,7 @@ export default function HeroSection() {
       {/* Scroll hint */}
       <motion.div
         className={styles.scrollHint}
-        animate={{ y: [0, 8, 0], opacity: [0.6, 1, 0.6] }}
+        animate={{ y: [0, 8, 0], opacity: [0.5, 0.9, 0.5] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
       >
         <span>▼</span>
