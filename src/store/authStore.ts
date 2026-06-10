@@ -1,17 +1,17 @@
 /**
- * Auth Store — хранит состояние аутентификации в памяти (без localStorage).
- * Логин и пароль берутся из Vite ENV-переменных:
- *   VITE_AUTH_LOGIN=<что-то личное>
- *   VITE_AUTH_PASSWORD=<что-то личное>
- *
- * Если переменные не заданы — используются временные заглушки для разработки.
+ * Auth Store — реактивное состояние аутентификации.
+ * Логин и пароль — из Vite ENV:
+ *   VITE_AUTH_LOGIN=<личное>
+ *   VITE_AUTH_PASSWORD=<личное>
+ * Без .env — заглушка 'dev'/'dev'.
  */
+import { createContext, useContext, useState, useCallback } from 'react'
 
-import { createContext, useContext } from 'react'
+export type LoginStep = 'idle' | 'login_ok' | 'authenticated' | 'error'
 
 export interface AuthState {
   isAuthenticated: boolean
-  loginStep: 'idle' | 'login_ok' | 'authenticated' | 'error'
+  loginStep: LoginStep
   login: (value: string) => boolean
   authenticate: (password: string) => boolean
   logout: () => void
@@ -20,38 +20,36 @@ export interface AuthState {
 const DEV_LOGIN    = import.meta.env.VITE_AUTH_LOGIN    ?? 'dev'
 const DEV_PASSWORD = import.meta.env.VITE_AUTH_PASSWORD ?? 'dev'
 
-export function createAuthStore(): AuthState {
-  let isAuthenticated = false
-  let loginStep: AuthState['loginStep'] = 'idle'
+/** Используется внутри AuthProvider — реактивный хук */
+export function useAuthStore(): AuthState {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [loginStep, setLoginStep]             = useState<LoginStep>('idle')
 
-  return {
-    get isAuthenticated() { return isAuthenticated },
-    get loginStep() { return loginStep },
+  const login = useCallback((value: string): boolean => {
+    if (value.trim().toLowerCase() === DEV_LOGIN.toLowerCase()) {
+      setLoginStep('login_ok')
+      return true
+    }
+    setLoginStep('error')
+    return false
+  }, [])
 
-    login(value: string): boolean {
-      if (value.trim().toLowerCase() === DEV_LOGIN.toLowerCase()) {
-        loginStep = 'login_ok'
-        return true
-      }
-      loginStep = 'error'
-      return false
-    },
+  const authenticate = useCallback((password: string): boolean => {
+    if (password.trim().toLowerCase() === DEV_PASSWORD.toLowerCase()) {
+      setIsAuthenticated(true)
+      setLoginStep('authenticated')
+      return true
+    }
+    setLoginStep('error')
+    return false
+  }, [])
 
-    authenticate(password: string): boolean {
-      if (password.trim().toLowerCase() === DEV_PASSWORD.toLowerCase()) {
-        isAuthenticated = true
-        loginStep = 'authenticated'
-        return true
-      }
-      loginStep = 'error'
-      return false
-    },
+  const logout = useCallback(() => {
+    setIsAuthenticated(false)
+    setLoginStep('idle')
+  }, [])
 
-    logout() {
-      isAuthenticated = false
-      loginStep = 'idle'
-    },
-  }
+  return { isAuthenticated, loginStep, login, authenticate, logout }
 }
 
 export const AuthContext = createContext<AuthState | null>(null)

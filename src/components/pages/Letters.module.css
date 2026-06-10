@@ -1,7 +1,6 @@
 .page {
-  min-height: 100svh;
-  background: var(--color-bg-parchment);
-  font-family: var(--font-pixel);
+  min-height: 100dvh;
+  background: var(--color-bg-warm);
   padding-bottom: var(--space-16);
 }
 
@@ -11,176 +10,188 @@
 }
 
 .eyebrow {
+  font-family: var(--font-pixel);
   font-size: 0.55rem;
-  color: var(--color-heart);
   letter-spacing: 0.2em;
+  color: var(--color-heart);
   margin-bottom: var(--space-3);
 }
 
 .title {
-  font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+  font-family: var(--font-pixel);
+  font-size: clamp(0.9rem, 2.5vw, 1.6rem);
   color: var(--color-text-dark);
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
-  margin-bottom: var(--space-3);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.12);
+  margin-bottom: var(--space-2);
 }
 
 .subtitle {
-  font-size: 0.6rem;
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
   color: var(--color-text-muted);
   letter-spacing: 0.06em;
-  font-family: var(--font-body);
 }
 
-/* ── Grid ── */
+/* ── Сетка писем ── */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-  gap: var(--space-6);
-  padding: 0 var(--space-8) var(--space-8);
-  max-width: var(--content-default);
+  max-width: 720px;
   margin: 0 auto;
+  padding: 0 var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }
 
 /* ── Конверт ── */
 .envelope {
-  position: relative;
-  border: 3px solid var(--color-border-pixel);
-  background: #f5deb3;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  transition: box-shadow 200ms ease;
-  cursor: default;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
 }
 
 .envelope:hover {
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-md);
 }
 
 .envelopeOpen {
-  box-shadow: 5px 5px 0 var(--color-brown-mid);
+  border-color: var(--color-heart);
 }
 
-/* ── Крышка */
+/* Крышка конверта */
 .envelopeFlap {
   width: 100%;
-  background: #e8c99a;
+  background: var(--color-surface-offset);
   border: none;
-  border-bottom: 2px dashed var(--color-border-pixel);
+  border-bottom: 2px solid var(--color-border);
   cursor: pointer;
   padding: var(--space-3);
   display: flex;
-  align-items: center;
   justify-content: center;
-  transition: background 180ms ease;
+  transition: background 0.15s;
 }
 
-.envelopeFlap:hover { background: #ddb97a; }
+.envelopeFlap:hover {
+  background: var(--color-surface-dynamic);
+}
 
 .flapInner {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  justify-content: center;
 }
 
 .flapHeart {
   font-size: 1.4rem;
   color: var(--color-heart);
-  text-shadow: 0 0 8px var(--color-heart);
-  transition: transform 200ms ease;
+  transition: transform 0.2s;
+  line-height: 1;
 }
 
-.envelopeFlap:hover .flapHeart { transform: scale(1.2); }
+.envelopeOpen .flapHeart {
+  transform: scale(1.2);
+}
 
-/* ── Тело конверта */
+/* Тело конверта */
 .envelopeBody {
-  padding: var(--space-4);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-2);
+  padding: var(--space-4) var(--space-6);
 }
 
 .envelopeMeta {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
 }
 
-.letterFrom {
-  font-size: 0.5rem;
+.letterFrom,
+.letterDate {
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
   color: var(--color-text-muted);
   letter-spacing: 0.06em;
-}
-
-.letterDate {
-  font-size: 0.5rem;
-  color: var(--color-text-muted);
-  letter-spacing: 0.04em;
 }
 
 .letterTitle {
-  font-size: 0.6rem;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
   color: var(--color-text-dark);
-  letter-spacing: 0.06em;
-  text-align: right;
-  max-width: 20ch;
+  letter-spacing: 0.04em;
   line-height: 1.5;
 }
 
-/* ── Развернутое письмо */
+/* Развернутое письмо */
 .letterContent {
   overflow: hidden;
-  border-top: 2px solid var(--color-border-pixel);
 }
 
 .letterPaper {
   position: relative;
-  background: #fffef5;
-  padding: var(--space-6) var(--space-5) var(--space-5);
+  background: #fdf8f0;
+  border-top: 2px dashed var(--color-border);
+  padding: var(--space-6) var(--space-8) var(--space-8);
   overflow: hidden;
 }
 
-/* Линейки */
+/* Линейки бумаги */
 .paperLine {
   position: absolute;
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(180,160,120,0.3);
+  background: rgba(100, 149, 237, 0.15);
   pointer-events: none;
 }
 
-.paperLine:nth-child(1) { top: 36px; }
-.paperLine:nth-child(2) { top: 60px; }
-.paperLine:nth-child(3) { top: 84px; }
-.paperLine:nth-child(4) { top: 108px; }
-.paperLine:nth-child(5) { top: 132px; }
-.paperLine:nth-child(6) { top: 156px; }
-.paperLine:nth-child(7) { top: 180px; }
-.paperLine:nth-child(8) { top: 204px; }
+.paperLine:nth-child(1)  { top: calc(var(--space-6) + 22px * 1); }
+.paperLine:nth-child(2)  { top: calc(var(--space-6) + 22px * 2); }
+.paperLine:nth-child(3)  { top: calc(var(--space-6) + 22px * 3); }
+.paperLine:nth-child(4)  { top: calc(var(--space-6) + 22px * 4); }
+.paperLine:nth-child(5)  { top: calc(var(--space-6) + 22px * 5); }
+.paperLine:nth-child(6)  { top: calc(var(--space-6) + 22px * 6); }
+.paperLine:nth-child(7)  { top: calc(var(--space-6) + 22px * 7); }
+.paperLine:nth-child(8)  { top: calc(var(--space-6) + 22px * 8); }
 
 .letterBody {
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  line-height: 22px; /* совпадает с линейками */
+  color: #3a2e1e;
   position: relative;
   z-index: 1;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  line-height: 2.0;
-  color: var(--color-text-dark);
+  min-height: 44px;
   white-space: pre-wrap;
-  max-width: 100%;
+  word-break: break-word;
+}
+
+/* Мигающий курсор */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  background: #3a2e1e;
+  animation: blink 0.7s step-end infinite;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  height: 0.8em;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
 }
 
 .letterSign {
-  position: relative;
-  z-index: 1;
   font-family: var(--font-pixel);
-  font-size: 0.55rem;
+  font-size: 0.52rem;
   color: var(--color-heart);
   text-align: right;
   margin-top: var(--space-4);
-  letter-spacing: 0.08em;
+  position: relative;
+  z-index: 1;
 }
 
-/* ── Mobile ── */
 @media (max-width: 640px) {
-  .grid { padding: 0 var(--space-4) var(--space-8); gap: var(--space-4); }
+  .grid { padding: 0 var(--space-3); }
+  .letterPaper { padding: var(--space-4) var(--space-4) var(--space-6); }
 }
