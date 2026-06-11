@@ -3,10 +3,9 @@
 */
 
 :root {
-  --plat-w: clamp(400px, 60vw, 800px);
-  --plat-h: clamp(64px, 9vw, 110px);
-  --char-h: clamp(130px, 17vw, 220px);
-  --plat-bottom: clamp(20px, 4vw, 60px);
+  --plat-h: clamp(72px, 10vw, 120px);
+  --char-h: clamp(140px, 18vw, 230px);
+  --plat-bottom: 0px;
 }
 
 /* ── HERO wrapper ── */
@@ -33,32 +32,16 @@
 .worldRight { right: 0; }
 
 /*
-  Fire bg: the image is a full-width scene — we want the RIGHT edge to touch the divider.
-  So we anchor object-position to the right.
+  Each bg image fills its half completely.
+  object-fit: fill stretches it — no cropping.
+  This way the full artwork is visible.
 */
-.worldLeft .worldBg {
+.worldBg {
   position: absolute;
   top: 0; left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: right center;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  display: block;
-  pointer-events: none;
-}
-
-/*
-  Nature bg: anchor to the LEFT edge so it touches the divider.
-*/
-.worldRight .worldBg {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: left center;
+  object-fit: fill;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   display: block;
@@ -80,22 +63,22 @@
 /* ── TEXT LEFT ── */
 .textLeft {
   position: absolute;
-  left: clamp(80px, 18vw, 240px);
-  right: 54%;
-  top: clamp(60px, 14vh, 160px);
+  left: clamp(40px, 8vw, 140px);
+  right: 52%;
+  top: clamp(60px, 12vh, 140px);
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
   pointer-events: none;
 }
 
 .headline {
   font-family: var(--font-pixel);
-  font-size: clamp(0.7rem, 1.3vw, 1.15rem);
+  font-size: clamp(0.7rem, 1.3vw, 1.1rem);
   line-height: 1.75;
   color: #2c1a00;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.18);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
   letter-spacing: 0.01em;
   margin: 0;
 }
@@ -106,7 +89,7 @@
 }
 .subtext {
   font-family: var(--font-pixel);
-  font-size: clamp(0.4rem, 0.65vw, 0.55rem);
+  font-size: clamp(0.4rem, 0.6vw, 0.52rem);
   color: #3a2000;
   opacity: 0.85;
   line-height: 2.2;
@@ -117,11 +100,11 @@
 /* ── SPEECH BUBBLE ── */
 .speechBubble {
   position: absolute;
-  left: clamp(52%, 66vw, 72%);
-  top: clamp(60px, 18vh, 200px);
+  left: clamp(52%, 64vw, 70%);
+  top: clamp(60px, 16vh, 180px);
   z-index: 15;
   font-family: var(--font-body);
-  font-size: clamp(0.65rem, 0.95vw, 0.82rem);
+  font-size: clamp(0.65rem, 0.9vw, 0.8rem);
   line-height: 1.85;
   color: #3a2800;
   background: #fdf6e3;
@@ -132,8 +115,8 @@
     0  3px 0 0 #8b6a3a,
     -3px 0 0 0 #8b6a3a,
      3px 0 0 0 #8b6a3a,
-    4px 4px 0 rgba(0, 0, 0, 0.2);
-  max-width: clamp(150px, 18vw, 230px);
+    4px 4px 0 rgba(0,0,0,0.2);
+  max-width: clamp(140px, 16vw, 220px);
   pointer-events: auto;
 }
 .speechBubble strong { color: #1a6b3a; }
@@ -157,27 +140,31 @@
   border-color: transparent #fdf6e3 transparent transparent;
 }
 
-/* ── PLATFORM ── */
+/* ── PLATFORM ──
+   Rendered as a div that spans the full width at the bottom.
+   The platform_ground.png is tiled horizontally as background-image.
+*/
 .platform {
   position: absolute;
   bottom: var(--plat-bottom);
-  left: 50%;
-  transform: translateX(-50%);
-  width: var(--plat-w);
+  left: 0;
+  width: 100%;
   height: var(--plat-h);
-  object-fit: fill;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  /* platform must be ABOVE world backgrounds (z:0) but below chars */
   z-index: 12;
   pointer-events: none;
-  display: block;
+  /* tile the ground texture horizontally */
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: center top;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
-/* ── CHARACTERS ── */
+/* ── CHARACTERS ──
+   bottom = platform height, so feet land exactly on the platform top.
+*/
 .char {
   position: absolute;
-  /* sit exactly on top of platform */
   bottom: calc(var(--plat-bottom) + var(--plat-h));
   height: var(--char-h);
   width: auto;
@@ -188,18 +175,20 @@
   z-index: 13;
   pointer-events: none;
   display: block;
-  filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 4px 3px rgba(0,0,0,0.3));
 }
-.char1 { right: calc(50% + 8px); }
-.char2 { left:  calc(50% + 8px); transform: scaleX(-1); }
+/* char1 stands to the LEFT of center */
+.char1 { right: calc(50% + 10px); }
+/* char2 stands to the RIGHT of center, mirrored */
+.char2 { left: calc(50% + 10px); transform: scaleX(-1); }
 
 /* ── HEART ── */
 .heart {
   position: absolute;
-  bottom: calc(var(--plat-bottom) + var(--plat-h) + var(--char-h) + 8px);
+  bottom: calc(var(--plat-bottom) + var(--plat-h) + var(--char-h) + 12px);
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(56px, 8vw, 96px);
+  width: clamp(56px, 7vw, 90px);
   height: auto;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -211,7 +200,7 @@
     drop-shadow(-2px 0 0 #fff)
     drop-shadow(0 2px 0 #fff)
     drop-shadow(0 -2px 0 #fff)
-    drop-shadow(3px 3px 0 rgba(0, 0, 0, 0.3));
+    drop-shadow(3px 3px 0 rgba(0,0,0,0.3));
 }
 
 /* ── PARTICLES ── */
@@ -221,24 +210,22 @@
   height: 5px;
   z-index: 4;
   pointer-events: none;
-  image-rendering: pixelated;
 }
 
 /* ── MOBILE ── */
 @media (max-width: 640px) {
   :root {
-    --plat-w: 100%;
     --plat-h: 48px;
     --char-h: 100px;
-    --plat-bottom: 20px;
+    --plat-bottom: 0px;
   }
   .hero { height: auto; min-height: 100svh; }
-  .textLeft { left: var(--space-4); right: 52%; top: var(--space-6); }
+  .textLeft { left: var(--space-3); right: 52%; top: var(--space-6); }
   .speechBubble {
     left: auto;
     right: var(--space-3);
     top: auto;
-    bottom: calc(var(--plat-bottom) + var(--plat-h) + var(--char-h) + 50px);
+    bottom: calc(var(--plat-h) + var(--char-h) + 40px);
     max-width: 42vw;
   }
   .divider { display: none; }

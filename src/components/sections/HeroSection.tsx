@@ -44,7 +44,7 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
 
-      {/* ── LEFT WORLD — fire background image ── */}
+      {/* ── LEFT WORLD — fire bg ── */}
       <div className={styles.worldLeft}>
         <img
           src={bgFireWorld}
@@ -55,7 +55,7 @@ export default function HeroSection() {
         {fireParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
       </div>
 
-      {/* ── RIGHT WORLD — nature background image ── */}
+      {/* ── RIGHT WORLD — nature bg ── */}
       <div className={styles.worldRight}>
         <img
           src={bgNatureWorld}
@@ -103,12 +103,11 @@ export default function HeroSection() {
         <div className={styles.bubbleTail} />
       </motion.div>
 
-      {/* ── PLATFORM ── */}
-      <img
-        src={platformGround}
-        alt=""
+      {/* ── PLATFORM — tiled ground texture ── */}
+      <div
         className={styles.platform}
-        draggable={false}
+        style={{ backgroundImage: `url(${platformGround})` }}
+        role="presentation"
       />
 
       {/* ── CHAR 1 — fire side ── */}
