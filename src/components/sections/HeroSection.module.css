@@ -1,29 +1,16 @@
 /*
-  HeroSection — точная копия концепта
-  =====================================
-  Концепт:
-  - Левый мир: оранжевый/персиковый (светлый)
-  - Правый мир: мятно-зелёный (светлый)
-  - Платформа: по центру, ~40% ширины
-  - Персонажи стоят на платформе у линии раздела
-  - Сердце: точно над центром
-  - Текст: ~20% от левого края (не с самого края)
-  - Речевой пузырь: ~65-70% по X, середина по Y
-  =====================================
+  HeroSection — pixel art split-screen
+  Два полноэкранных фона-картинки + платформа + персонажи
 */
 
-/* Platform & char sizes */
 :root {
-  --plat-w: clamp(320px, 42vw, 580px);
-  --plat-h: clamp(60px, 8vw, 100px);
+  --plat-w: clamp(320px, 52vw, 680px);
+  --plat-h: clamp(60px, 9vw, 110px);
   --char-h: clamp(130px, 17vw, 220px);
-  /* bottom offset where platform top sits */
-  --plat-bottom: clamp(60px, 9vw, 120px);
+  --plat-bottom: clamp(40px, 6vw, 80px);
 }
 
-/* ────────────────────────────────────────
-   HERO wrapper
-──────────────────────────────────────── */
+/* ── HERO wrapper ── */
 .hero {
   position: relative;
   width: 100%;
@@ -31,13 +18,10 @@
   min-height: 560px;
   overflow: hidden;
   font-family: var(--font-pixel);
-  /* prevent text selection on drag */
   user-select: none;
 }
 
-/* ────────────────────────────────────────
-   WORLD HALVES — light colors like concept
-──────────────────────────────────────── */
+/* ── WORLD HALVES ── */
 .worldLeft,
 .worldRight {
   position: absolute;
@@ -45,98 +29,25 @@
   width: 50%;
   overflow: hidden;
 }
+.worldLeft  { left: 0; }
+.worldRight { right: 0; }
 
-/* Left: warm orange sky, darker at horizon */
-.worldLeft {
-  left: 0;
-  background: linear-gradient(
-    180deg,
-    #f5a020 0%,
-    #e8820a 55%,
-    #c06010 100%
-  );
-}
-
-/* Right: mint-green sky */
-.worldRight {
-  right: 0;
-  background: linear-gradient(
-    180deg,
-    #d4eea0 0%,
-    #aad870 55%,
-    #78b840 100%
-  );
-}
-
-/* ────────────────────────────────────────
-   PIXEL CLOUDS (CSS-drawn)
-──────────────────────────────────────── */
-.cloud {
+/* Background image fills entire half, pixel-perfect */
+.worldBg {
   position: absolute;
-  background: rgba(255,255,255,0.85);
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
   image-rendering: pixelated;
-}
-/* clouds via box-shadow pixel art trick */
-.cloud::before,
-.cloud::after {
-  content: '';
-  position: absolute;
-  background: rgba(255,255,255,0.85);
-}
-
-.worldLeftClouds,
-.worldRightClouds {
-  position: absolute;
-  inset: 0;
+  image-rendering: crisp-edges;
+  display: block;
   pointer-events: none;
+  user-select: none;
 }
 
-/* Cloud 1 — left world, top area */
-.cloud1 {
-  width: 48px; height: 16px;
-  top: 18%; left: 20%;
-  box-shadow:
-    -8px  0   0 8px  rgba(255,255,255,0.85),
-     8px  0   0 8px  rgba(255,255,255,0.85),
-     0   -8px 0 4px  rgba(255,255,255,0.85);
-  border-radius: 0;
-  animation: cloudDrift 18s linear infinite;
-}
-.cloud2 {
-  width: 32px; height: 12px;
-  top: 10%; left: 55%;
-  box-shadow:
-    -6px  0   0 6px  rgba(255,255,255,0.75),
-     6px  0   0 6px  rgba(255,255,255,0.75),
-     0   -6px 0 4px  rgba(255,255,255,0.75);
-  animation: cloudDrift 24s linear infinite 4s;
-}
-.cloud3 {
-  width: 44px; height: 14px;
-  top: 14%; left: 10%;
-  box-shadow:
-    -8px  0   0 8px  rgba(255,255,255,0.8),
-     8px  0   0 8px  rgba(255,255,255,0.8),
-     0   -8px 0 4px  rgba(255,255,255,0.8);
-  animation: cloudDrift 20s linear infinite 2s;
-}
-.cloud4 {
-  width: 36px; height: 12px;
-  top: 8%; left: 65%;
-  box-shadow:
-    -6px  0   0 6px  rgba(255,255,255,0.7),
-     6px  0   0 6px  rgba(255,255,255,0.7),
-     0   -6px 0 4px  rgba(255,255,255,0.7);
-  animation: cloudDrift 28s linear infinite 8s;
-}
-@keyframes cloudDrift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(30px); }
-}
-
-/* ────────────────────────────────────────
-   CENTER DIVIDER — white 2px
-──────────────────────────────────────── */
+/* ── CENTER DIVIDER ── */
 .divider {
   position: absolute;
   top: 0; bottom: 0;
@@ -148,15 +59,10 @@
   pointer-events: none;
 }
 
-/* ────────────────────────────────────────
-   TEXT LEFT
-   Концепт: ~20% от левого края, вертикально ~30% сверху
-──────────────────────────────────────── */
+/* ── TEXT LEFT ── */
 .textLeft {
   position: absolute;
-  /* shifted right — starts at ~20% of screen width */
   left: clamp(80px, 18vw, 240px);
-  /* не дальше 46% (не залезать за разделитель) */
   right: 54%;
   top: clamp(80px, 18vh, 180px);
   z-index: 10;
@@ -183,17 +89,14 @@
 .subtext {
   font-family: var(--font-pixel);
   font-size: clamp(0.4rem, 0.65vw, 0.55rem);
-  color: #4a2e00;
-  opacity: 0.8;
+  color: #3a2000;
+  opacity: 0.85;
   line-height: 2.2;
   letter-spacing: 0.03em;
   margin-top: var(--space-2);
 }
 
-/* ────────────────────────────────────────
-   SPEECH BUBBLE
-   Концепт: ~66% по X, вертикально ~35% сверху
-──────────────────────────────────────── */
+/* ── SPEECH BUBBLE ── */
 .speechBubble {
   position: absolute;
   left: clamp(52%, 66vw, 72%);
@@ -217,8 +120,6 @@
 }
 .speechBubble strong { color: #1a6b3a; }
 .bubbleHeart { color: #e74c3c; }
-
-/* Tail pointing left (toward char2) */
 .bubbleTail {
   position: absolute;
   left: -13px;
@@ -238,10 +139,7 @@
   border-color: transparent #fdf6e3 transparent transparent;
 }
 
-/* ────────────────────────────────────────
-   PLATFORM — centered, partial width
-   Концепт: уступ по центру ~40% ширины
-──────────────────────────────────────── */
+/* ── PLATFORM ── */
 .platform {
   position: absolute;
   bottom: var(--plat-bottom);
@@ -258,10 +156,7 @@
   display: block;
 }
 
-/* ────────────────────────────────────────
-   CHARACTERS — стоят на платформе у разделителя
-   bottom = plat-bottom + plat-h (верхний край платформы)
-──────────────────────────────────────── */
+/* ── CHARACTERS ── */
 .char {
   position: absolute;
   bottom: calc(var(--plat-bottom) + var(--plat-h));
@@ -276,23 +171,10 @@
   display: block;
   filter: drop-shadow(0 4px 2px rgba(0,0,0,0.25));
 }
+.char1 { right: calc(50% + 4px); }
+.char2 { left: calc(50% + 4px); transform: scaleX(-1); }
 
-/* Char1: огненный — справа по центру, лицом к char2 */
-.char1 {
-  /* правый край char1 касается разделителя */
-  right: calc(50% + 4px);
-}
-
-/* Char2: природный — слева по центру, зеркально (лицо к char1) */
-.char2 {
-  left: calc(50% + 4px);
-  transform: scaleX(-1);
-}
-
-/* ────────────────────────────────────────
-   HEART — строго по центру X,
-   выше голов персонажей
-──────────────────────────────────────── */
+/* ── HEART ── */
 .heart {
   position: absolute;
   bottom: calc(var(--plat-bottom) + var(--plat-h) + var(--char-h) + 10px);
@@ -313,9 +195,7 @@
     drop-shadow(3px 3px 0 rgba(0,0,0,0.3));
 }
 
-/* ────────────────────────────────────────
-   PARTICLES
-──────────────────────────────────────── */
+/* ── PARTICLES ── */
 .particle {
   position: absolute;
   width: 5px;
@@ -325,18 +205,22 @@
   image-rendering: pixelated;
 }
 
-/* ────────────────────────────────────────
-   MOBILE
-──────────────────────────────────────── */
+/* ── MOBILE ── */
 @media (max-width: 640px) {
   :root {
     --plat-w: 100%;
     --plat-h: 48px;
     --char-h: 100px;
-    --plat-bottom: 40px;
+    --plat-bottom: 30px;
   }
   .hero       { height: auto; min-height: 100svh; }
   .textLeft   { left: var(--space-4); right: 52%; top: var(--space-8); }
-  .speechBubble { left: auto; right: var(--space-3); top: auto; bottom: calc(var(--plat-bottom) + var(--plat-h) + var(--char-h) + 80px); max-width: 42vw; }
-  .divider    { display: none; }
+  .speechBubble {
+    left: auto;
+    right: var(--space-3);
+    top: auto;
+    bottom: calc(var(--plat-bottom) + var(--plat-h) + var(--char-h) + 60px);
+    max-width: 42vw;
+  }
+  .divider { display: none; }
 }
