@@ -7,7 +7,6 @@ import char2Idle from '../../assets/sprites/char2_idle.png'
 import fireWorldBg from '../../assets/backgrounds/bg_fire_world.png'
 import natureWorldBg from '../../assets/backgrounds/bg_nature_world.png'
 
-// Pixel particle floating in each world
 function PixelParticle({ x, y, delay, color }: { x: number; y: number; delay: number; color: string }) {
   return (
     <motion.div
@@ -49,18 +48,11 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
 
-      {/* ── LEFT WORLD — Fire ── */}
+      {/* LEFT WORLD — Fire */}
       <motion.div className={styles.worldLeft} style={{ x: leftX }}>
-        <motion.img
-          src={fireWorldBg}
-          alt=""
-          className={styles.worldBgImg}
-          style={{ y: bgLeftY }}
-          draggable={false}
-        />
+        <motion.img src={fireWorldBg} alt="" className={styles.worldBgImg} style={{ y: bgLeftY }} draggable={false} />
         <div className={styles.worldBgFire} />
         {fireParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
-
         <motion.div
           className={styles.leftContent}
           initial={{ opacity: 0, x: -40 }}
@@ -78,15 +70,14 @@ export default function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* ── CENTER — Characters + Heart + Platform ── */}
+      {/* CENTER — Characters + Heart + Platform */}
       <motion.div className={styles.centerCol} style={{ y: charY }}>
 
-        {/* Split pixel heart above characters */}
+        {/* Split pixel heart */}
         <motion.div
           className={styles.heartWrapper}
           style={{ scale: heartScale, opacity: heartOpacity }}
         >
-          {/* Two-color pixel heart built purely with CSS */}
           <motion.div
             className={styles.pixelHeart}
             animate={{ scale: [1, 1.15, 1] }}
@@ -97,69 +88,48 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Characters sitting on the platform */}
+        {/* Characters on platform */}
         <div className={styles.stageArea}>
-          {/* Char 1 — fire world side */}
           <div className={styles.charSlot}>
             <motion.div
               animate={{ y: [0, -7, 0] }}
               transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
             >
-              <img
-                src={char1Idle}
-                alt="Fire character"
-                className={styles.charImg}
-                draggable={false}
-              />
+              <img src={char1Idle} alt="Fire character" className={styles.charImg} draggable={false} />
             </motion.div>
           </div>
 
-          {/* Char 2 — nature world side (mirrored) */}
           <div className={styles.charSlot}>
             <motion.div
               style={{ scaleX: -1 }}
               animate={{ y: [0, -7, 0] }}
               transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
             >
-              <img
-                src={char2Idle}
-                alt="Nature character"
-                className={styles.charImg}
-                draggable={false}
-              />
+              <img src={char2Idle} alt="Nature character" className={styles.charImg} draggable={false} />
             </motion.div>
           </div>
 
-          {/* Pixel platform ground */}
+          {/* Platform ground */}
           <div className={styles.platformGround}>
             <div className={styles.platformGrass} />
             <div className={styles.platformEarth} />
           </div>
         </div>
 
-        {/* Vertical pixel divider */}
         <div className={styles.divider} />
       </motion.div>
 
-      {/* ── RIGHT WORLD — Nature ── */}
+      {/* RIGHT WORLD — Nature */}
       <motion.div className={styles.worldRight} style={{ x: rightX }}>
-        <motion.img
-          src={natureWorldBg}
-          alt=""
-          className={styles.worldBgImg}
-          style={{ y: bgRightY }}
-          draggable={false}
-        />
+        <motion.img src={natureWorldBg} alt="" className={styles.worldBgImg} style={{ y: bgRightY }} draggable={false} />
         <div className={styles.worldBgNature} />
         {natureParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
-
         <motion.div
           className={styles.rightContent}
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Pixel speech bubble */}
           <motion.div
             className={styles.speechBubble}
             animate={{ y: [0, -5, 0] }}
@@ -175,15 +145,6 @@ export default function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* ── Scroll hint ── */}
-      <motion.div
-        className={styles.scrollHint}
-        animate={{ y: [0, 8, 0], opacity: [0.45, 0.85, 0.45] }}
-        transition={{ duration: 1.9, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <span>▼</span>
-        <p>scroll to continue</p>
-      </motion.div>
     </section>
   )
 }

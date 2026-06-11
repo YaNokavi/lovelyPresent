@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════
    HeroSection — redesigned
    Concept-accurate: platform, split heart,
-   body-font headline, larger chars
+   pixel-font headline, larger chars
    ═══════════════════════════════════════ */
 
 .hero {
@@ -107,15 +107,14 @@
   height: 100%;
 }
 
-/* ── HEADLINE — body font, large, readable ── */
+/* ── HEADLINE — pixel font (original) ── */
 .headline {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
-  line-height: 1.25;
+  font-family: var(--font-pixel);
+  font-size: clamp(0.85rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
   color: var(--color-text-fire);
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.55);
-  letter-spacing: -0.01em;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  letter-spacing: 0.02em;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -128,12 +127,12 @@
 }
 
 .subtext {
-  font-family: var(--font-body);
-  font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+  font-family: var(--font-pixel);
+  font-size: clamp(0.5rem, 0.9vw, 0.65rem);
   color: var(--color-text-fire);
   opacity: 0.72;
-  line-height: 1.8;
-  letter-spacing: 0.02em;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
 }
 
 /* ── CENTER COLUMN ── */
@@ -157,30 +156,14 @@
   will-change: transform, opacity;
 }
 
-/* CSS-drawn split pixel heart */
 .pixelHeart {
+  position: relative;
   display: flex;
   width: clamp(44px, 7vw, 72px);
   height: clamp(40px, 6.5vw, 66px);
   filter: drop-shadow(0 0 10px rgba(231,76,60,0.6)) drop-shadow(3px 3px 0 rgba(0,0,0,0.5));
   image-rendering: pixelated;
   will-change: transform;
-}
-
-.heartLeft,
-.heartRight {
-  width: 50%;
-  height: 100%;
-  clip-path: polygon(
-    25% 0%,   50% 0%,   50% 100%,
-    10% 70%,  0%  40%,  0%  25%,
-    10% 10%
-  );
-}
-
-/* Better heart shape using mask */
-.pixelHeart {
-  position: relative;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'%3E%3Cpath d='M16 26 L2 12 Q0 6 6 4 Q10 2 14 6 L16 8 L18 6 Q22 2 26 4 Q32 6 30 12 Z' fill='white'/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'%3E%3Cpath d='M16 26 L2 12 Q0 6 6 4 Q10 2 14 6 L16 8 L18 6 Q22 2 26 4 Q32 6 30 12 Z' fill='white'/%3E%3C/svg%3E");
   -webkit-mask-size: 100% 100%;
@@ -189,6 +172,11 @@
   mask-repeat: no-repeat;
 }
 
+.heartLeft,
+.heartRight {
+  width: 50%;
+  height: 100%;
+}
 .heartLeft  { background: var(--fire-primary); }
 .heartRight { background: var(--nature-primary); }
 
@@ -209,7 +197,6 @@
   justify-content: center;
   position: relative;
   z-index: 2;
-  margin-bottom: 0;
 }
 
 .charImg {
@@ -287,19 +274,15 @@
   background: var(--color-bg-parchment);
   padding: var(--space-4) var(--space-5);
   border: 3px solid var(--color-border-pixel);
-  /* Pixel corners — box-shadow trick */
   box-shadow:
-    /* outer pixel border */
     0 -3px 0 0 var(--color-border-pixel),
     0  3px 0 0 var(--color-border-pixel),
     -3px 0 0 0 var(--color-border-pixel),
      3px 0 0 0 var(--color-border-pixel),
-    /* cut corners */
     -6px -6px 0 0 var(--color-bg-parchment),
      6px -6px 0 0 var(--color-bg-parchment),
     -6px  6px 0 0 var(--color-bg-parchment),
      6px  6px 0 0 var(--color-bg-parchment),
-    /* drop shadow */
     4px 4px 0 rgba(0,0,0,0.3);
   max-width: 220px;
   text-align: left;
@@ -314,7 +297,6 @@
   color: var(--color-heart);
 }
 
-/* Tail pointing left (toward characters) */
 .bubbleTail {
   position: absolute;
   left: -14px;
@@ -348,25 +330,6 @@
   z-index: 3;
 }
 
-/* ── SCROLL HINT ── */
-.scrollHint {
-  position: absolute;
-  bottom: var(--space-4);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  color: rgba(255,255,255,0.4);
-  font-size: 0.5rem;
-  letter-spacing: 0.1em;
-  font-family: var(--font-pixel);
-  pointer-events: none;
-}
-.scrollHint span { font-size: 0.9rem; }
-
 /* ── MOBILE ── */
 @media (max-width: 640px) {
   .hero {
@@ -397,5 +360,4 @@
   .rightContent { padding: var(--space-6) var(--space-4); justify-content: center; }
 
   .speechBubble { max-width: 100%; }
-  .scrollHint { display: none; }
 }
