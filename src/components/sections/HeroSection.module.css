@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════
    HeroSection — redesigned
-   Concept-accurate: platform, split heart,
-   pixel-font headline, larger chars
+   PNG heart sprite, pixel-font headline,
+   platform ground, larger chars
    ═══════════════════════════════════════ */
 
 .hero {
@@ -40,7 +40,6 @@
   user-select: none;
 }
 
-/* Vignette overlays for readability */
 .worldLeft::after,
 .worldRight::after {
   content: '';
@@ -107,7 +106,7 @@
   height: 100%;
 }
 
-/* ── HEADLINE — pixel font (original) ── */
+/* ── HEADLINE ── */
 .headline {
   font-family: var(--font-pixel);
   font-size: clamp(0.85rem, 1.6vw, 1.3rem);
@@ -146,7 +145,7 @@
   will-change: transform;
 }
 
-/* ── PIXEL HEART ── */
+/* ── HEART PNG ── */
 .heartWrapper {
   position: absolute;
   top: clamp(20px, 8vh, 60px);
@@ -156,29 +155,15 @@
   will-change: transform, opacity;
 }
 
-.pixelHeart {
-  position: relative;
-  display: flex;
-  width: clamp(44px, 7vw, 72px);
-  height: clamp(40px, 6.5vw, 66px);
-  filter: drop-shadow(0 0 10px rgba(231,76,60,0.6)) drop-shadow(3px 3px 0 rgba(0,0,0,0.5));
+.heartImg {
+  width: clamp(56px, 9vw, 96px);
+  height: auto;
   image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 0 12px rgba(231,76,60,0.55)) drop-shadow(3px 3px 0 rgba(0,0,0,0.45));
+  display: block;
   will-change: transform;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'%3E%3Cpath d='M16 26 L2 12 Q0 6 6 4 Q10 2 14 6 L16 8 L18 6 Q22 2 26 4 Q32 6 30 12 Z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'%3E%3Cpath d='M16 26 L2 12 Q0 6 6 4 Q10 2 14 6 L16 8 L18 6 Q22 2 26 4 Q32 6 30 12 Z' fill='white'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
 }
-
-.heartLeft,
-.heartRight {
-  width: 50%;
-  height: 100%;
-}
-.heartLeft  { background: var(--fire-primary); }
-.heartRight { background: var(--nature-primary); }
 
 /* ── STAGE AREA (chars + platform) ── */
 .stageArea {
@@ -187,8 +172,6 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 0;
-  padding-bottom: 0;
 }
 
 .charSlot {
