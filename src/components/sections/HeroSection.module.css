@@ -1,15 +1,21 @@
+/* ═══════════════════════════════════════
+   HeroSection — redesigned
+   Concept-accurate: platform, split heart,
+   body-font headline, larger chars
+   ═══════════════════════════════════════ */
+
 .hero {
   position: relative;
   width: 100%;
   height: 100svh;
-  min-height: 520px;
+  min-height: 540px;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr clamp(220px, 26vw, 320px) 1fr;
   overflow: hidden;
   font-family: var(--font-pixel);
 }
 
-/* Миры */
+/* ── Worlds ── */
 .worldLeft,
 .worldRight {
   position: relative;
@@ -20,22 +26,21 @@
 .worldLeft  { background: var(--color-world-fire); }
 .worldRight { background: var(--color-world-nature); }
 
-/* Фоновые изображения */
 .worldBgImg {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 110%; /* чуть выше чтобы параллакс был запас */
+  height: 110%;
   object-fit: cover;
   object-position: center bottom;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  opacity: 0.85;
+  opacity: 0.88;
   pointer-events: none;
   user-select: none;
 }
 
-/* Тёмный градиент поверх фона — текст легче читается */
+/* Vignette overlays for readability */
 .worldLeft::after,
 .worldRight::after {
   content: '';
@@ -44,21 +49,19 @@
   pointer-events: none;
   z-index: 1;
 }
-
 .worldLeft::after {
   background: linear-gradient(
     to right,
-    rgba(45,26,14,0.72) 0%,
-    rgba(45,26,14,0.35) 60%,
+    rgba(45,26,14,0.75) 0%,
+    rgba(45,26,14,0.3) 55%,
     transparent 100%
   );
 }
-
 .worldRight::after {
   background: linear-gradient(
     to left,
-    rgba(13,34,24,0.72) 0%,
-    rgba(13,34,24,0.35) 60%,
+    rgba(13,34,24,0.75) 0%,
+    rgba(13,34,24,0.3) 55%,
     transparent 100%
   );
 }
@@ -67,23 +70,22 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 40% at 20% 80%, #ff6b0033 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, #ff6b0030 0%, transparent 70%),
     radial-gradient(ellipse 40% 60% at 80% 20%, #ff9f4318 0%, transparent 70%);
   pointer-events: none;
   z-index: 1;
 }
-
 .worldBgNature {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 40% at 80% 80%, #4caf5025 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 20% 20%, #78e08f18 0%, transparent 70%);
+    radial-gradient(ellipse 60% 40% at 80% 80%, #4caf5022 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 20%, #78e08f15 0%, transparent 70%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Текстовые области */
+/* ── Text areas ── */
 .leftContent {
   position: relative;
   z-index: 2;
@@ -105,41 +107,158 @@
   height: 100%;
 }
 
+/* ── HEADLINE — body font, large, readable ── */
 .headline {
-  font-size: clamp(1rem, 2vw, 1.6rem);
-  line-height: 1.4;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+  line-height: 1.25;
   color: var(--color-text-fire);
-  text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
-  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.55);
+  letter-spacing: -0.01em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
 }
 
-.accent {
+.headlineAccent {
   color: var(--color-fire);
   display: block;
-  margin-top: var(--space-2);
 }
 
 .subtext {
-  font-size: clamp(0.55rem, 1vw, 0.7rem);
+  font-family: var(--font-body);
+  font-size: clamp(0.75rem, 1.2vw, 0.95rem);
   color: var(--color-text-fire);
-  opacity: 0.75;
-  line-height: 1.9;
-  letter-spacing: 0.04em;
+  opacity: 0.72;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
 }
 
-/* Персонажи — центральная колонка */
-.characters {
+/* ── CENTER COLUMN ── */
+.centerCol {
   position: relative;
   z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: var(--space-8);
-  width: clamp(180px, 22vw, 280px);
   will-change: transform;
 }
 
+/* ── PIXEL HEART ── */
+.heartWrapper {
+  position: absolute;
+  top: clamp(20px, 8vh, 60px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  will-change: transform, opacity;
+}
+
+/* CSS-drawn split pixel heart */
+.pixelHeart {
+  display: flex;
+  width: clamp(44px, 7vw, 72px);
+  height: clamp(40px, 6.5vw, 66px);
+  filter: drop-shadow(0 0 10px rgba(231,76,60,0.6)) drop-shadow(3px 3px 0 rgba(0,0,0,0.5));
+  image-rendering: pixelated;
+  will-change: transform;
+}
+
+.heartLeft,
+.heartRight {
+  width: 50%;
+  height: 100%;
+  clip-path: polygon(
+    25% 0%,   50% 0%,   50% 100%,
+    10% 70%,  0%  40%,  0%  25%,
+    10% 10%
+  );
+}
+
+/* Better heart shape using mask */
+.pixelHeart {
+  position: relative;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'%3E%3Cpath d='M16 26 L2 12 Q0 6 6 4 Q10 2 14 6 L16 8 L18 6 Q22 2 26 4 Q32 6 30 12 Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'%3E%3Cpath d='M16 26 L2 12 Q0 6 6 4 Q10 2 14 6 L16 8 L18 6 Q22 2 26 4 Q32 6 30 12 Z' fill='white'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.heartLeft  { background: var(--fire-primary); }
+.heartRight { background: var(--nature-primary); }
+
+/* ── STAGE AREA (chars + platform) ── */
+.stageArea {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0;
+  padding-bottom: 0;
+}
+
+.charSlot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0;
+}
+
+.charImg {
+  width: clamp(110px, 16vw, 190px);
+  height: clamp(110px, 16vw, 190px);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 6px 0 rgba(0,0,0,0.35));
+  display: block;
+}
+
+/* ── PLATFORM GROUND ── */
+.platformGround {
+  position: absolute;
+  bottom: 0;
+  left: -40px;
+  right: -40px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.platformGrass {
+  height: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    #3a7d44 0px, #3a7d44 7px,
+    #2d6b38 7px, #2d6b38 14px,
+    #4a9e58 14px, #4a9e58 18px,
+    #2d6b38 18px, #2d6b38 28px
+  );
+  border-top: 3px solid #52b868;
+  image-rendering: pixelated;
+}
+
+.platformEarth {
+  height: 36px;
+  background: repeating-linear-gradient(
+    180deg,
+    #5a3a1a 0px, #5a3a1a 9px,
+    #4a2e12 9px, #4a2e12 18px,
+    #6b4c2a 18px, #6b4c2a 27px,
+    #4a2e12 27px, #4a2e12 36px
+  );
+  border-top: 2px solid #3d2510;
+  image-rendering: pixelated;
+}
+
+/* ── VERTICAL DIVIDER ── */
 .divider {
   position: absolute;
   top: 0;
@@ -153,40 +272,72 @@
     transparent 6px,
     transparent 12px
   );
-  opacity: 0.5;
+  opacity: 0.45;
   pointer-events: none;
+  z-index: 0;
 }
 
-.heartTop {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+/* ── PIXEL SPEECH BUBBLE ── */
+.speechBubble {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+  line-height: 1.75;
+  color: var(--color-text-dark);
+  background: var(--color-bg-parchment);
+  padding: var(--space-4) var(--space-5);
+  border: 3px solid var(--color-border-pixel);
+  /* Pixel corners — box-shadow trick */
+  box-shadow:
+    /* outer pixel border */
+    0 -3px 0 0 var(--color-border-pixel),
+    0  3px 0 0 var(--color-border-pixel),
+    -3px 0 0 0 var(--color-border-pixel),
+     3px 0 0 0 var(--color-border-pixel),
+    /* cut corners */
+    -6px -6px 0 0 var(--color-bg-parchment),
+     6px -6px 0 0 var(--color-bg-parchment),
+    -6px  6px 0 0 var(--color-bg-parchment),
+     6px  6px 0 0 var(--color-bg-parchment),
+    /* drop shadow */
+    4px 4px 0 rgba(0,0,0,0.3);
+  max-width: 220px;
+  text-align: left;
+}
+
+.speechBubble strong {
+  font-weight: 700;
+  color: var(--nature-primary);
+}
+
+.bubbleHeart {
   color: var(--color-heart);
-  text-shadow: 0 0 16px var(--color-heart), 3px 3px 0 rgba(0,0,0,0.5);
-  margin-bottom: var(--space-6);
-  cursor: default;
-  user-select: none;
-  will-change: transform;
 }
 
-.char1,
-.char2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  will-change: transform;
+/* Tail pointing left (toward characters) */
+.bubbleTail {
   position: absolute;
-  bottom: var(--space-8);
+  left: -14px;
+  bottom: 18px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 14px 8px 0;
+  border-color: transparent var(--color-border-pixel) transparent transparent;
+}
+.bubbleTail::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: -6px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 10px 6px 0;
+  border-color: transparent var(--color-bg-parchment) transparent transparent;
 }
 
-/* Персонажи стоят по обе стороны центральной колонки */
-.char1 { left: -52px; }
-.char2 { right: -52px; transform: scaleX(-1); }
-
-.char1 img,
-.char2 img {
-  filter: drop-shadow(0 8px 0 rgba(0,0,0,0.28));
-}
-
-/* Пиксельные частицы */
+/* ── PARTICLES ── */
 .particle {
   position: absolute;
   width: 6px;
@@ -197,7 +348,7 @@
   z-index: 3;
 }
 
-/* Scroll hint */
+/* ── SCROLL HINT ── */
 .scrollHint {
   position: absolute;
   bottom: var(--space-4);
@@ -208,16 +359,15 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.4);
   font-size: 0.5rem;
   letter-spacing: 0.1em;
   font-family: var(--font-pixel);
   pointer-events: none;
 }
-
 .scrollHint span { font-size: 0.9rem; }
 
-/* Мобайл */
+/* ── MOBILE ── */
 @media (max-width: 640px) {
   .hero {
     grid-template-columns: 1fr;
@@ -226,20 +376,19 @@
     min-height: 100svh;
   }
 
-  .characters {
+  .centerCol {
     width: 100%;
     flex-direction: row;
-    justify-content: center;
-    gap: var(--space-8);
     padding: var(--space-4);
     order: 2;
     background: var(--color-bg-dark);
+    justify-content: center;
   }
 
-  .char1, .char2 { position: static; margin: 0; }
-  .char2 { transform: scaleX(-1); }
+  .stageArea { width: auto; gap: var(--space-4); }
+  .platformGround { display: none; }
   .divider { display: none; }
-  .heartTop { margin-bottom: 0; }
+  .heartWrapper { position: static; transform: none; margin-bottom: var(--space-2); }
 
   .worldLeft  { order: 1; min-height: 240px; }
   .worldRight { order: 3; min-height: 200px; }
@@ -247,5 +396,6 @@
   .leftContent  { padding: var(--space-6) var(--space-4); }
   .rightContent { padding: var(--space-6) var(--space-4); justify-content: center; }
 
+  .speechBubble { max-width: 100%; }
   .scrollHint { display: none; }
 }

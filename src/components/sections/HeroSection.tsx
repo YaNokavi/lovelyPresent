@@ -7,28 +7,29 @@ import char2Idle from '../../assets/sprites/char2_idle.png'
 import fireWorldBg from '../../assets/backgrounds/bg_fire_world.png'
 import natureWorldBg from '../../assets/backgrounds/bg_nature_world.png'
 
+// Pixel particle floating in each world
 function PixelParticle({ x, y, delay, color }: { x: number; y: number; delay: number; color: string }) {
   return (
     <motion.div
       className={styles.particle}
       style={{ left: `${x}%`, top: `${y}%`, background: color }}
-      animate={{ y: [0, -18, 0], opacity: [0.7, 1, 0.7] }}
-      transition={{ duration: 2.4 + delay * 0.3, repeat: Infinity, delay, ease: 'easeInOut' }}
+      animate={{ y: [0, -18, 0], opacity: [0.6, 1, 0.6] }}
+      transition={{ duration: 2.6 + delay * 0.3, repeat: Infinity, delay, ease: 'easeInOut' }}
     />
   )
 }
 
 const fireParticles = [
-  { x: 10, y: 60, delay: 0,   color: 'var(--color-fire)' },
-  { x: 22, y: 75, delay: 0.4, color: 'var(--color-gold)' },
-  { x: 5,  y: 40, delay: 0.8, color: 'var(--color-fire)' },
+  { x: 10, y: 60, delay: 0,   color: '#e67e22' },
+  { x: 22, y: 75, delay: 0.4, color: '#f1c40f' },
+  { x:  5, y: 40, delay: 0.8, color: '#e67e22' },
   { x: 32, y: 55, delay: 1.2, color: '#ff9f43' },
-  { x: 15, y: 85, delay: 0.2, color: 'var(--color-gold)' },
+  { x: 15, y: 85, delay: 0.2, color: '#f1c40f' },
 ]
 const natureParticles = [
-  { x: 65, y: 50, delay: 0.3, color: 'var(--color-nature)' },
+  { x: 65, y: 50, delay: 0.3, color: '#27ae60' },
   { x: 80, y: 70, delay: 0.7, color: '#a8e063' },
-  { x: 90, y: 35, delay: 1.1, color: 'var(--color-nature)' },
+  { x: 90, y: 35, delay: 1.1, color: '#27ae60' },
   { x: 72, y: 80, delay: 0.5, color: '#78e08f' },
   { x: 58, y: 90, delay: 1.5, color: '#a8e063' },
 ]
@@ -40,7 +41,7 @@ export default function HeroSection() {
   const leftX        = useTransform(scrollYProgress, [0, 1], ['0%', '-6%'])
   const rightX       = useTransform(scrollYProgress, [0, 1], ['0%',  '6%'])
   const charY        = useTransform(scrollYProgress, [0, 1], ['0px', '40px'])
-  const heartScale   = useTransform(scrollYProgress, [0, 0.3], [1, 0.6])
+  const heartScale   = useTransform(scrollYProgress, [0, 0.3], [1, 0.7])
   const heartOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
   const bgLeftY      = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
   const bgRightY     = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
@@ -48,7 +49,7 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
 
-      {/* Левый мир — огонь */}
+      {/* ── LEFT WORLD — Fire ── */}
       <motion.div className={styles.worldLeft} style={{ x: leftX }}>
         <motion.img
           src={fireWorldBg}
@@ -59,6 +60,7 @@ export default function HeroSection() {
         />
         <div className={styles.worldBgFire} />
         {fireParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
+
         <motion.div
           className={styles.leftContent}
           initial={{ opacity: 0, x: -40 }}
@@ -66,8 +68,8 @@ export default function HeroSection() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1 className={styles.headline}>
-            Two different<br />worlds.<br />
-            <span className={styles.accent}>One beautiful<br />adventure.</span>
+            Two different worlds.
+            <span className={styles.headlineAccent}>One beautiful adventure.</span>
           </h1>
           <p className={styles.subtext}>
             This is our story.<br />
@@ -76,51 +78,70 @@ export default function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* Персонажи по центру */}
-      <motion.div className={styles.characters} style={{ y: charY }}>
+      {/* ── CENTER — Characters + Heart + Platform ── */}
+      <motion.div className={styles.centerCol} style={{ y: charY }}>
+
+        {/* Split pixel heart above characters */}
         <motion.div
-          className={styles.heartTop}
+          className={styles.heartWrapper}
           style={{ scale: heartScale, opacity: heartOpacity }}
-          animate={{ scale: [1, 1.18, 1] }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          ♥
+          {/* Two-color pixel heart built purely with CSS */}
+          <motion.div
+            className={styles.pixelHeart}
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 1.3, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <div className={styles.heartLeft} />
+            <div className={styles.heartRight} />
+          </motion.div>
         </motion.div>
 
-        <motion.div
-          className={styles.char1}
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
-        >
-          <img
-            src={char1Idle}
-            alt=""
-            width={148}
-            height={148}
-            loading="eager"
-            style={{ imageRendering: 'pixelated' }}
-          />
-        </motion.div>
+        {/* Characters sitting on the platform */}
+        <div className={styles.stageArea}>
+          {/* Char 1 — fire world side */}
+          <div className={styles.charSlot}>
+            <motion.div
+              animate={{ y: [0, -7, 0] }}
+              transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
+            >
+              <img
+                src={char1Idle}
+                alt="Fire character"
+                className={styles.charImg}
+                draggable={false}
+              />
+            </motion.div>
+          </div>
 
-        <motion.div
-          className={styles.char2}
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.35 }}
-        >
-          <img
-            src={char2Idle}
-            alt=""
-            width={148}
-            height={148}
-            loading="eager"
-            style={{ imageRendering: 'pixelated' }}
-          />
-        </motion.div>
+          {/* Char 2 — nature world side (mirrored) */}
+          <div className={styles.charSlot}>
+            <motion.div
+              style={{ scaleX: -1 }}
+              animate={{ y: [0, -7, 0] }}
+              transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+            >
+              <img
+                src={char2Idle}
+                alt="Nature character"
+                className={styles.charImg}
+                draggable={false}
+              />
+            </motion.div>
+          </div>
 
+          {/* Pixel platform ground */}
+          <div className={styles.platformGround}>
+            <div className={styles.platformGrass} />
+            <div className={styles.platformEarth} />
+          </div>
+        </div>
+
+        {/* Vertical pixel divider */}
         <div className={styles.divider} />
       </motion.div>
 
-      {/* Правый мир — природа */}
+      {/* ── RIGHT WORLD — Nature ── */}
       <motion.div className={styles.worldRight} style={{ x: rightX }}>
         <motion.img
           src={natureWorldBg}
@@ -131,30 +152,34 @@ export default function HeroSection() {
         />
         <div className={styles.worldBgNature} />
         {natureParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
+
         <motion.div
           className={styles.rightContent}
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
+          {/* Pixel speech bubble */}
           <motion.div
-            className="speech-bubble"
-            animate={{ y: [0, -4, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            className={styles.speechBubble}
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
           >
+            <span className={styles.bubbleHeart}>♥</span>
             We met, we clicked,<br />
             and somehow...<br />
-            we just fit.{' '}
-            <span style={{ color: 'var(--color-heart)' }}>♥</span>
+            <strong>we just fit.</strong>
+            <span className={styles.bubbleHeart}> ♥</span>
+            <div className={styles.bubbleTail} />
           </motion.div>
         </motion.div>
       </motion.div>
 
-      {/* Scroll hint */}
+      {/* ── Scroll hint ── */}
       <motion.div
         className={styles.scrollHint}
-        animate={{ y: [0, 8, 0], opacity: [0.5, 0.9, 0.5] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ y: [0, 8, 0], opacity: [0.45, 0.85, 0.45] }}
+        transition={{ duration: 1.9, repeat: Infinity, ease: 'easeInOut' }}
       >
         <span>▼</span>
         <p>scroll to continue</p>
