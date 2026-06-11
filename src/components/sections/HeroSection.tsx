@@ -6,6 +6,8 @@ import char1Idle from '../../assets/sprites/char1_idle.png'
 import char2Idle from '../../assets/sprites/char2_idle.png'
 import heartSplit from '../../assets/sprites/heart_split.png'
 import platformGround from '../../assets/backgrounds/platform_ground.png'
+import bgFireWorld from '../../assets/backgrounds/bg_fire_world.png'
+import bgNatureWorld from '../../assets/backgrounds/bg_nature_world.png'
 
 function PixelParticle({ x, y, delay, color }: {
   x: number; y: number; delay: number; color: string
@@ -21,14 +23,14 @@ function PixelParticle({ x, y, delay, color }: {
 }
 
 const fireParticles = [
-  { x: 12, y: 60, delay: 0,   color: '#f1c40f' },
-  { x: 22, y: 75, delay: 0.5, color: '#e67e22' },
-  { x: 7,  y: 45, delay: 1.0, color: '#f39c12' },
+  { x: 8,  y: 65, delay: 0,   color: '#f1c40f' },
+  { x: 15, y: 75, delay: 0.5, color: '#e67e22' },
+  { x: 5,  y: 50, delay: 1.0, color: '#f39c12' },
 ]
 const natureParticles = [
-  { x: 68, y: 55, delay: 0.3, color: '#27ae60' },
-  { x: 80, y: 70, delay: 0.8, color: '#a8e063' },
-  { x: 90, y: 40, delay: 1.3, color: '#52d68a' },
+  { x: 68, y: 55, delay: 0.3, color: '#52d68a' },
+  { x: 78, y: 70, delay: 0.8, color: '#a8e063' },
+  { x: 88, y: 42, delay: 1.3, color: '#27ae60' },
 ]
 
 export default function HeroSection() {
@@ -42,29 +44,32 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
 
-      {/* ── LEFT WORLD ── */}
+      {/* ── LEFT WORLD — fire background image ── */}
       <div className={styles.worldLeft}>
-        {/* Sky gradient done in CSS */}
-        <div className={styles.worldLeftClouds}>
-          <div className={`${styles.cloud} ${styles.cloud1}`} />
-          <div className={`${styles.cloud} ${styles.cloud2}`} />
-        </div>
+        <img
+          src={bgFireWorld}
+          alt=""
+          className={styles.worldBg}
+          draggable={false}
+        />
         {fireParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
       </div>
 
-      {/* ── RIGHT WORLD ── */}
+      {/* ── RIGHT WORLD — nature background image ── */}
       <div className={styles.worldRight}>
-        <div className={styles.worldRightClouds}>
-          <div className={`${styles.cloud} ${styles.cloud3}`} />
-          <div className={`${styles.cloud} ${styles.cloud4}`} />
-        </div>
+        <img
+          src={bgNatureWorld}
+          alt=""
+          className={styles.worldBg}
+          draggable={false}
+        />
         {natureParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
       </div>
 
       {/* ── WHITE CENTER DIVIDER ── */}
       <div className={styles.divider} />
 
-      {/* ── TEXT LEFT (shifted right from edge, ~20% from left) ── */}
+      {/* ── TEXT LEFT ── */}
       <motion.div
         className={styles.textLeft}
         initial={{ opacity: 0, x: -24 }}
@@ -98,7 +103,7 @@ export default function HeroSection() {
         <div className={styles.bubbleTail} />
       </motion.div>
 
-      {/* ── PLATFORM — centered, NOT full width ── */}
+      {/* ── PLATFORM ── */}
       <img
         src={platformGround}
         alt=""
@@ -106,7 +111,7 @@ export default function HeroSection() {
         draggable={false}
       />
 
-      {/* ── CHAR 1 — right of divider on fire side ── */}
+      {/* ── CHAR 1 — fire side ── */}
       <img
         src={char1Idle}
         alt="Fire character"
@@ -114,7 +119,7 @@ export default function HeroSection() {
         draggable={false}
       />
 
-      {/* ── CHAR 2 — left of divider on nature side, mirrored ── */}
+      {/* ── CHAR 2 — nature side, mirrored ── */}
       <img
         src={char2Idle}
         alt="Nature character"
@@ -122,7 +127,7 @@ export default function HeroSection() {
         draggable={false}
       />
 
-      {/* ── HEART — centered above chars ── */}
+      {/* ── HEART ── */}
       <motion.img
         src={heartSplit}
         alt="split heart"
