@@ -1,19 +1,22 @@
 /*
-  HeroSection — pixel art split-screen
+  HeroSection — cinematic pixel art split-screen
+  Target: wide 16:5.5 ratio, backgrounds cover their half naturally,
+  platform centered ~55% width, chars standing on it.
 */
 
 :root {
-  --plat-h: clamp(72px, 10vw, 120px);
-  --char-h: clamp(140px, 18vw, 230px);
-  --plat-bottom: 0px;
+  --plat-w: clamp(360px, 55vw, 760px);
+  --plat-h: clamp(56px, 7vw, 96px);
+  --char-h: clamp(120px, 15vw, 200px);
 }
 
 /* ── HERO wrapper ── */
 .hero {
   position: relative;
   width: 100%;
-  height: 100svh;
-  min-height: 560px;
+  aspect-ratio: 16 / 5.8;
+  min-height: 340px;
+  max-height: 92vh;
   overflow: hidden;
   font-family: var(--font-pixel);
   user-select: none;
@@ -32,16 +35,27 @@
 .worldRight { right: 0; }
 
 /*
-  Each bg image fills its half completely.
-  object-fit: fill stretches it — no cropping.
-  This way the full artwork is visible.
+  object-fit: cover fills each half without distortion.
+  Fire bg  → right part of image faces the center divider.
+  Nature bg → left part of image faces the center divider.
 */
-.worldBg {
+.worldLeft .worldBg {
   position: absolute;
   top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+  pointer-events: none;
+}
+.worldRight .worldBg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: left center;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   display: block;
@@ -55,7 +69,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.85);
   z-index: 20;
   pointer-events: none;
 }
@@ -63,96 +77,96 @@
 /* ── TEXT LEFT ── */
 .textLeft {
   position: absolute;
-  left: clamp(40px, 8vw, 140px);
+  left: clamp(32px, 6vw, 120px);
   right: 52%;
-  top: clamp(60px, 12vh, 140px);
+  top: clamp(28px, 8vh, 80px);
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
   pointer-events: none;
 }
 
 .headline {
   font-family: var(--font-pixel);
-  font-size: clamp(0.7rem, 1.3vw, 1.1rem);
-  line-height: 1.75;
-  color: #2c1a00;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  font-size: clamp(0.75rem, 1.4vw, 1.2rem);
+  line-height: 1.7;
+  color: #1e0e00;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
   letter-spacing: 0.01em;
   margin: 0;
 }
 .headlineAccent {
-  color: #8b3a00;
+  color: #7a2e00;
   display: block;
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
 }
 .subtext {
   font-family: var(--font-pixel);
-  font-size: clamp(0.4rem, 0.6vw, 0.52rem);
-  color: #3a2000;
-  opacity: 0.85;
+  font-size: clamp(0.38rem, 0.6vw, 0.5rem);
+  color: #2c1600;
+  opacity: 0.8;
   line-height: 2.2;
   letter-spacing: 0.03em;
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 /* ── SPEECH BUBBLE ── */
 .speechBubble {
   position: absolute;
-  left: clamp(52%, 64vw, 70%);
-  top: clamp(60px, 16vh, 180px);
+  left: clamp(54%, 62vw, 70%);
+  top: clamp(28px, 8vh, 80px);
   z-index: 15;
   font-family: var(--font-body);
-  font-size: clamp(0.65rem, 0.9vw, 0.8rem);
-  line-height: 1.85;
+  font-size: clamp(0.6rem, 0.85vw, 0.78rem);
+  line-height: 1.9;
   color: #3a2800;
   background: #fdf6e3;
-  padding: var(--space-4) var(--space-5);
-  border: 3px solid #8b6a3a;
+  padding: clamp(8px, 1.2vw, 18px) clamp(10px, 1.5vw, 22px);
+  border: 2.5px solid #8b6a3a;
   box-shadow:
-    0 -3px 0 0 #8b6a3a,
-    0  3px 0 0 #8b6a3a,
-    -3px 0 0 0 #8b6a3a,
-     3px 0 0 0 #8b6a3a,
-    4px 4px 0 rgba(0,0,0,0.2);
-  max-width: clamp(140px, 16vw, 220px);
+    0 -2px 0 0 #8b6a3a,
+    0  2px 0 0 #8b6a3a,
+    -2px 0 0 0 #8b6a3a,
+     2px 0 0 0 #8b6a3a,
+    3px 3px 0 rgba(0,0,0,0.18);
+  max-width: clamp(130px, 15vw, 210px);
+  text-align: center;
   pointer-events: auto;
 }
 .speechBubble strong { color: #1a6b3a; }
-.bubbleHeart { color: #e74c3c; }
+.bubbleHeart { color: #e74c3c; font-size: 0.9em; }
 .bubbleTail {
   position: absolute;
-  left: -13px;
-  bottom: 22px;
+  left: -12px;
+  bottom: 20px;
   width: 0; height: 0;
   border-style: solid;
-  border-width: 7px 13px 7px 0;
+  border-width: 6px 12px 6px 0;
   border-color: transparent #8b6a3a transparent transparent;
 }
 .bubbleTail::after {
   content: '';
   position: absolute;
-  left: 3px; top: -5px;
+  left: 3px; top: -4px;
   width: 0; height: 0;
   border-style: solid;
-  border-width: 5px 10px 5px 0;
+  border-width: 4px 9px 4px 0;
   border-color: transparent #fdf6e3 transparent transparent;
 }
 
 /* ── PLATFORM ──
-   Rendered as a div that spans the full width at the bottom.
-   The platform_ground.png is tiled horizontally as background-image.
+   Centered, ~55% width. Tiled horizontally via background-image.
 */
 .platform {
   position: absolute;
-  bottom: var(--plat-bottom);
-  left: 0;
-  width: 100%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--plat-w);
   height: var(--plat-h);
   z-index: 12;
   pointer-events: none;
-  /* tile the ground texture horizontally */
   background-repeat: repeat-x;
   background-size: auto 100%;
   background-position: center top;
@@ -161,11 +175,11 @@
 }
 
 /* ── CHARACTERS ──
-   bottom = platform height, so feet land exactly on the platform top.
+   bottom = plat-h so feet land exactly on platform top.
 */
 .char {
   position: absolute;
-  bottom: calc(var(--plat-bottom) + var(--plat-h));
+  bottom: var(--plat-h);
   height: var(--char-h);
   width: auto;
   object-fit: contain;
@@ -175,20 +189,18 @@
   z-index: 13;
   pointer-events: none;
   display: block;
-  filter: drop-shadow(0 4px 3px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.25));
 }
-/* char1 stands to the LEFT of center */
-.char1 { right: calc(50% + 10px); }
-/* char2 stands to the RIGHT of center, mirrored */
-.char2 { left: calc(50% + 10px); transform: scaleX(-1); }
+.char1 { right: calc(50% + 8px); }
+.char2 { left:  calc(50% + 8px); transform: scaleX(-1); }
 
 /* ── HEART ── */
 .heart {
   position: absolute;
-  bottom: calc(var(--plat-bottom) + var(--plat-h) + var(--char-h) + 12px);
+  bottom: calc(var(--plat-h) + var(--char-h) + 10px);
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(56px, 7vw, 90px);
+  width: clamp(48px, 6.5vw, 84px);
   height: auto;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -196,11 +208,11 @@
   pointer-events: none;
   display: block;
   filter:
-    drop-shadow(2px 0 0 #fff)
-    drop-shadow(-2px 0 0 #fff)
-    drop-shadow(0 2px 0 #fff)
-    drop-shadow(0 -2px 0 #fff)
-    drop-shadow(3px 3px 0 rgba(0,0,0,0.3));
+    drop-shadow(1px 0 0 #fff)
+    drop-shadow(-1px 0 0 #fff)
+    drop-shadow(0 1px 0 #fff)
+    drop-shadow(0 -1px 0 #fff)
+    drop-shadow(2px 2px 0 rgba(0,0,0,0.25));
 }
 
 /* ── PARTICLES ── */
@@ -215,18 +227,20 @@
 /* ── MOBILE ── */
 @media (max-width: 640px) {
   :root {
-    --plat-h: 48px;
-    --char-h: 100px;
-    --plat-bottom: 0px;
+    --plat-w: 96vw;
+    --plat-h: 44px;
+    --char-h: 90px;
   }
-  .hero { height: auto; min-height: 100svh; }
-  .textLeft { left: var(--space-3); right: 52%; top: var(--space-6); }
+  .hero {
+    aspect-ratio: unset;
+    height: 60vw;
+    min-height: 260px;
+  }
+  .textLeft { left: var(--space-3); right: 52%; top: var(--space-4); }
   .speechBubble {
-    left: auto;
-    right: var(--space-3);
-    top: auto;
-    bottom: calc(var(--plat-h) + var(--char-h) + 40px);
-    max-width: 42vw;
+    left: 53%;
+    top: var(--space-4);
+    max-width: 44vw;
   }
   .divider { display: none; }
 }
