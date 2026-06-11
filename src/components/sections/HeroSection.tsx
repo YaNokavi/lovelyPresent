@@ -16,8 +16,8 @@ function PixelParticle({ x, y, delay, color }: {
     <motion.div
       className={styles.particle}
       style={{ left: `${x}%`, top: `${y}%`, background: color }}
-      animate={{ y: [0, -16, 0], opacity: [0.5, 1, 0.5] }}
-      transition={{ duration: 2.6 + delay * 0.3, repeat: Infinity, delay, ease: 'easeInOut' }}
+      animate={{ y: [0, -14, 0], opacity: [0.4, 1, 0.4] }}
+      transition={{ duration: 2.8 + delay * 0.3, repeat: Infinity, delay, ease: 'easeInOut' }}
     />
   )
 }
@@ -37,11 +37,6 @@ const natureParticles = [
   { x: 62, y: 88, delay: 1.5, color: '#a8e063' },
 ]
 
-// Platform height in px — used to offset heart position
-const PLATFORM_H = 56
-// Character display size (matches CSS clamp midpoint)
-const CHAR_SIZE_CSS = 'clamp(100px, 13vw, 175px)'
-
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -56,14 +51,19 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
 
-      {/* LEFT WORLD */}
+      {/* ── LEFT WORLD ── */}
       <div className={styles.worldLeft}>
-        <motion.img src={fireWorldBg} alt="" className={styles.worldBgImg} style={{ y: bgLeftY }} draggable={false} />
-        <div className={styles.worldBgFire} />
+        <motion.img
+          src={fireWorldBg} alt=""
+          className={styles.worldBgImg}
+          style={{ y: bgLeftY }}
+          draggable={false}
+        />
+        <div className={styles.worldVignette} />
         {fireParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
         <motion.div
           className={styles.leftContent}
-          initial={{ opacity: 0, x: -36 }}
+          initial={{ opacity: 0, x: -32 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
@@ -80,21 +80,26 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* RIGHT WORLD */}
+      {/* ── RIGHT WORLD ── */}
       <div className={styles.worldRight}>
-        <motion.img src={natureWorldBg} alt="" className={styles.worldBgImg} style={{ y: bgRightY }} draggable={false} />
-        <div className={styles.worldBgNature} />
+        <motion.img
+          src={natureWorldBg} alt=""
+          className={styles.worldBgImg}
+          style={{ y: bgRightY }}
+          draggable={false}
+        />
+        <div className={styles.worldVignette} style={{ background: 'linear-gradient(to left, rgba(8,26,16,0.55) 0%, transparent 60%)' }} />
         {natureParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
         <motion.div
           className={styles.rightContent}
-          initial={{ opacity: 0, x: 36 }}
+          initial={{ opacity: 0, x: 32 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           <motion.div
             className={styles.speechBubble}
             animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
           >
             <span className={styles.bubbleHeart}>♥</span>{' '}
             We met, we clicked,<br />
@@ -106,58 +111,29 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* CENTER OVERLAY */}
-      <div className={styles.centerOverlay}>
+      {/* ── WHITE CENTER DIVIDER ── */}
+      <div className={styles.divider} />
 
-        {/* White vertical divider line */}
-        <div className={styles.divider} />
+      {/* ── PLATFORM (full width, bottom-anchored, above worlds) ── */}
+      <img
+        src={platformGround}
+        alt=""
+        className={styles.platform}
+        draggable={false}
+      />
 
-        {/* Heart — no animation, just scroll fade */}
-        <motion.div
-          className={styles.heartWrapper}
-          style={{ opacity: heartOpacity }}
-        >
-          <img
-            src={heartSplit}
-            alt="heart"
-            className={styles.heartImg}
-            draggable={false}
-          />
-        </motion.div>
+      {/* ── CHARACTERS (stand on platform) ── */}
+      <img src={char1Idle} alt="Fire character" className={`${styles.char} ${styles.charLeft}`} draggable={false} />
+      <img src={char2Idle} alt="Nature character" className={`${styles.char} ${styles.charRight}`} draggable={false} />
 
-        {/* Stage: chars + platform PNG */}
-        <div className={styles.stageRow}>
-          {/* Char 1 */}
-          <div className={styles.charLeft}>
-            <img
-              src={char1Idle}
-              alt="Fire character"
-              className={styles.charImg}
-              style={{ width: CHAR_SIZE_CSS, height: CHAR_SIZE_CSS }}
-              draggable={false}
-            />
-          </div>
-
-          {/* Char 2 — mirrored via inline style (arch note: scaleX on outer div) */}
-          <div className={styles.charRight} style={{ scaleX: -1 } as React.CSSProperties}>
-            <img
-              src={char2Idle}
-              alt="Nature character"
-              className={styles.charImg}
-              style={{ width: CHAR_SIZE_CSS, height: CHAR_SIZE_CSS }}
-              draggable={false}
-            />
-          </div>
-
-          {/* Platform PNG — full width, sticks to bottom */}
-          <img
-            src={platformGround}
-            alt=""
-            className={styles.platformImg}
-            draggable={false}
-          />
-        </div>
-      </div>
+      {/* ── HEART (centered, above characters) ── */}
+      <motion.img
+        src={heartSplit}
+        alt="split heart"
+        className={styles.heart}
+        style={{ opacity: heartOpacity }}
+        draggable={false}
+      />
 
     </section>
   )

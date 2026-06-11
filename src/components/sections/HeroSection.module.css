@@ -1,19 +1,31 @@
-/* =============================================
-   HeroSection — concept-accurate
-   Two 50% absolute worlds + center overlay
-   Full-width platform PNG, static heart/chars
-   ============================================= */
+/* ===========================================
+   HeroSection
+   All key elements are position:absolute
+   inside the hero (position:relative).
+   Platform is bottom-anchored.
+   Chars stand on platform via bottom offset.
+   Heart is centered horizontally + sits
+   above chars via bottom offset.
+   =========================================== */
+
+/* -- CSS Custom Properties used here -- */
+:root {
+  --platform-h: 72px;     /* visual height of the platform image */
+  --char-size: clamp(110px, 14vw, 185px);
+}
 
 .hero {
   position: relative;
   width: 100%;
   height: 100svh;
-  min-height: 520px;
+  min-height: 540px;
   overflow: hidden;
   font-family: var(--font-pixel);
 }
 
-/* ── WORLDS ── */
+/* ────────────────────────────────────
+   WORLDS — left 50% / right 50%
+──────────────────────────────────── */
 .worldLeft,
 .worldRight {
   position: absolute;
@@ -22,9 +34,8 @@
   width: 50%;
   overflow: hidden;
 }
-
-.worldLeft  { left: 0;  background: var(--color-world-fire); }
-.worldRight { right: 0; background: var(--color-world-nature); }
+.worldLeft  { left: 0; }
+.worldRight { right: 0; }
 
 .worldBgImg {
   position: absolute;
@@ -35,52 +46,122 @@
   object-position: center bottom;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  opacity: 0.9;
   pointer-events: none;
   user-select: none;
 }
 
-/* Slight vignette on outer edges only */
-.worldLeft::after {
-  content: '';
+/* Outer-edge vignette */
+.worldVignette {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(35,18,6,0.5) 0%, transparent 55%);
-  pointer-events: none;
-  z-index: 1;
-}
-.worldRight::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to left, rgba(8,26,16,0.5) 0%, transparent 55%);
+  background: linear-gradient(to right, rgba(35,18,6,0.5) 0%, transparent 60%);
   pointer-events: none;
   z-index: 1;
 }
 
-.worldBgFire {
+/* ────────────────────────────────────
+   CENTER DIVIDER — white solid 2px line
+──────────────────────────────────── */
+.divider {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 55% 35% at 15% 85%, #ff6b0025 0%, transparent 70%);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 20;
   pointer-events: none;
-  z-index: 1;
-}
-.worldBgNature {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 55% 35% at 85% 85%, #4caf501c 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 1;
 }
 
-/* ── TEXT CONTENT ── */
+/* ────────────────────────────────────
+   PLATFORM — bottom: 0, full width
+──────────────────────────────────── */
+.platform {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--platform-h);
+  object-fit: cover;
+  object-position: center top;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  z-index: 10;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+
+/* ────────────────────────────────────
+   CHARACTERS — bottom edge = top of platform
+──────────────────────────────────── */
+.char {
+  position: absolute;
+  bottom: var(--platform-h);   /* stands ON TOP of platform */
+  width: var(--char-size);
+  height: var(--char-size);
+  object-fit: contain;
+  object-position: bottom;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  z-index: 11;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+  filter: drop-shadow(0 4px 2px rgba(0,0,0,0.35));
+}
+
+/* Char1: right of center, touching divider */
+.charLeft {
+  right: calc(50% + 8px);
+  transform: translateX(100%);
+}
+
+/* Char2: left of center, touching divider */
+.charRight {
+  left: calc(50% + 8px);
+  transform: scaleX(-1);   /* mirror to face inward */
+}
+
+/* ────────────────────────────────────
+   HEART — horizontally centered,
+   vertically above chars
+──────────────────────────────────── */
+.heart {
+  position: absolute;
+  /* bottom = platform + char + gap */
+  bottom: calc(var(--platform-h) + var(--char-size) + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(64px, 9vw, 104px);
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  z-index: 15;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+  /* White pixel outline via drop-shadow */
+  filter:
+    drop-shadow(2px 0 0 #fff)
+    drop-shadow(-2px 0 0 #fff)
+    drop-shadow(0 2px 0 #fff)
+    drop-shadow(0 -2px 0 #fff)
+    drop-shadow(4px 4px 0 rgba(0,0,0,0.4))
+    drop-shadow(0 0 18px rgba(231,76,60,0.4));
+}
+
+/* ────────────────────────────────────
+   TEXT CONTENT — stays in world halves
+──────────────────────────────────── */
 .leftContent {
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   top: 50%;
-  transform: translateY(-56%);
+  transform: translateY(-58%);
   left: var(--space-10);
-  right: clamp(50px, 8%, 100px);
+  right: clamp(48px, 7%, 96px);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -88,11 +169,11 @@
 
 .rightContent {
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   top: 50%;
-  transform: translateY(-56%);
+  transform: translateY(-58%);
   right: var(--space-8);
-  left: clamp(50px, 8%, 100px);
+  left: clamp(48px, 7%, 96px);
   display: flex;
   justify-content: flex-end;
 }
@@ -102,128 +183,31 @@
   font-size: clamp(0.88rem, 1.5vw, 1.3rem);
   line-height: 1.65;
   color: var(--color-text-fire);
-  text-shadow: 3px 3px 0 rgba(0,0,0,0.55);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.6);
   letter-spacing: 0.02em;
   margin: 0;
 }
-
 .headlineAccent {
   color: var(--color-fire);
   display: block;
   margin-top: var(--space-3);
 }
-
 .subtext {
   font-family: var(--font-pixel);
   font-size: clamp(0.46rem, 0.82vw, 0.6rem);
   color: var(--color-text-fire);
-  opacity: 0.7;
+  opacity: 0.72;
   line-height: 2;
   letter-spacing: 0.04em;
 }
 
-/* ── CENTER OVERLAY ── */
-.centerOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-/* ── VERTICAL DIVIDER — white solid line like concept ── */
-.divider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  background: rgba(255, 255, 255, 0.55);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ── HEART ── */
-.heartWrapper {
-  position: absolute;
-  /* sits just above the platform + characters */
-  bottom: calc(56px + clamp(100px, 13vw, 175px) + 12px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 15;
-  will-change: opacity;
-}
-
-.heartImg {
-  width: clamp(60px, 9vw, 100px);
-  height: auto;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  /* White pixel outline via drop-shadow trick */
-  filter:
-    drop-shadow(0 0 0 2px #fff)
-    drop-shadow(2px 0 0 2px #fff)
-    drop-shadow(-2px 0 0 2px #fff)
-    drop-shadow(0 2px 0 2px #fff)
-    drop-shadow(0 -2px 0 2px #fff)
-    drop-shadow(3px 3px 0 rgba(0,0,0,0.45))
-    drop-shadow(0 0 16px rgba(231,76,60,0.45));
-  display: block;
-}
-
-/* ── STAGE ROW ── */
-.stageRow {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: clamp(4px, 1.5vw, 20px);
-  /* stageRow bottom = 0, platform PNG sits at absolute bottom */
-}
-
-.charLeft,
-.charRight {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  align-items: flex-end;
-  /* lift chars so they stand ON TOP of platform: platformH = 56px */
-  margin-bottom: 56px;
-}
-
-.charImg {
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  filter: drop-shadow(0 3px 0 rgba(0,0,0,0.4));
-  display: block;
-}
-
-/* ── PLATFORM PNG ── */
-.platformImg {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 56px;
-  object-fit: cover;
-  object-position: center top;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  z-index: 2;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* ── SPEECH BUBBLE ── */
+/* ────────────────────────────────────
+   SPEECH BUBBLE
+──────────────────────────────────── */
 .speechBubble {
   position: relative;
   font-family: var(--font-body);
-  font-size: clamp(0.7rem, 1.1vw, 0.9rem);
+  font-size: clamp(0.7rem, 1.05vw, 0.88rem);
   line-height: 1.8;
   color: var(--color-text-dark);
   background: var(--color-bg-parchment);
@@ -234,17 +218,12 @@
     0  3px 0 0 var(--color-border-pixel),
     -3px 0 0 0 var(--color-border-pixel),
      3px 0 0 0 var(--color-border-pixel),
-    -6px -6px 0 0 var(--color-bg-parchment),
-     6px -6px 0 0 var(--color-bg-parchment),
-    -6px  6px 0 0 var(--color-bg-parchment),
-     6px  6px 0 0 var(--color-bg-parchment),
     4px 4px 0 rgba(0,0,0,0.25);
   max-width: clamp(160px, 20vw, 240px);
   pointer-events: auto;
 }
 .speechBubble strong { color: var(--nature-primary); }
 .bubbleHeart { color: var(--color-heart); }
-
 .bubbleTail {
   position: absolute;
   left: -14px; bottom: 20px;
@@ -263,27 +242,43 @@
   border-color: transparent var(--color-bg-parchment) transparent transparent;
 }
 
-/* ── PARTICLES ── */
+/* ────────────────────────────────────
+   PARTICLES
+──────────────────────────────────── */
 .particle {
   position: absolute;
-  width: 6px; height: 6px;
+  width: 6px;
+  height: 6px;
   image-rendering: pixelated;
   pointer-events: none;
   border-radius: 0;
   z-index: 4;
 }
 
-/* ── MOBILE ── */
+/* ────────────────────────────────────
+   MOBILE
+──────────────────────────────────── */
 @media (max-width: 640px) {
-  .hero { display: flex; flex-direction: column; height: auto; }
-  .worldLeft, .worldRight { position: relative; width: 100%; height: 38vh; min-height: 180px; }
-  .centerOverlay { position: relative; background: var(--color-bg-dark); }
-  .leftContent { position: relative; top: auto; transform: none; padding: var(--space-6) var(--space-4); right: 0; }
+  :root {
+    --platform-h: 48px;
+    --char-size: 90px;
+  }
+  .hero {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+  .worldLeft, .worldRight {
+    position: relative;
+    width: 100%;
+    height: 38vh;
+    min-height: 180px;
+  }
+  .leftContent  { position: relative; top: auto; transform: none; padding: var(--space-6) var(--space-4); right: 0; }
   .rightContent { position: relative; top: auto; transform: none; padding: var(--space-4); left: 0; justify-content: center; }
-  .divider { display: none; }
-  .heartWrapper { position: static; transform: none; bottom: auto; margin-bottom: var(--space-2); }
-  .stageRow { justify-content: center; gap: var(--space-4); }
-  .charLeft, .charRight { margin-bottom: 0; }
-  .platformImg { display: none; }
+  .divider      { display: none; }
+  .platform     { position: relative; height: var(--platform-h); object-fit: cover; }
+  .char         { position: static; width: var(--char-size); height: var(--char-size); display: inline-block; }
+  .heart        { position: static; transform: none; width: 64px; display: block; margin: var(--space-4) auto 0; }
   .speechBubble { max-width: 100%; }
 }
