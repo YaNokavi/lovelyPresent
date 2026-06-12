@@ -2,95 +2,8 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import CampfireScene from "../ui/CampfireScene";
 import styles from "./PowerUpsSection.module.css";
-
-const powerUps = [
-  { icon: "🔥", label: "Passion", color: "var(--color-fire)" },
-  { icon: "🌿", label: "Growth", color: "var(--color-nature)" },
-  { icon: "💗", label: "Trust", color: "var(--color-heart)" },
-  { icon: "⭐", label: "Laughter", color: "var(--color-gold)" },
-];
-
-const extras = [
-  { icon: "🖼", label: "GALLERY", href: "/gallery" },
-  { icon: "✉", label: "LETTERS", href: "/letters" },
-  { icon: "👤", label: "ABOUT US", href: "/about-us" },
-];
-
-function PowerUpItem({
-  icon,
-  label,
-  color,
-  index,
-}: {
-  icon: string;
-  label: string;
-  color: string;
-  index: number;
-}) {
-  const ref = useRef<HTMLLIElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px 0px" });
-  return (
-    <motion.li
-      ref={ref}
-      className={styles.powerItem}
-      initial={{ opacity: 0, x: -20 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{
-        duration: 0.45,
-        delay: index * 0.08,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-    >
-      <motion.span
-        className={styles.powerIcon}
-        animate={{ y: [0, -3, 0] }}
-        transition={{
-          duration: 2 + index * 0.3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{ filter: `drop-shadow(0 0 6px ${color})` }}
-      >
-        {icon}
-      </motion.span>
-      <span className={styles.powerLabel} style={{ color }}>
-        {label}
-      </span>
-    </motion.li>
-  );
-}
-
-function ExtraItem({
-  icon,
-  label,
-  href,
-  index,
-}: {
-  icon: string;
-  label: string;
-  href: string;
-  index: number;
-}) {
-  const ref = useRef<HTMLLIElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px 0px" });
-  return (
-    <motion.li
-      ref={ref}
-      initial={{ opacity: 0, x: 20 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{
-        duration: 0.45,
-        delay: index * 0.08,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-    >
-      <a href={href} className={styles.extraLink}>
-        <span className={styles.extraIcon}>{icon}</span>
-        <span>{label}</span>
-      </a>
-    </motion.li>
-  );
-}
+import leftBg from "../../assets/backgrounds/leftBottomBg.png";
+import rightBg from "../../assets/backgrounds/rightBottomBg.png";
 
 export default function PowerUpsSection() {
   const ref = useRef<HTMLElement>(null);
@@ -100,24 +13,18 @@ export default function PowerUpsSection() {
     <section
       ref={ref}
       className={styles.section}
-      aria-label="Power-Ups and Extras"
+      aria-label="Campfire and footer"
     >
-      <div className={styles.grid}>
-        {/* Левая колонка: Power-Ups */}
-        {/* <motion.div
-          className={styles.panel}
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h3 className={styles.panelTitle}>POWER-UPS</h3>
-          <ul className={styles.powerList}>
-            {powerUps.map((p, i) => (
-              <PowerUpItem key={p.label} {...p} index={i} />
-            ))}
-          </ul>
-        </motion.div> */}
-        <div></div>
+      {/* Тёмная нижняя зона с цветами */}
+      <div className={styles.darkZone}>
+        {/* Цветы слева */}
+        <img
+          src={leftBg}
+          alt=""
+          className={styles.sideLeft}
+          aria-hidden="true"
+          loading="lazy"
+        />
 
         {/* Центральная панель — цитата + живая campfire сцена */}
         <motion.div
@@ -134,25 +41,25 @@ export default function PowerUpsSection() {
           >
             ♥
           </motion.div>
-          {/* Живая сцена с персонажами и костром */}
           <CampfireScene showCaption />
         </motion.div>
-        <div></div>
-        {/* Правая колонка: Extras */}
-        {/* <motion.div
-          className={styles.panel}
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h3 className={styles.panelTitle}>EXTRAS</h3>
-          <ul className={styles.extraList}>
-            {extras.map((e, i) => (
-              <ExtraItem key={e.label} {...e} index={i} />
-            ))}
-          </ul>
-        </motion.div> */}
+
+        {/* Цветы справа */}
+        <img
+          src={rightBg}
+          alt=""
+          className={styles.sideRight}
+          aria-hidden="true"
+          loading="lazy"
+        />
       </div>
+
+      {/* Футер */}
+      <footer className={styles.footer}>
+        <span className={styles.footerText}>
+          ♥ MADE WITH LOVE BY US, FOR US ♥
+        </span>
+      </footer>
     </section>
   );
 }
