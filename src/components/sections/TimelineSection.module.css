@@ -56,14 +56,14 @@
 /* ── Горизонтальная лента ── */
 .track {
   display: flex;
-  /* карточки выровнены по верху — иначе connector гуляет */
   align-items: flex-start;
   gap: 0;
   padding: var(--space-10) var(--space-8) var(--space-12);
   overflow-x: auto;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
-  position: relative;
+  /* важно: position relative здесь не ставим —
+     .connectorLine теперь внутри .trackInner */
   scrollbar-width: thin;
   scrollbar-color: var(--color-heart) transparent;
   min-height: 360px;
@@ -76,13 +76,32 @@
   border-radius: var(--radius-full);
 }
 
-/* Пунктирная линия-путь по центру высоты сцены */
+/*
+  trackInner — внутренний flex-контейнер, который растягивается
+  на весь скролл-контент. Пунктирная линия абсолютно позиционируется
+  относительно этого элемента, а не внешнего .track.
+  z-index: 0 здесь ставит контекст наложения, чтобы z-index
+  дочерних элементов работал.
+*/
+.trackInner {
+  position: relative;   /* относительный предок для .connectorLine */
+  z-index: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+/*
+  Пунктирная линия пути:
+  - left/right: 0 — от начала до конца .trackInner (весь скролл-контент)
+  - z-index: -1 — строго позади карточек
+  - top: сцена (130px) / 2 + padding карточки (16px) + бэдж (~22px) + gap (12px)
+*/
 .connectorLine {
   position: absolute;
-  left: var(--space-8);
-  right: var(--space-8);
-  /* высота сцены ~130px, половина сцены + padding карточки + scroll-padding */
-  top: calc(var(--space-10) + 24px + 65px);
+  left: 0;
+  right: 0;
+  top: calc(16px + 22px + 12px + 65px); /* = badge + gap + половина сцены */
   height: 3px;
   background: repeating-linear-gradient(
     to right,
@@ -93,12 +112,12 @@
   );
   opacity: 0.3;
   pointer-events: none;
+  z-index: -1; /* позади всех карточек */
 }
 
 /* ── Обёртка карточки + коннектор ── */
 .cardWrapper {
   display: flex;
-  /* горизонтально: карточка → коннектор → следующая карточка */
   flex-direction: row;
   align-items: flex-start;
   flex-shrink: 0;
@@ -120,6 +139,7 @@
   will-change: transform;
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.2s ease;
+  z-index: 1; /* поверх .connectorLine */
 }
 
 .card:hover { box-shadow: var(--shadow-md); }
@@ -154,11 +174,10 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  /* фиксированная высота — коннектор больше не прыгает */
   height: 130px;
   background: rgba(0, 0, 0, 0.04);
   border-radius: var(--radius-md);
-  padding: var(--space-2) var(--space-2) var(--space-2);
+  padding: var(--space-2);
   overflow: hidden;
 }
 
@@ -172,9 +191,6 @@
   height: 100%;
 }
 
-/* ── КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: не задаём оба размера одновременно ──
-   width: auto сохраняет пропорции спрайта;
-   max-height не даёт ему вылезти из сцены */
 .sceneImg {
   display: block;
   width: auto;
@@ -260,56 +276,21 @@
   white-space: nowrap;
 }
 
-/* ── Соединитель между карточками ──
-   Позиционируем строго по центру сцены:
-   margin-top = padding-top карточки(16px) + badge(~22px) + gap(12px) +
-                (130px сцены / 2) - (высота сердечка / 2)
+/*
+  Соединитель (♥) между карточками.
+  margin-top выравнивает его по центру сцены:
+  padding(.card) + badge + gap + половина сцены - половина сердечка
 */
 .connector {
   font-size: 1rem;
   color: var(--color-heart);
   padding: 0 var(--space-3);
   flex-shrink: 0;
-  /* ровно по вертикали: сверху badge+gap, потом середина сцены */
   margin-top: calc(16px + 22px + 12px + 55px);
   line-height: 1;
   align-self: flex-start;
-}
-
-/* Кнопка продолжения */
-.continueWrap {
-  display: flex;
-  justify-content: center;
-  padding: var(--space-8) var(--space-4) 0;
-}
-
-.continueBtn {
-  font-family: var(--font-pixel);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: var(--color-text-dark);
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-8);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  text-decoration: none;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
-}
-
-.continueBtn:hover {
-  background: var(--color-surface-2);
-  border-color: var(--color-heart);
-  transform: translateY(-3px);
-}
-
-.continueSub {
-  font-size: 0.45rem;
-  color: var(--color-text-muted);
-  letter-spacing: 0.08em;
+  z-index: 1;
+  position: relative;
 }
 
 /* ── Мобильный ── */
@@ -320,4 +301,5 @@
   .sceneImg { height: 85px; max-width: 70px; }
   .connector { margin-top: calc(12px + 22px + 10px + 45px); }
   .track { padding: var(--space-6) var(--space-4) var(--space-10); min-height: 300px; }
+  .connectorLine { top: calc(12px + 22px + 10px + 55px); }
 }

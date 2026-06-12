@@ -24,11 +24,7 @@ function SceneSprites({
             height={isFinal ? 52 : 44}
             loading="lazy"
             className={styles.sceneImg}
-            style={{
-              imageRendering: "pixelated",
-              // второй персонаж смотрит влево
-              // transform: i === 1 ? "scaleX(-1)" : "none",
-            }}
+            style={{ imageRendering: "pixelated" }}
           />
         ))}
         {icon && (
@@ -39,12 +35,9 @@ function SceneSprites({
       </div>
     );
   }
-  // фоллбэк — только icon
   return icon ? (
     <div className={styles.sceneSprites}>
-      <span className={styles.sceneEmoji} role="img">
-        {icon}
-      </span>
+      <span className={styles.sceneEmoji} role="img">{icon}</span>
     </div>
   ) : null;
 }
@@ -66,25 +59,15 @@ function LevelCard({
       className={`${styles.card} ${isFinal ? styles.cardFinal : ""}`}
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.07,
-        ease: [0.16, 1, 0.3, 1],
-      }}
+      transition={{ duration: 0.5, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
       whileHover={!isFinal ? { y: -6, transition: { duration: 0.2 } } : {}}
     >
-      <div
-        className={`${styles.levelBadge} ${isFinal ? styles.badgeFinal : ""}`}
-      >
+      <div className={`${styles.levelBadge} ${isFinal ? styles.badgeFinal : ""}`}>
         {isFinal ? "FINAL LEVEL" : `LEVEL ${index + 1}`}
       </div>
 
       <div className={styles.scene}>
-        <SceneSprites
-          sprites={event.sceneSprites}
-          icon={event.sceneIcon}
-          isFinal={isFinal}
-        />
+        <SceneSprites sprites={event.sceneSprites} icon={event.sceneIcon} isFinal={isFinal} />
       </div>
 
       <div className={styles.info}>
@@ -116,48 +99,38 @@ export default function TimelineSection() {
         >
           ❖ НАШЕ ПРИКЛЮЧЕНИЕ ❖
         </motion.h2>
-        {/* <motion.p
-          className={styles.subtitle}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          A timeline of us, one level at a time.
-        </motion.p> */}
-        {/* <div className={styles.heart}>♥</div> */}
       </div>
 
       <div className={styles.progressTrack}>
-        <motion.div
-          className={styles.progressBar}
-          style={{ width: progressWidth }}
-        />
+        <motion.div className={styles.progressBar} style={{ width: progressWidth }} />
       </div>
 
-      <div
-        ref={trackRef}
-        className={styles.track}
-        role="list"
-        aria-label="Relationship timeline"
-      >
-        <div className={styles.connectorLine} aria-hidden />
+      {/* track — скролл-контейнер */}
+      <div ref={trackRef} className={styles.track} role="list" aria-label="Relationship timeline">
+        {/*
+          trackInner — растягивается на весь скролл-контент.
+          Пунктирная линия left:0/right:0 относится к нему,
+          а не к видимой ширине .track.
+        */}
+        <div className={styles.trackInner}>
+          <div className={styles.connectorLine} aria-hidden />
 
-        {timelineEvents.map((event, i) => (
-          <div key={event.id} role="listitem" className={styles.cardWrapper}>
-            <LevelCard event={event} index={i} />
-            {i < timelineEvents.length - 1 && (
-              <div className={styles.connector} aria-hidden>
-                <motion.span
-                  animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
-                >
-                  ♥
-                </motion.span>
-              </div>
-            )}
-          </div>
-        ))}
+          {timelineEvents.map((event, i) => (
+            <div key={event.id} role="listitem" className={styles.cardWrapper}>
+              <LevelCard event={event} index={i} />
+              {i < timelineEvents.length - 1 && (
+                <div className={styles.connector} aria-hidden>
+                  <motion.span
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+                  >
+                    ♥
+                  </motion.span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
