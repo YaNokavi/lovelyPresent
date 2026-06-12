@@ -58,16 +58,18 @@
   display: flex;
   align-items: flex-end;
   gap: 0;
-  padding: var(--space-8) var(--space-8) var(--space-10);
+  padding: var(--space-10) var(--space-8) var(--space-12);
   overflow-x: auto;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   position: relative;
   scrollbar-width: thin;
   scrollbar-color: var(--color-heart) transparent;
+  /* Достаточная высота чтобы карточки дышали */
+  min-height: 380px;
 }
 
-.track::-webkit-scrollbar { height: 4px; }
+.track::-webkit-scrollbar { height: 5px; }
 .track::-webkit-scrollbar-track { background: transparent; }
 .track::-webkit-scrollbar-thumb {
   background: var(--color-heart);
@@ -79,14 +81,14 @@
   position: absolute;
   left: var(--space-8);
   right: var(--space-8);
-  bottom: calc(var(--space-10) + 80px);
+  bottom: calc(var(--space-12) + 100px);
   height: 3px;
   background: repeating-linear-gradient(
     to right,
     var(--color-heart) 0px,
-    var(--color-heart) 10px,
-    transparent 10px,
-    transparent 20px
+    var(--color-heart) 12px,
+    transparent 12px,
+    transparent 24px
   );
   opacity: 0.35;
   pointer-events: none;
@@ -99,16 +101,16 @@
   scroll-snap-align: center;
 }
 
-/* Карточка уровня */
+/* ── Карточка уровня — увеличенная ── */
 .card {
   background: var(--color-surface);
   border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  width: 160px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  width: 240px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
   position: relative;
   cursor: default;
   will-change: transform;
@@ -121,20 +123,20 @@
 }
 
 .cardFinal {
-  width: 180px;
+  width: 260px;
   border-color: var(--color-gold);
   background: var(--color-surface-2);
-  box-shadow: 0 0 24px rgba(209,153,0,0.2), var(--shadow-md);
+  box-shadow: 0 0 28px rgba(209,153,0,0.22), var(--shadow-md);
 }
 
 /* Бэдж уровня */
 .levelBadge {
   font-family: var(--font-pixel);
-  font-size: 0.5rem;
+  font-size: 0.55rem;
   letter-spacing: 0.08em;
   background: var(--color-bg-dark);
   color: var(--color-text-fire);
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-sm);
   align-self: flex-start;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
@@ -150,34 +152,44 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  min-height: 64px;
+  min-height: 100px;
+  background: rgba(0,0,0,0.04);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-2) var(--space-2);
 }
 
 .sceneSprites {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   position: relative;
   width: 100%;
 }
 
 .sceneImg {
   display: block;
+  width: 60px;
+  height: 60px;
   filter: drop-shadow(0 4px 0 rgba(0,0,0,0.2));
+}
+
+.cardFinal .sceneImg {
+  width: 68px;
+  height: 68px;
 }
 
 .sceneIcon {
   position: absolute;
-  top: -16px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   pointer-events: none;
 }
 
 .sceneEmoji {
-  font-size: 2.5rem;
+  font-size: 3.2rem;
   line-height: 1;
 }
 
@@ -185,28 +197,28 @@
 .info {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
 }
 
 .title {
   font-family: var(--font-pixel);
-  font-size: 0.55rem;
+  font-size: 0.62rem;
   letter-spacing: 0.05em;
   color: var(--color-text-dark);
   text-shadow: 1px 1px 0 rgba(0,0,0,0.12);
-  line-height: 1.5;
+  line-height: 1.7;
 }
 
 .date {
   font-family: var(--font-pixel);
-  font-size: 0.48rem;
+  font-size: 0.52rem;
   color: var(--color-text-muted);
   letter-spacing: 0.06em;
 }
 
 .loadingText {
   font-family: var(--font-pixel);
-  font-size: 0.48rem;
+  font-size: 0.52rem;
   letter-spacing: 0.12em;
   color: var(--color-gold);
   animation: blink 1s step-end infinite;
@@ -223,7 +235,7 @@
   bottom: calc(100% + var(--space-3));
   left: -8px;
   font-family: var(--font-pixel);
-  font-size: 0.48rem;
+  font-size: 0.5rem;
   background: var(--color-nature);
   color: #fff;
   padding: var(--space-1) var(--space-2);
@@ -235,12 +247,12 @@
 
 /* Соединитель между карточками */
 .connector {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--color-heart);
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-4);
   align-self: center;
   flex-shrink: 0;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 /* Кнопка продолжения */
@@ -277,4 +289,12 @@
   font-size: 0.45rem;
   color: var(--color-text-muted);
   letter-spacing: 0.08em;
+}
+
+/* ── Мобильный ── */
+@media (max-width: 640px) {
+  .card      { width: 200px; padding: var(--space-4); }
+  .cardFinal { width: 216px; }
+  .sceneImg  { width: 50px; height: 50px; }
+  .track     { padding: var(--space-6) var(--space-4) var(--space-10); min-height: 320px; }
 }
