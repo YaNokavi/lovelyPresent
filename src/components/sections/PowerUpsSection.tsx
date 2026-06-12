@@ -2,8 +2,6 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import CampfireScene from "../ui/CampfireScene";
 import styles from "./PowerUpsSection.module.css";
-import leftBg from "../../assets/backgrounds/leftBottomBg.png";
-import rightBg from "../../assets/backgrounds/rightBottomBg.png";
 
 export default function PowerUpsSection() {
   const ref = useRef<HTMLElement>(null);
@@ -11,15 +9,10 @@ export default function PowerUpsSection() {
 
   return (
     <section ref={ref} className={styles.section} aria-label="Campfire scene">
-      {/* Фон: левая половина */}
-      <div className={styles.bgLeft} style={{ backgroundImage: `url(${leftBg})` }} aria-hidden="true" />
-      {/* Фон: правая половина */}
-      <div className={styles.bgRight} style={{ backgroundImage: `url(${rightBg})` }} aria-hidden="true" />
-
       {/* Центральная пиксельная рамка */}
       <motion.div
         className={styles.frame}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
       >

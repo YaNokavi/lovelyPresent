@@ -1,24 +1,62 @@
+/* ───────────────────────────────────────
+   Footer — тёмная полоса внизу
+   Изображения position:absolute, bottom:0
+   — они выходят вверх через границу
+   секции (overflow:visible там)
+─────────────────────────────────────── */
 .footer {
+  position: relative; /* контейнер для абсолютных детей */
+  overflow: visible;   /* даём пейзажу вылезть вверх */
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
+  justify-content: center;
+  align-items: flex-end;
+  /* высота футера — только текстовая часть */
   padding: var(--space-6) var(--space-6) var(--space-8);
-  background: var(--color-bg-dark);
-  border-top: 2px solid rgba(255,255,255,0.06);
-  text-align: center;
+  background: var(--color-bg-dark, #1e1510);
+  border-top: 2px solid rgba(255, 255, 255, 0.06);
 }
 
+/* ── Пейзаж ──
+   bottom: 0 — прижат к низу футера
+   height фиксированная — не прыгает при ресайзе
+   вылезает вверх через overflow:visible секции
+*/
+.scenery {
+  position: absolute;
+  bottom: 0;             /* прижать к низу */
+  height: 280px;         /* фиксированная высота — стабильно */
+  width: auto;           /* ширина по пропорциям */
+  max-width: 300px;      /* не шире определённого */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+  z-index: 10; /* поверх футера, рядом с центральной рамкой */
+}
+
+.sceneryLeft {
+  left: 0;
+  transform-origin: bottom left;
+}
+
+.sceneryRight {
+  right: 0;
+  transform-origin: bottom right;
+}
+
+/* ── Текст ── */
 .tagline {
+  position: relative;
+  z-index: 2;
   font-family: var(--font-pixel);
   font-size: var(--text-xs);
-  color: rgba(255,255,255,0.38);
+  color: rgba(255, 255, 255, 0.38);
   letter-spacing: 0.1em;
   max-width: none;
 }
 
 .heart {
-  color: var(--color-heart);
+  color: var(--color-heart, #e85555);
   animation: heart-pulse 1.5s ease-in-out infinite;
   display: inline-block;
 }
@@ -28,24 +66,15 @@
   font-style: normal;
 }
 
-.socials {
-  display: flex;
-  gap: var(--space-6);
-}
-
-.socialLink {
-  font-size: 1.25rem;
-  opacity: 0.5;
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
-  display: inline-block;
-}
-
-.socialLink:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-}
-
 @keyframes heart-pulse {
   0%, 100% { transform: scale(1); }
   50%       { transform: scale(1.25); }
+}
+
+@media (max-width: 900px) {
+  .scenery { height: 200px; max-width: 220px; }
+}
+
+@media (max-width: 600px) {
+  .scenery { height: 140px; max-width: 140px; }
 }

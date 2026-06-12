@@ -1,57 +1,22 @@
-/* ──────────────────────────────────────────
-   PowerUps Section
-   — Светлый фон (#f5f0e8)
-   — Два пиксельных фона размещаются по бокам (position: absolute)
-   — Центральная рамка со сценой костра — поверх фона
-────────────────────────────────────────── */
 .section {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 320px;
-  overflow: hidden;
   background: var(--color-bg-parchment, #f5f0e8);
-  padding: var(--space-12) var(--space-4);
+  /* Паддинг снизу — даём место, чтобы рамка не налезала на пейзаж */
+  padding: 64px 320px 80px;
   font-family: var(--font-pixel);
+  overflow: visible; /* важно: пейзаж выходит за пределы секции в футер */
 }
 
-/* ── Фоновые половинки ── */
-.bgLeft,
-.bgRight {
-  position: absolute;
-  top: 0;
-  width: 28%;
-  height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  image-rendering: pixelated;
-}
-
-.bgLeft {
-  left: 0;
-  background-position: right bottom;
-}
-
-.bgRight {
-  right: 0;
-  background-position: left bottom;
-}
-
-/* ── Центральная пиксельная рамка ──
-   Точно как на референсном скриншоте:
-   • тёмный фон
-   • двойная граница: внешняя светлая (outline), внутренняя тёмная
-*/
+/* ── Пиксельная рамка ── */
 .frame {
   position: relative;
   z-index: 2;
   background: var(--color-bg-dark, #1e1510);
-  /* Внешняя светлая полоса (outline) */
   outline: 4px solid var(--color-bg-parchment, #f5f0e8);
   outline-offset: 0;
-  /* Внутренняя тёмная рамка */
   border: 3px solid #5a3820;
   border-radius: 2px;
   padding: var(--space-6) var(--space-8);
@@ -60,7 +25,7 @@
   align-items: center;
   gap: var(--space-3);
   text-align: center;
-  width: min(480px, 48vw);
+  width: min(480px, 100%);
   box-shadow:
     0 0 0 7px #2a1a0e,
     0 12px 40px rgba(0, 0, 0, 0.5);
@@ -81,14 +46,11 @@
   line-height: 1;
 }
 
-/* ── Responsive ── */
 @media (max-width: 900px) {
-  .bgLeft, .bgRight { width: 22%; }
-  .frame { width: min(400px, 60vw); }
+  .section { padding-inline: 180px; }
 }
 
 @media (max-width: 600px) {
-  .bgLeft, .bgRight { width: 15%; }
-  .frame { width: 90vw; padding: var(--space-5) var(--space-4); }
-  .section { padding: var(--space-8) var(--space-2); }
+  .section { padding: 48px 16px 64px; }
+  .frame { width: 92vw; padding: var(--space-5) var(--space-4); }
 }
