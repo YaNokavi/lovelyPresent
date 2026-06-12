@@ -5,7 +5,7 @@
   align-items: center;
   background: var(--color-bg-parchment, #f5f0e8);
   /* Паддинг снизу — даём место, чтобы рамка не налезала на пейзаж */
-  padding: 64px 320px 80px;
+  padding: 64px 20px 80px;
   font-family: var(--font-pixel);
   overflow: visible; /* важно: пейзаж выходит за пределы секции в футер */
 }
@@ -47,10 +47,17 @@
 }
 
 @media (max-width: 900px) {
-  .section { padding-inline: 180px; }
+  .section {
+    padding-inline: 180px;
+  }
 }
 
 @media (max-width: 600px) {
-  .section { padding: 48px 16px 64px; }
-  .frame { width: 92vw; padding: var(--space-5) var(--space-4); }
+  .section {
+    padding: 48px 16px 64px;
+  }
+  .frame {
+    width: 92vw;
+    padding: var(--space-5) var(--space-4);
+  }
 }
