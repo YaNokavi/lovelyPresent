@@ -10,34 +10,29 @@ export default function PowerUpsSection() {
   const inView = useInView(ref, { once: true, margin: "-60px 0px" });
 
   return (
-    <section
-      ref={ref}
-      className={styles.section}
-      aria-label="Campfire scene"
-    >
-      {/* Боковые цветы */}
-      <img src={leftBg}  alt="" className={styles.sideLeft}  aria-hidden="true" loading="lazy" />
-      <img src={rightBg} alt="" className={styles.sideRight} aria-hidden="true" loading="lazy" />
+    <section ref={ref} className={styles.section} aria-label="Campfire scene">
+      {/* Фон: левая половина */}
+      <div className={styles.bgLeft} style={{ backgroundImage: `url(${leftBg})` }} aria-hidden="true" />
+      {/* Фон: правая половина */}
+      <div className={styles.bgRight} style={{ backgroundImage: `url(${rightBg})` }} aria-hidden="true" />
 
-      {/* Центральная панель с пиксельной рамкой */}
-      <div className={styles.center}>
+      {/* Центральная пиксельная рамка */}
+      <motion.div
+        className={styles.frame}
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <p className={styles.quote}>You're my favorite player two.</p>
         <motion.div
-          className={styles.frame}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={inView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className={styles.heart}
+          animate={{ scale: [1, 1.3, 1] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <p className={styles.quote}>You're my favorite player two.</p>
-          <motion.div
-            className={styles.heart}
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            ♥
-          </motion.div>
-          <CampfireScene showCaption />
+          ♥
         </motion.div>
-      </div>
+        <CampfireScene showCaption />
+      </motion.div>
     </section>
   );
 }
