@@ -54,13 +54,14 @@ function LevelCard({
   const isFinal = event.isFinal;
 
   return (
-    <motion.div
+    <div
       ref={ref}
       className={`${styles.card} ${isFinal ? styles.cardFinal : ""}`}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={!isFinal ? { y: -6, transition: { duration: 0.2 } } : {}}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(30px)",
+        transition: `opacity 0.5s ease ${index * 0.07}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${index * 0.07}s`,
+      }}
     >
       <div className={`${styles.levelBadge} ${isFinal ? styles.badgeFinal : ""}`}>
         {isFinal ? "FINAL LEVEL" : `LEVEL ${index + 1}`}
@@ -77,7 +78,7 @@ function LevelCard({
       </div>
 
       {index === 0 && <div className={styles.startBadge}>START</div>}
-    </motion.div>
+    </div>
   );
 }
 
@@ -105,31 +106,31 @@ export default function TimelineSection() {
         <motion.div className={styles.progressBar} style={{ width: progressWidth }} />
       </div>
 
-      {/* track — скролл-контейнер */}
-      <div ref={trackRef} className={styles.track} role="list" aria-label="Relationship timeline">
-        {/*
-          trackInner — растягивается на весь скролл-контент.
-          Пунктирная линия left:0/right:0 относится к нему,
-          а не к видимой ширине .track.
-        */}
-        <div className={styles.trackInner}>
-          <div className={styles.connectorLine} aria-hidden />
+      {/* trackWrap — relative-контейнер для линии и скролла */}
+      <div className={styles.trackWrap}>
+        {/* Линия рисуется ЗДЕСЬ — она сестра .track, не внутри него.
+            position:absolute относится к .trackWrap.
+            z-index:0, а карточки не создают stacking context (нет transform на .card). */}
+        <div className={styles.connectorLine} aria-hidden />
 
-          {timelineEvents.map((event, i) => (
-            <div key={event.id} role="listitem" className={styles.cardWrapper}>
-              <LevelCard event={event} index={i} />
-              {i < timelineEvents.length - 1 && (
-                <div className={styles.connector} aria-hidden>
-                  <motion.span
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
-                  >
-                    ♥
-                  </motion.span>
-                </div>
-              )}
-            </div>
-          ))}
+        <div ref={trackRef} className={styles.track} role="list" aria-label="Relationship timeline">
+          <div className={styles.trackInner}>
+            {timelineEvents.map((event, i) => (
+              <div key={event.id} role="listitem" className={styles.cardWrapper}>
+                <LevelCard event={event} index={i} />
+                {i < timelineEvents.length - 1 && (
+                  <div className={styles.connector} aria-hidden>
+                    <motion.span
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+                    >
+                      ♥
+                    </motion.span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

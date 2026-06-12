@@ -52,7 +52,39 @@
   will-change: width;
 }
 
+/*
+  trackWrap — relative-обёртка.
+  .connectorLine — absolute внутри неё, z-index:0.
+  .track — скролл-контейнер, z-index:1 (выше линии).
+  .card — обычный div без transform/will-change => нет stacking context,
+          поэтому background карточки перекрывает линию физически.
+*/
+.trackWrap {
+  position: relative;
+}
+
+.connectorLine {
+  position: absolute;
+  /* Вертикаль: badge(22px) + gap(12px) + scene(130px)/2 */
+  top: calc(var(--space-10) + 22px + 12px + 65px);
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--color-heart) 0px,
+    var(--color-heart) 12px,
+    transparent 12px,
+    transparent 24px
+  );
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .track {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-start;
   padding: var(--space-10) var(--space-8) var(--space-12);
@@ -62,6 +94,8 @@
   scrollbar-width: thin;
   scrollbar-color: var(--color-heart) transparent;
   min-height: 360px;
+  /* Важно: background прозрачный, чтобы линия была видна */
+  background: transparent;
 }
 
 .track::-webkit-scrollbar { height: 5px; }
@@ -75,32 +109,6 @@
   display: flex;
   align-items: flex-start;
   position: relative;
-  isolation: isolate; /* создаём stacking context ДО дочерних элементов */
-}
-
-/*
-  ::before рисуется как самый нижний слой внутри trackInner.
-  Псевдоэлемент не имеет transform/will-change — поэтому он
-  остаётся за всеми дочерними блоками, даже теми, у кого
-  есть свой stacking context (framer-motion transform).
-*/
-.trackInner::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(22px + 16px + 12px + 65px);
-  height: 3px;
-  background: repeating-linear-gradient(
-    to right,
-    var(--color-heart) 0px,
-    var(--color-heart) 12px,
-    transparent 12px,
-    transparent 24px
-  );
-  opacity: 0.3;
-  pointer-events: none;
-  z-index: -1;
 }
 
 .cardWrapper {
@@ -111,8 +119,15 @@
   scroll-snap-align: center;
 }
 
+/*
+  КЛЮЧЕВОЕ: нет transform, нет will-change, нет isolation.
+  Без них div НЕ создаёт stacking context и не "вырывается" над линией.
+  background-clip: padding-box — фон физически закрывает линию, которая
+  проходит под карточкой через .trackWrap.
+*/
 .card {
   background: var(--color-surface);
+  background-clip: padding-box;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-4) var(--space-4) var(--space-5);
@@ -123,10 +138,7 @@
   position: relative;
   cursor: default;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-  /* НЕТ will-change:transform — он создавал stacking context */
-  /* НЕТ isolation — достаточно того что псевдоэлемент имеет z-index:-1 */
-  background-clip: padding-box; /* фон карточки перекрывает линию физически */
+  transition: box-shadow 0.2s ease;
 }
 
 .card:hover { box-shadow: var(--shadow-md); }
@@ -277,5 +289,5 @@
   .sceneImg { height: 85px; max-width: 70px; }
   .connector { margin-top: calc(12px + 22px + 10px + 45px); }
   .track { padding: var(--space-6) var(--space-4) var(--space-10); min-height: 300px; }
-  .trackInner::before { top: calc(12px + 22px + 10px + 55px); }
+  .connectorLine { top: calc(var(--space-6) + 22px + 10px + 55px); }
 }
