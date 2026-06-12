@@ -3,17 +3,17 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-8) var(--space-6);
-  background: var(--color-bg-card);
-  border-top: 2px solid var(--color-border);
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  background: var(--color-bg-dark);
+  border-top: 2px solid rgba(255,255,255,0.06);
   text-align: center;
 }
 
 .tagline {
   font-family: var(--font-pixel);
   font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.1em;
   max-width: none;
 }
 
@@ -35,7 +35,7 @@
 
 .socialLink {
   font-size: 1.25rem;
-  opacity: 0.7;
+  opacity: 0.5;
   transition: opacity var(--transition-fast), transform var(--transition-fast);
   display: inline-block;
 }
@@ -43,4 +43,9 @@
 .socialLink:hover {
   opacity: 1;
   transform: translateY(-2px);
+}
+
+@keyframes heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.25); }
 }
