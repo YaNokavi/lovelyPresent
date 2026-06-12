@@ -53,15 +53,19 @@ function LevelCard({
   const inView = useInView(ref, { once: true, margin: "-80px 0px" });
   const isFinal = event.isFinal;
 
+  const classNames = [
+    styles.card,
+    isFinal ? styles.cardFinal : "",
+    inView ? styles.cardVisible : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div
       ref={ref}
-      className={`${styles.card} ${isFinal ? styles.cardFinal : ""}`}
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(30px)",
-        transition: `opacity 0.5s ease ${index * 0.07}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${index * 0.07}s`,
-      }}
+      className={classNames}
+      style={{ "--card-delay": `${index * 0.07}s` } as React.CSSProperties}
     >
       <div className={`${styles.levelBadge} ${isFinal ? styles.badgeFinal : ""}`}>
         {isFinal ? "FINAL LEVEL" : `LEVEL ${index + 1}`}
@@ -108,9 +112,7 @@ export default function TimelineSection() {
 
       <div ref={trackRef} className={styles.track} role="list" aria-label="Relationship timeline">
         <div className={styles.trackInner}>
-          {/* Линия лежит в DOM ДО карточек — рисуется под ними */}
           <div className={styles.connectorLine} aria-hidden />
-
           {timelineEvents.map((event, i) => (
             <div key={event.id} role="listitem" className={styles.cardWrapper}>
               <LevelCard event={event} index={i} />
