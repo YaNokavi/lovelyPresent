@@ -52,27 +52,39 @@
   border-radius: var(--radius-full);
 }
 
-/*
-  Линия рисуется через border-top на trackInner.
-  padding-top сдвигает содержимое ниже этой линии.
-  Никакого z-index, никакого absolute — линия просто
-  является верхней границей flex-контейнера и
-  физически находится ЗА всеми дочерними элементами.
-
-  Высота от верха .track до линии:
-    padding-top track (var(--space-10) = 40px)
-    + badge (22px) + gap (12px) + полсцены (65px) = 139px
-  Поэтому margin-top на trackInner = 139px,
-  а сам trackInner начинает рисоваться ровно на уровне линии.
-*/
 .trackInner {
   display: flex;
   align-items: flex-start;
-  /* Отступ сверху = badge + gap(card) + half-scene */
-  margin-top: calc(22px + var(--space-3) + 65px);
-  /* Пунктирная линия — просто border-top этого div */
-  border-top: 3px dashed color-mix(in srgb, var(--color-heart) 35%, transparent);
-  padding-top: calc(var(--space-3) + 65px);
+  position: relative;
+}
+
+/*
+  connectorLine — position:absolute внутри trackInner.
+  Он первый дочерний элемент в DOM — рисуется до карточек.
+  Карточки — обычные div без transform/opacity/filter —
+  не создают stacking context, поэтому их фон
+  физически перекрывает линию.
+  Исключение: последняя карточка — там есть inline style
+  transition: opacity/transform, который при opacity:0 не
+  создаёт stacking context, но при transform:translateY()
+  создаёт. Поэтому inline style убран в пользу CSS-only
+  анимации через :not(.visible) / .visible класс.
+*/
+.connectorLine {
+  position: absolute;
+  top: calc(22px + var(--space-3) + 65px);
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--color-heart) 0px,
+    var(--color-heart) 10px,
+    transparent 10px,
+    transparent 22px
+  );
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .cardWrapper {
@@ -81,10 +93,15 @@
   align-items: flex-start;
   flex-shrink: 0;
   scroll-snap-align: center;
-  /* Поднимаем карточку вверх чтобы она перекрыла линию */
-  margin-top: calc(-1 * (var(--space-3) + 65px));
 }
 
+/*
+  ВАЖНО: нет inline transform/opacity style на .card.
+  Анимация через CSS-классы: начальное состояние .cardHidden,
+  после появления в viewport — .cardVisible.
+  Нет transform —> нет stacking context —> линия никогда
+  не вылезет поверх карточки.
+*/
 .card {
   background: var(--color-surface);
   border: 2px solid var(--color-border);
@@ -97,7 +114,13 @@
   position: relative;
   cursor: default;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease, opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  /* Опацить CSS-классами, не inline-style */
+  opacity: 0;
+  transition: opacity 0.5s ease, box-shadow 0.2s ease;
+}
+
+.card.cardVisible {
+  opacity: 1;
 }
 
 .card:hover { box-shadow: var(--shadow-md); }
@@ -235,8 +258,7 @@
   color: var(--color-heart);
   padding: 0 var(--space-3);
   flex-shrink: 0;
-  /* Центрируем сердечко по высоте линии */
-  margin-top: calc(22px + var(--space-3) - 0.5rem);
+  margin-top: calc(22px + var(--space-3) + 0.5rem);
   line-height: 1;
   align-self: flex-start;
 }
@@ -246,13 +268,7 @@
   .cardFinal { width: 200px; }
   .scene { height: 110px; }
   .sceneImg { height: 85px; max-width: 70px; }
+  .connector { margin-top: calc(20px + var(--space-3) + 0.5rem); }
   .track { padding: var(--space-6) var(--space-4) var(--space-10); min-height: 300px; }
-  .trackInner {
-    margin-top: calc(20px + var(--space-3) + 55px);
-    padding-top: calc(var(--space-3) + 55px);
-  }
-  .cardWrapper {
-    margin-top: calc(-1 * (var(--space-3) + 55px));
-  }
-  .connector { margin-top: calc(20px + var(--space-3) - 0.5rem); }
+  .connectorLine { top: calc(20px + var(--space-3) + 55px); }
 }

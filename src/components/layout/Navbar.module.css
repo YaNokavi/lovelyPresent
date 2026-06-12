@@ -6,9 +6,9 @@
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-3) var(--space-6);
-  background: var(--color-bg-card);
-  border-bottom: 2px solid var(--color-border);
-  box-shadow: 0 2px 0 var(--color-border);
+  background: var(--color-bg-dark, #1e1510);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 .logo {
@@ -25,10 +25,15 @@
   animation: heart-pulse 2s ease-in-out infinite;
 }
 
+@keyframes heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.2); }
+}
+
 .logoText {
   font-family: var(--font-pixel);
   font-size: var(--text-xs);
-  color: var(--color-text);
+  color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -43,7 +48,7 @@
 .link {
   font-family: var(--font-pixel);
   font-size: clamp(0.45rem, 0.4rem + 0.2vw, 0.55rem);
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.5);
   padding: var(--space-2) var(--space-3);
   border: 2px solid transparent;
   transition: color var(--transition-fast), border-color var(--transition-fast);
@@ -53,7 +58,7 @@
 }
 
 .link:hover {
-  color: var(--color-text);
+  color: rgba(255, 255, 255, 0.9);
   border-bottom-color: var(--color-gold);
 }
 
@@ -71,7 +76,7 @@
 
 .iconBtn {
   font-size: 1rem;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.5);
   padding: var(--space-2);
   border: 2px solid transparent;
   transition: color var(--transition-fast), border-color var(--transition-fast);
@@ -80,15 +85,10 @@
 
 .iconBtn:hover {
   color: var(--color-gold);
-  border-color: var(--color-border);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 @media (max-width: 640px) {
-  .links {
-    display: none;
-  }
-
-  .navbar {
-    justify-content: space-between;
-  }
+  .links { display: none; }
+  .navbar { justify-content: space-between; }
 }

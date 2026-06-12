@@ -108,6 +108,9 @@ export default function TimelineSection() {
 
       <div ref={trackRef} className={styles.track} role="list" aria-label="Relationship timeline">
         <div className={styles.trackInner}>
+          {/* Линия лежит в DOM ДО карточек — рисуется под ними */}
+          <div className={styles.connectorLine} aria-hidden />
+
           {timelineEvents.map((event, i) => (
             <div key={event.id} role="listitem" className={styles.cardWrapper}>
               <LevelCard event={event} index={i} />
