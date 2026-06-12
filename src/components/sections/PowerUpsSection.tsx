@@ -104,7 +104,7 @@ export default function PowerUpsSection() {
     >
       <div className={styles.grid}>
         {/* Левая колонка: Power-Ups */}
-        <motion.div
+        {/* <motion.div
           className={styles.panel}
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -116,7 +116,8 @@ export default function PowerUpsSection() {
               <PowerUpItem key={p.label} {...p} index={i} />
             ))}
           </ul>
-        </motion.div>
+        </motion.div> */}
+        <div></div>
 
         {/* Центральная панель — цитата + живая campfire сцена */}
         <motion.div
@@ -136,9 +137,9 @@ export default function PowerUpsSection() {
           {/* Живая сцена с персонажами и костром */}
           <CampfireScene showCaption />
         </motion.div>
-
+        <div></div>
         {/* Правая колонка: Extras */}
-        <motion.div
+        {/* <motion.div
           className={styles.panel}
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -150,7 +151,7 @@ export default function PowerUpsSection() {
               <ExtraItem key={e.label} {...e} index={i} />
             ))}
           </ul>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
