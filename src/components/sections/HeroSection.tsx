@@ -44,32 +44,22 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className={styles.hero} aria-label="Hero">
 
-      {/* ── LEFT WORLD — fire bg ── */}
+      {/* ── ЛЕВЫЙ МИР — огонь ── */}
       <div className={styles.worldLeft}>
-        <img
-          src={bgFireWorld}
-          alt=""
-          className={styles.worldBg}
-          draggable={false}
-        />
+        <img src={bgFireWorld} alt="" className={styles.worldBg} draggable={false} />
         {fireParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
       </div>
 
-      {/* ── RIGHT WORLD — nature bg ── */}
+      {/* ── ПРАВЫЙ МИР — природа ── */}
       <div className={styles.worldRight}>
-        <img
-          src={bgNatureWorld}
-          alt=""
-          className={styles.worldBg}
-          draggable={false}
-        />
+        <img src={bgNatureWorld} alt="" className={styles.worldBg} draggable={false} />
         {natureParticles.map((p, i) => <PixelParticle key={i} {...p} />)}
       </div>
 
-      {/* ── WHITE CENTER DIVIDER ── */}
+      {/* ── ЦЕНТРАЛЬНЫЙ РАЗДЕЛИТЕЛЬ ── */}
       <div className={styles.divider} />
 
-      {/* ── TEXT LEFT ── */}
+      {/* ── ТЕКСТ СЛЕВА ── */}
       <motion.div
         className={styles.textLeft}
         initial={{ opacity: 0, x: -24 }}
@@ -77,18 +67,18 @@ export default function HeroSection() {
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
         <h1 className={styles.headline}>
-          Two different<br />worlds.
+          Два разных<br />мира.
           <span className={styles.headlineAccent}>
-            One beautiful<br />adventure.
+            Одно прекрасное<br />приключение.
           </span>
         </h1>
         <p className={styles.subtext}>
-          This is our story.<br />
-          Thank you for being here!
+          Это наша история.<br />
+          Спасибо, что ты здесь!
         </p>
       </motion.div>
 
-      {/* ── SPEECH BUBBLE RIGHT ── */}
+      {/* ── РЕЧЕВОЙ ПУЗЫРЬ СПРАВА ── */}
       <motion.div
         className={styles.speechBubble}
         initial={{ opacity: 0, x: 24 }}
@@ -96,40 +86,40 @@ export default function HeroSection() {
         transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
       >
         <span className={styles.bubbleHeart}>♥</span>{' '}
-        We met, we clicked,<br />
-        and somehow...<br />
-        <strong>we just fit.</strong>
+        Мы встретились, совпали,<br />
+        и как-то само собой...<br />
+        <strong>мы просто подошли друг другу.</strong>
         {' '}<span className={styles.bubbleHeart}>♥</span>
         <div className={styles.bubbleTail} />
       </motion.div>
 
-      {/* ── PLATFORM — tiled ground texture ── */}
+      {/* ── ПЛАТФОРМА ── */}
       <div
         className={styles.platform}
         style={{ backgroundImage: `url(${platformGround})` }}
         role="presentation"
       />
 
-      {/* ── CHAR 1 — fire side ── */}
+      {/* ── ПЕРСОНАЖ 1 — огонь ── */}
       <img
         src={char1Idle}
-        alt="Fire character"
+        alt="Персонаж огня"
         className={`${styles.char} ${styles.char1}`}
         draggable={false}
       />
 
-      {/* ── CHAR 2 — nature side, mirrored ── */}
+      {/* ── ПЕРСОНАЖ 2 — природа, зеркальный ── */}
       <img
         src={char2Idle}
-        alt="Nature character"
+        alt="Персонаж природы"
         className={`${styles.char} ${styles.char2}`}
         draggable={false}
       />
 
-      {/* ── HEART ── */}
+      {/* ── СЕРДЦЕ ── */}
       <motion.img
         src={heartSplit}
-        alt="split heart"
+        alt="разделённое сердце"
         className={styles.heart}
         style={{ opacity: heartOpacity }}
         draggable={false}
