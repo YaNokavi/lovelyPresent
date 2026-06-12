@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";

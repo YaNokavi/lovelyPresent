@@ -156,7 +156,7 @@ export default function AuthScreen() {
               transition={{ duration: 0.22 }}
             >
               <label className={styles.label} htmlFor="login">
-                &gt; Введи ключевое слово
+                &gt; Введи логин
               </label>
               <input
                 id="login"

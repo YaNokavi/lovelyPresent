@@ -1,6 +1,4 @@
 import styles from "./Footer.module.css";
-import leftBg from "../../assets/backgrounds/leftBottomBg.png";
-import rightBg from "../../assets/backgrounds/rightBottomBg.png";
 
 export default function Footer() {
   return (
