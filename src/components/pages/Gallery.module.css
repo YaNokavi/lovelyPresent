@@ -1,180 +1,309 @@
+/* ────────────────────── PAGE ────────────────────── */
 .page {
   min-height: 100dvh;
   background: var(--color-bg-warm);
-  padding-bottom: var(--space-16);
+  padding: var(--space-16) 0 var(--space-20);
+  overflow: hidden;
+  outline: none;
 }
 
+/* ────────────────────── HEADER ───────────────────── */
 .header {
   text-align: center;
-  padding: var(--space-12) var(--space-4) var(--space-8);
+  padding: 0 var(--space-4) var(--space-10);
 }
 
 .eyebrow {
   font-family: var(--font-pixel);
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   letter-spacing: 0.2em;
   color: var(--color-heart);
   margin-bottom: var(--space-3);
+  max-width: none;
 }
 
 .title {
   font-family: var(--font-pixel);
-  font-size: clamp(1rem, 3vw, 1.8rem);
+  font-size: clamp(1.1rem, 3.5vw, 2rem);
+  letter-spacing: 0.1em;
   color: var(--color-text-dark);
   text-shadow: 3px 3px 0 rgba(0,0,0,0.12);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
 }
 
 .subtitle {
   font-family: var(--font-pixel);
-  font-size: 0.55rem;
+  font-size: clamp(0.45rem, 1.2vw, 0.62rem);
   color: var(--color-text-muted);
   letter-spacing: 0.06em;
+  max-width: none;
 }
 
-/* ── Карусель ── */
+/* ────────────────────── CAROUSEL ──────────────────── */
 .carouselWrapper {
-  position: relative;
-  padding: 0 0 var(--space-8);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-8);
 }
 
-/* Фоллбэк нативный трек */
 .track {
+  flex: 1;
   display: flex;
   gap: var(--space-6);
-  padding: var(--space-4) var(--space-8);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-heart) transparent;
-  cursor: grab;
+  scrollbar-width: none;
+  padding: var(--space-2) var(--space-2) var(--space-8);
+  /* выравнивание по центру — первый кадр виден целиком */
+  scroll-padding-inline: calc(50% - 140px);
 }
+.track::-webkit-scrollbar { display: none; }
 
-.track:active { cursor: grabbing; }
-
-.track::-webkit-scrollbar { height: 4px; }
-.track::-webkit-scrollbar-track { background: transparent; }
-.track::-webkit-scrollbar-thumb {
-  background: var(--color-heart);
-  border-radius: var(--radius-full);
-}
-
-/* BlossomCarousel обёртка */
-.blossomTrack {
-  display: flex;
-  gap: var(--space-6);
-  padding: var(--space-4) var(--space-8);
-}
-
-/* ── Слайд ── */
+/* ────────────────────── SLIDE ────────────────────── */
 .slide {
   flex-shrink: 0;
   scroll-snap-align: center;
+  scroll-snap-stop: always;
+  width: 280px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: var(--space-3);
-  width: clamp(260px, 35vw, 380px);
+  transition: transform 0.25s ease;
+}
+.slide:hover { transform: translateY(-6px); }
+
+/* Активный слайд выделяется через рамку */
+.slideActive .photoFrame {
+  border-color: var(--color-heart);
+  box-shadow:
+    0 0 0 3px rgba(161,53,68,0.2),
+    var(--shadow-md);
 }
 
-/* Рамка фото */
+/* ────────────────────── PHOTO FRAME ───────────────── */
 .photoFrame {
   position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--color-surface-offset);
+  background: var(--color-surface);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Пиксельные уголки рамки */
+/* Пиксельные уголки */
 .corner {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
+  border-color: var(--color-gold);
+  border-style: solid;
   z-index: 2;
-  pointer-events: none;
+  opacity: 0.7;
 }
+.corner[data-pos="tl"] { top: 6px;  left: 6px;  border-width: 2px 0 0 2px; }
+.corner[data-pos="tr"] { top: 6px;  right: 6px; border-width: 2px 2px 0 0; }
+.corner[data-pos="bl"] { bottom: 6px; left: 6px;  border-width: 0 0 2px 2px; }
+.corner[data-pos="br"] { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
 
-.corner[data-pos='tl'] { top: 6px;    left: 6px;    border-top: 2px solid var(--color-gold);   border-left:  2px solid var(--color-gold); }
-.corner[data-pos='tr'] { top: 6px;    right: 6px;   border-top: 2px solid var(--color-gold);   border-right: 2px solid var(--color-gold); }
-.corner[data-pos='bl'] { bottom: 6px; left: 6px;    border-bottom: 2px solid var(--color-gold); border-left: 2px solid var(--color-gold); }
-.corner[data-pos='br'] { bottom: 6px; right: 6px;   border-bottom: 2px solid var(--color-gold); border-right: 2px solid var(--color-gold); }
-
+/* ── ФОТО: aspect-ratio сохраняет пропорции, не растягивает ── */
 .photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  image-rendering: auto;
 }
 
-/* Placeholder если фото не загрузилось */
-.photoPlaceholder {
-  width: 100%;
-  height: 100%;
+/* ────────────────────── INFO ─────────────────────── */
+.info {
+  padding: 0 var(--space-1);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  background: var(--color-surface-offset);
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 8px,
-    rgba(0,0,0,0.03) 8px,
-    rgba(0,0,0,0.03) 16px
-  );
-}
-
-.placeholderIcon {
-  font-size: 2.5rem;
-  opacity: 0.4;
-}
-
-.placeholderText {
-  font-family: var(--font-pixel);
-  font-size: 0.5rem;
-  color: var(--color-text-muted);
-  letter-spacing: 0.06em;
-  text-align: center;
-  padding: 0 var(--space-4);
-}
-
-.caption {
-  font-family: var(--font-pixel);
-  font-size: 0.55rem;
-  color: var(--color-text-dark);
-  letter-spacing: 0.05em;
-  text-align: center;
+  gap: var(--space-1);
 }
 
 .date {
   font-family: var(--font-pixel);
-  font-size: 0.48rem;
+  font-size: 0.45rem;
+  letter-spacing: 0.1em;
   color: var(--color-text-muted);
-  letter-spacing: 0.06em;
 }
+
+.caption {
+  font-family: var(--font-pixel);
+  font-size: 0.56rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  max-width: none;
+}
+
+/* ────────────────────── CONTROLS ──────────────────── */
+.arrow {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-dark);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, opacity 0.18s;
+  box-shadow: var(--shadow-sm);
+}
+.arrow:hover:not(:disabled) {
+  background: var(--color-surface-2);
+  border-color: var(--color-heart);
+}
+.arrow:disabled { opacity: 0.25; cursor: default; }
 
 .dragHint {
   text-align: center;
   font-family: var(--font-pixel);
   font-size: 0.45rem;
-  color: var(--color-text-muted);
+  letter-spacing: 0.12em;
+  color: var(--color-text-faint);
+  margin-top: var(--space-1);
+  max-width: none;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-5) var(--space-4) 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+.dotActive {
+  background: var(--color-heart);
+  transform: scale(1.45);
+}
+
+/* ────────────────────── LIGHTBOX ──────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.lightboxInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: min(600px, 90vw);
+}
+
+.lbImg {
+  display: block;
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+}
+
+.lbClose {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.15s;
+  line-height: 1;
+  padding: var(--space-1);
+}
+.lbClose:hover { color: #fff; }
+
+.lbNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  backdrop-filter: blur(4px);
+}
+.lbNav:hover { background: rgba(255,255,255,0.22); }
+.lbNav:disabled { opacity: 0.2; cursor: default; }
+.lbPrev { left: -64px; }
+.lbNext { right: -64px; }
+
+.lbInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.lbDate {
+  font-family: var(--font-pixel);
+  font-size: 0.45rem;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.45);
+}
+
+.lbCaption {
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.8);
+  text-align: center;
+  max-width: none;
+}
+
+.lbCounter {
+  font-family: var(--font-pixel);
+  font-size: 0.42rem;
   letter-spacing: 0.1em;
-  margin-top: var(--space-3);
-  opacity: 0.6;
-  animation: fadeInOut 3s ease-in-out infinite;
+  color: rgba(255,255,255,0.35);
 }
 
-@keyframes fadeInOut {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.8; }
-}
-
+/* ────────────────────── MOBILE ────────────────────── */
 @media (max-width: 640px) {
-  .slide { width: clamp(220px, 80vw, 300px); }
+  .carouselWrapper { padding: 0 var(--space-3); gap: var(--space-1); }
+  .slide { width: 240px; }
+  .arrow { width: 36px; height: 36px; font-size: 0.65rem; }
+  .lbPrev { left: -46px; }
+  .lbNext { right: -46px; }
+  .lbImg  { max-height: 60vh; }
 }
