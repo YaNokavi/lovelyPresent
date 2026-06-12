@@ -9,13 +9,12 @@ import fireWorldBg from "../../assets/backgrounds/bg_fire_world.png";
 import natureWorldBg from "../../assets/backgrounds/bg_nature_world.png";
 import platformGround from "../../assets/backgrounds/platform_ground.png";
 
-const STEP_AFTER_LOGIN    = 40;
-const STEP_AFTER_PASSWORD = 80;
+const STEP_AFTER_LOGIN = 60;
+const STEP_AFTER_PASSWORD = 100;
 
-const CHARS_MEET_DURATION = 700;
-const HEART_APPEAR_DELAY  = 500;
-const PARTICLES_DELAY     = 500;
-const NAVIGATE_DELAY      = 2400;
+const HEART_APPEAR_DELAY = 500;
+const PARTICLES_DELAY = 500;
+const NAVIGATE_DELAY = 2400;
 
 const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
   id: i,
@@ -28,34 +27,51 @@ const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
 export default function AuthScreen() {
   const auth = useAuth();
 
-  const [loginVal,    setLoginVal]    = useState("");
+  const [loginVal, setLoginVal] = useState("");
   const [passwordVal, setPasswordVal] = useState("");
-  const [phase, setPhase] = useState<"login" | "password" | "success" | "error">("login");
-  const [shake,          setShake]          = useState(false);
-  const [showHeart,      setShowHeart]      = useState(false);
-  const [showParticles,  setShowParticles]  = useState(false);
+  const [phase, setPhase] = useState<
+    "login" | "password" | "success" | "error"
+  >("login");
+  const [shake, setShake] = useState(false);
+  const [showHeart, setShowHeart] = useState(false);
+  const [showParticles, setShowParticles] = useState(false);
 
-  const passwordRef   = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const char1Controls = useAnimation();
   const char2Controls = useAnimation();
 
   useEffect(() => {
     if (phase === "password") {
-      char1Controls.start({ x: STEP_AFTER_LOGIN,  transition: { type: "spring", stiffness: 120, damping: 18 } });
-      char2Controls.start({ x: -STEP_AFTER_LOGIN, transition: { type: "spring", stiffness: 120, damping: 18 } });
+      char1Controls.start({
+        x: STEP_AFTER_LOGIN,
+        transition: { type: "spring", stiffness: 120, damping: 18 },
+      });
+      char2Controls.start({
+        x: -STEP_AFTER_LOGIN,
+        transition: { type: "spring", stiffness: 120, damping: 18 },
+      });
       setTimeout(() => passwordRef.current?.focus(), 200);
       return;
     }
     if (phase === "success") {
-      char1Controls.start({ x: STEP_AFTER_PASSWORD,  transition: { type: "spring", stiffness: 90, damping: 14 } });
-      char2Controls.start({ x: -STEP_AFTER_PASSWORD, transition: { type: "spring", stiffness: 90, damping: 14 } });
-      setTimeout(() => setShowHeart(true),     HEART_APPEAR_DELAY);
+      char1Controls.start({
+        x: STEP_AFTER_PASSWORD,
+        transition: { type: "spring", stiffness: 90, damping: 14 },
+      });
+      char2Controls.start({
+        x: -STEP_AFTER_PASSWORD,
+        transition: { type: "spring", stiffness: 90, damping: 14 },
+      });
+      setTimeout(() => setShowHeart(true), HEART_APPEAR_DELAY);
       setTimeout(() => setShowParticles(true), PARTICLES_DELAY);
-      setTimeout(() => auth.confirmAuth(),     NAVIGATE_DELAY);
+      setTimeout(() => auth.confirmAuth(), NAVIGATE_DELAY);
       return;
     }
     if (phase === "error") {
-      char2Controls.start({ x: [-STEP_AFTER_LOGIN, -STEP_AFTER_LOGIN + 16, -STEP_AFTER_LOGIN], transition: { duration: 0.35 } });
+      char2Controls.start({
+        x: [-STEP_AFTER_LOGIN, -STEP_AFTER_LOGIN + 16, -STEP_AFTER_LOGIN],
+        transition: { duration: 0.35 },
+      });
       setTimeout(() => setPhase("password"), 900);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,25 +84,41 @@ export default function AuthScreen() {
 
   function handleLoginSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (auth.login(loginVal)) { setPhase("password"); }
-    else { triggerShake(); }
+    if (auth.login(loginVal)) {
+      setPhase("password");
+    } else {
+      triggerShake();
+    }
   }
 
   function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (auth.authenticate(passwordVal)) { setPhase("success"); }
-    else { triggerShake(); setPhase("error"); }
+    if (auth.authenticate(passwordVal)) {
+      setPhase("success");
+    } else {
+      triggerShake();
+      setPhase("error");
+    }
   }
 
   return (
     <div className={styles.screen}>
-
       {/* ── ФОНЫ ── */}
       <div className={styles.worldFire} aria-hidden>
-        <img src={fireWorldBg} alt="" className={styles.worldBg} draggable={false} />
+        <img
+          src={fireWorldBg}
+          alt=""
+          className={styles.worldBg}
+          draggable={false}
+        />
       </div>
       <div className={styles.worldNature} aria-hidden>
-        <img src={natureWorldBg} alt="" className={styles.worldBg} draggable={false} />
+        <img
+          src={natureWorldBg}
+          alt=""
+          className={styles.worldBg}
+          draggable={false}
+        />
       </div>
 
       {/* ── РАЗДЕЛИТЕЛЬ ── */}
@@ -136,7 +168,10 @@ export default function AuthScreen() {
                 placeholder="_ _ _ _ _ _"
                 autoFocus
               />
-              <button type="submit" className={`btn-pixel btn-gold ${styles.btn}`}>
+              <button
+                type="submit"
+                className={`btn-pixel btn-gold ${styles.btn}`}
+              >
                 Продолжить &gt;
               </button>
             </motion.form>
@@ -165,7 +200,10 @@ export default function AuthScreen() {
                 onChange={(e) => setPasswordVal(e.target.value)}
                 placeholder="_ _ _ _ _ _"
               />
-              <button type="submit" className={`btn-pixel btn-fire ${styles.btn}`}>
+              <button
+                type="submit"
+                className={`btn-pixel btn-fire ${styles.btn}`}
+              >
                 Начать &gt;
               </button>
             </motion.form>
@@ -187,9 +225,20 @@ export default function AuthScreen() {
 
       {/* ── ПЕРСОНАЖИ ── */}
       <div className={styles.characters} aria-hidden>
-        <motion.div className={styles.charOuter} animate={char1Controls} initial={{ x: 0 }}>
+        <motion.div
+          className={styles.charOuter}
+          animate={char1Controls}
+          initial={{ x: 0 }}
+        >
           <div className={styles.charBob}>
-            <img src={char1Idle} alt="" width={148} height={148} loading="eager" className={styles.charImg} />
+            <img
+              src={char1Idle}
+              alt=""
+              width={148}
+              height={148}
+              loading="eager"
+              className={styles.charImg}
+            />
           </div>
         </motion.div>
 
@@ -203,26 +252,46 @@ export default function AuthScreen() {
                 animate={{ scale: [0, 1.6, 1], opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
                 transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              >♥</motion.div>
+              >
+                ♥
+              </motion.div>
             )}
           </AnimatePresence>
           <AnimatePresence>
-            {showParticles && PARTICLES.map((p) => (
-              <motion.span
-                key={p.id}
-                className={styles.particle}
-                initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
-                animate={{ x: p.x, y: p.y, scale: 1, opacity: 0 }}
-                transition={{ duration: 0.9, delay: p.delay, ease: "easeOut" }}
-                style={{ fontSize: p.size }}
-              >♥</motion.span>
-            ))}
+            {showParticles &&
+              PARTICLES.map((p) => (
+                <motion.span
+                  key={p.id}
+                  className={styles.particle}
+                  initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
+                  animate={{ x: p.x, y: p.y, scale: 1, opacity: 0 }}
+                  transition={{
+                    duration: 0.9,
+                    delay: p.delay,
+                    ease: "easeOut",
+                  }}
+                  style={{ fontSize: p.size }}
+                >
+                  ♥
+                </motion.span>
+              ))}
           </AnimatePresence>
         </div>
 
-        <motion.div className={styles.charOuter} style={{ scaleX: -1 }} animate={char2Controls} initial={{ x: 0 }}>
+        <motion.div
+          className={styles.charOuter}
+          animate={char2Controls}
+          initial={{ x: 0 }}
+        >
           <div className={styles.charBob}>
-            <img src={char2Idle} alt="" width={148} height={148} loading="eager" className={styles.charImg} />
+            <img
+              src={char2Idle}
+              alt=""
+              width={148}
+              height={148}
+              loading="eager"
+              className={styles.charImg}
+            />
           </div>
         </motion.div>
       </div>
@@ -233,7 +302,6 @@ export default function AuthScreen() {
         style={{ backgroundImage: `url(${platformGround})` }}
         aria-hidden
       />
-
     </div>
   );
 }

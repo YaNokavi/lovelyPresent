@@ -1,14 +1,14 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../store/authStore'
-import styles from './Navbar.module.css'
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../store/authStore";
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
-  const { logout } = useAuth()
-  const navigate = useNavigate()
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   function handleLogout() {
-    logout()
-    navigate('/')
+    logout();
+    navigate("/");
   }
 
   return (
@@ -25,7 +25,7 @@ export default function Navbar() {
           <NavLink
             to="/gallery"
             className={({ isActive }) =>
-              [styles.link, isActive ? styles.active : ''].join(' ')
+              [styles.link, isActive ? styles.active : ""].join(" ")
             }
           >
             Галерея
@@ -35,9 +35,6 @@ export default function Navbar() {
 
       {/* Иконки справа */}
       <div className={styles.actions}>
-        <button className={styles.iconBtn} aria-label="Музыка" title="Музыка">
-          ♪
-        </button>
         <button
           className={styles.iconBtn}
           onClick={handleLogout}
@@ -48,5 +45,5 @@ export default function Navbar() {
         </button>
       </div>
     </nav>
-  )
+  );
 }

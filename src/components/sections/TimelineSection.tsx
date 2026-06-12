@@ -1,12 +1,16 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import { timelineEvents } from '../../data/timeline'
-import styles from './TimelineSection.module.css'
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { timelineEvents } from "../../data/timeline";
+import styles from "./TimelineSection.module.css";
 
-function SceneSprites({ sprites, icon, isFinal }: {
-  sprites?: string[]
-  icon?: string
-  isFinal?: boolean
+function SceneSprites({
+  sprites,
+  icon,
+  isFinal,
+}: {
+  sprites?: string[];
+  icon?: string;
+  isFinal?: boolean;
 }) {
   if (sprites && sprites.length > 0) {
     return (
@@ -21,40 +25,58 @@ function SceneSprites({ sprites, icon, isFinal }: {
             loading="lazy"
             className={styles.sceneImg}
             style={{
-              imageRendering: 'pixelated',
+              imageRendering: "pixelated",
               // второй персонаж смотрит влево
-              transform: i === 1 ? 'scaleX(-1)' : 'none',
+              // transform: i === 1 ? "scaleX(-1)" : "none",
             }}
           />
         ))}
-        {icon && <span className={styles.sceneIcon} aria-hidden>{icon}</span>}
+        {icon && (
+          <span className={styles.sceneIcon} aria-hidden>
+            {icon}
+          </span>
+        )}
       </div>
-    )
+    );
   }
   // фоллбэк — только icon
   return icon ? (
     <div className={styles.sceneSprites}>
-      <span className={styles.sceneEmoji} role="img">{icon}</span>
+      <span className={styles.sceneEmoji} role="img">
+        {icon}
+      </span>
     </div>
-  ) : null
+  ) : null;
 }
 
-function LevelCard({ event, index }: { event: typeof timelineEvents[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px 0px' })
-  const isFinal = event.isFinal
+function LevelCard({
+  event,
+  index,
+}: {
+  event: (typeof timelineEvents)[0];
+  index: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px 0px" });
+  const isFinal = event.isFinal;
 
   return (
     <motion.div
       ref={ref}
-      className={`${styles.card} ${isFinal ? styles.cardFinal : ''}`}
+      className={`${styles.card} ${isFinal ? styles.cardFinal : ""}`}
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.07,
+        ease: [0.16, 1, 0.3, 1],
+      }}
       whileHover={!isFinal ? { y: -6, transition: { duration: 0.2 } } : {}}
     >
-      <div className={`${styles.levelBadge} ${isFinal ? styles.badgeFinal : ''}`}>
-        {isFinal ? 'FINAL LEVEL' : `LEVEL ${index + 1}`}
+      <div
+        className={`${styles.levelBadge} ${isFinal ? styles.badgeFinal : ""}`}
+      >
+        {isFinal ? "FINAL LEVEL" : `LEVEL ${index + 1}`}
       </div>
 
       <div className={styles.scene}>
@@ -73,13 +95,13 @@ function LevelCard({ event, index }: { event: typeof timelineEvents[0]; index: n
 
       {index === 0 && <div className={styles.startBadge}>START</div>}
     </motion.div>
-  )
+  );
 }
 
 export default function TimelineSection() {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const { scrollXProgress } = useScroll({ container: trackRef })
-  const progressWidth = useTransform(scrollXProgress, [0, 1], ['0%', '100%'])
+  const trackRef = useRef<HTMLDivElement>(null);
+  const { scrollXProgress } = useScroll({ container: trackRef });
+  const progressWidth = useTransform(scrollXProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <section className={styles.section} aria-labelledby="adventure-title">
@@ -92,9 +114,9 @@ export default function TimelineSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          ❖ OUR ADVENTURE ❖
+          ❖ НАШЕ ПРИКЛЮЧЕНИЕ ❖
         </motion.h2>
-        <motion.p
+        {/* <motion.p
           className={styles.subtitle}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -102,12 +124,15 @@ export default function TimelineSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           A timeline of us, one level at a time.
-        </motion.p>
-        <div className={styles.heart}>♥</div>
+        </motion.p> */}
+        {/* <div className={styles.heart}>♥</div> */}
       </div>
 
       <div className={styles.progressTrack}>
-        <motion.div className={styles.progressBar} style={{ width: progressWidth }} />
+        <motion.div
+          className={styles.progressBar}
+          style={{ width: progressWidth }}
+        />
       </div>
 
       <div
@@ -135,7 +160,7 @@ export default function TimelineSection() {
         ))}
       </div>
 
-      <motion.div
+      {/* <motion.div
         className={styles.continueWrap}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -146,7 +171,7 @@ export default function TimelineSection() {
           CONTINUE THE STORY...
           <span className={styles.continueSub}>Many more levels to come ♡</span>
         </a>
-      </motion.div>
+      </motion.div> */}
     </section>
-  )
+  );
 }

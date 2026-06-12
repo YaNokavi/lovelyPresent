@@ -31,11 +31,11 @@
 }
 .worldFire {
   left: 0;
-  box-shadow: inset -24px 0 48px rgba(0,0,0,0.25);
+  box-shadow: inset -24px 0 48px rgba(0, 0, 0, 0.25);
 }
 .worldNature {
   left: 50%;
-  box-shadow: inset 24px 0 48px rgba(0,0,0,0.18);
+  box-shadow: inset 24px 0 48px rgba(0, 0, 0, 0.18);
 }
 .worldFire .worldBg,
 .worldNature .worldBg {
@@ -49,8 +49,12 @@
   display: block;
   pointer-events: none;
 }
-.worldFire .worldBg   { object-position: left center; }
-.worldNature .worldBg { object-position: right center; }
+.worldFire .worldBg {
+  object-position: left center;
+}
+.worldNature .worldBg {
+  object-position: right center;
+}
 
 /* ── ЦЕНТРАЛЬНЫЙ РАЗДЕЛИТЕЛЬ ── */
 .divider {
@@ -60,23 +64,23 @@
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  background: rgba(255,255,255,0.85);
-  z-index: 20;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 2;
   pointer-events: none;
 }
 
 /* ── ПЛАТФОРМА ── */
 .platform {
   position: absolute;
-  bottom: 0;
-  left: 50%;
+  bottom: 0px;
+  left: 49.5%;
   transform: translateX(-50%);
   width: clamp(320px, 52vw, 720px);
   height: var(--auth-plat-h);
   z-index: 12;
   pointer-events: none;
   background-repeat: no-repeat;
-  background-size: auto 120%;
+  background-size: auto 160%;
   background-position: center top;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -119,7 +123,7 @@
   height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
-  filter: drop-shadow(0 6px 0 rgba(0,0,0,0.28));
+  filter: drop-shadow(0 6px 0 rgba(0, 0, 0, 0.28));
 }
 
 /* ── СЕРДЦЕ + ЧАСТИЦЫ ── */
@@ -130,7 +134,7 @@
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  z-index: 22;
+  z-index: 220;
 }
 
 .heartCenter {
@@ -138,10 +142,11 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2.6rem;
+  font-size: 3.6rem;
   color: #e84855;
   line-height: 1;
-  filter: drop-shadow(0 0 10px rgba(232,72,85,0.7));
+  z-index: 90;
+  filter: drop-shadow(0 0 10px rgba(232, 72, 85, 0.7));
   pointer-events: none;
   animation: heart-pulse 1s ease-in-out infinite;
 }
@@ -153,7 +158,7 @@
   color: #e84855;
   pointer-events: none;
   line-height: 1;
-  filter: drop-shadow(0 0 4px rgba(232,72,85,0.5));
+  filter: drop-shadow(0 0 4px rgba(232, 72, 85, 0.5));
 }
 
 /* ── ФОРМА ── */
@@ -162,13 +167,17 @@
   z-index: 25;
   background: rgba(12, 8, 4, 0.93);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(255,255,255,0.12);
-  box-shadow: 4px 4px 0 rgba(0,0,0,0.65), 0 16px 48px rgba(0,0,0,0.55);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.65),
+    0 16px 48px rgba(0, 0, 0, 0.55);
   padding: var(--space-8) var(--space-10);
   width: min(420px, calc(100vw - 2rem));
   text-align: center;
   /* поднимаем форму чуть выше персонажей */
-  margin-bottom: calc(var(--auth-plat-h) + var(--auth-char-h) + clamp(16px, 4vh, 40px));
+  margin-bottom: calc(
+    var(--auth-plat-h) + var(--auth-char-h) + clamp(16px, 4vh, 40px)
+  );
 }
 
 .shake {
@@ -194,7 +203,7 @@
 .label {
   font-family: var(--font-pixel);
   font-size: 0.5rem;
-  color: rgba(245,230,200,0.55);
+  color: rgba(245, 230, 200, 0.55);
   text-align: left;
   letter-spacing: 0.06em;
 }
@@ -219,26 +228,53 @@
 
 /* ── KEYFRAMES ── */
 @keyframes idle-bob {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 @keyframes heart-pulse {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50%       { transform: translateX(-50%) scale(1.18); }
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.18);
+  }
 }
 
 @keyframes form-shake {
-  0%, 100% { transform: translateX(0); }
-  20%       { transform: translateX(-8px); }
-  40%       { transform: translateX(8px); }
-  60%       { transform: translateX(-5px); }
-  80%       { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
 }
 
 @keyframes pixel-blink {
-  0%,  49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ── МОБИЛЬНЫЙ ── */
@@ -247,6 +283,10 @@
     --auth-char-h: 88px;
     --auth-plat-h: 44px;
   }
-  .characters { gap: 48px; }
-  .formBox    { padding: var(--space-6); }
+  .characters {
+    gap: 48px;
+  }
+  .formBox {
+    padding: var(--space-6);
+  }
 }
