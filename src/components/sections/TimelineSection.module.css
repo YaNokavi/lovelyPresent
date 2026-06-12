@@ -37,7 +37,6 @@
   50%       { transform: scale(1.22); }
 }
 
-/* Прогресс-бар */
 .progressTrack {
   height: 4px;
   background: var(--color-divider);
@@ -53,17 +52,13 @@
   will-change: width;
 }
 
-/* ── Горизонтальная лента ── */
 .track {
   display: flex;
   align-items: flex-start;
-  gap: 0;
   padding: var(--space-10) var(--space-8) var(--space-12);
   overflow-x: auto;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
-  /* важно: position relative здесь не ставим —
-     .connectorLine теперь внутри .trackInner */
   scrollbar-width: thin;
   scrollbar-color: var(--color-heart) transparent;
   min-height: 360px;
@@ -76,32 +71,25 @@
   border-radius: var(--radius-full);
 }
 
-/*
-  trackInner — внутренний flex-контейнер, который растягивается
-  на весь скролл-контент. Пунктирная линия абсолютно позиционируется
-  относительно этого элемента, а не внешнего .track.
-  z-index: 0 здесь ставит контекст наложения, чтобы z-index
-  дочерних элементов работал.
-*/
 .trackInner {
-  position: relative;   /* относительный предок для .connectorLine */
-  z-index: 0;
   display: flex;
   align-items: flex-start;
-  gap: 0;
+  position: relative;
+  isolation: isolate; /* создаём stacking context ДО дочерних элементов */
 }
 
 /*
-  Пунктирная линия пути:
-  - left/right: 0 — от начала до конца .trackInner (весь скролл-контент)
-  - z-index: -1 — строго позади карточек
-  - top: сцена (130px) / 2 + padding карточки (16px) + бэдж (~22px) + gap (12px)
+  ::before рисуется как самый нижний слой внутри trackInner.
+  Псевдоэлемент не имеет transform/will-change — поэтому он
+  остаётся за всеми дочерними блоками, даже теми, у кого
+  есть свой stacking context (framer-motion transform).
 */
-.connectorLine {
+.trackInner::before {
+  content: '';
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(16px + 22px + 12px + 65px); /* = badge + gap + половина сцены */
+  top: calc(22px + 16px + 12px + 65px);
   height: 3px;
   background: repeating-linear-gradient(
     to right,
@@ -112,10 +100,9 @@
   );
   opacity: 0.3;
   pointer-events: none;
-  z-index: -1; /* позади всех карточек */
+  z-index: -1;
 }
 
-/* ── Обёртка карточки + коннектор ── */
 .cardWrapper {
   display: flex;
   flex-direction: row;
@@ -124,7 +111,6 @@
   scroll-snap-align: center;
 }
 
-/* ── Карточка ── */
 .card {
   background: var(--color-surface);
   border: 2px solid var(--color-border);
@@ -136,10 +122,11 @@
   gap: var(--space-3);
   position: relative;
   cursor: default;
-  will-change: transform;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease;
-  z-index: 1; /* поверх .connectorLine */
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  /* НЕТ will-change:transform — он создавал stacking context */
+  /* НЕТ isolation — достаточно того что псевдоэлемент имеет z-index:-1 */
+  background-clip: padding-box; /* фон карточки перекрывает линию физически */
 }
 
 .card:hover { box-shadow: var(--shadow-md); }
@@ -148,10 +135,10 @@
   width: 240px;
   border-color: var(--color-gold);
   background: var(--color-surface-2);
+  background-clip: padding-box;
   box-shadow: 0 0 28px rgba(209, 153, 0, 0.22), var(--shadow-md);
 }
 
-/* Бэдж уровня */
 .levelBadge {
   font-family: var(--font-pixel);
   font-size: 0.55rem;
@@ -169,7 +156,6 @@
   color: var(--color-bg-dark);
 }
 
-/* ── Сцена ── */
 .scene {
   display: flex;
   justify-content: center;
@@ -224,7 +210,6 @@
   line-height: 1;
 }
 
-/* Инфо */
 .info {
   display: flex;
   flex-direction: column;
@@ -260,7 +245,6 @@
   50%       { opacity: 0; }
 }
 
-/* START бэдж */
 .startBadge {
   position: absolute;
   bottom: calc(100% + var(--space-2));
@@ -276,11 +260,6 @@
   white-space: nowrap;
 }
 
-/*
-  Соединитель (♥) между карточками.
-  margin-top выравнивает его по центру сцены:
-  padding(.card) + badge + gap + половина сцены - половина сердечка
-*/
 .connector {
   font-size: 1rem;
   color: var(--color-heart);
@@ -289,11 +268,8 @@
   margin-top: calc(16px + 22px + 12px + 55px);
   line-height: 1;
   align-self: flex-start;
-  z-index: 1;
-  position: relative;
 }
 
-/* ── Мобильный ── */
 @media (max-width: 640px) {
   .card { width: 185px; padding: var(--space-3); }
   .cardFinal { width: 200px; }
@@ -301,5 +277,5 @@
   .sceneImg { height: 85px; max-width: 70px; }
   .connector { margin-top: calc(12px + 22px + 10px + 45px); }
   .track { padding: var(--space-6) var(--space-4) var(--space-10); min-height: 300px; }
-  .connectorLine { top: calc(12px + 22px + 10px + 55px); }
+  .trackInner::before { top: calc(12px + 22px + 10px + 55px); }
 }
