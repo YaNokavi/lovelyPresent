@@ -72,7 +72,7 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={auth}>
-      <BrowserRouter>
+      <BrowserRouter basename="/lovelyPresent">
         <AnimatedRoutes />
       </BrowserRouter>
     </AuthContext.Provider>
