@@ -26,13 +26,17 @@
 .worldLeft,
 .worldRight {
   position: absolute;
-  top: 0;
+  top: -20px;
   bottom: 0;
   width: 50%;
   overflow: hidden;
 }
-.worldLeft  { left: 0; }
-.worldRight { right: 0; }
+.worldLeft {
+  left: 0;
+}
+.worldRight {
+  right: 0;
+}
 
 /*
   object-fit: cover fills each half without distortion.
@@ -41,10 +45,12 @@
 */
 .worldLeft .worldBg {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: right center;
+  object-position: left center;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   display: block;
@@ -52,10 +58,12 @@
 }
 .worldRight .worldBg {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 20px);
   object-fit: cover;
-  object-position: left center;
+  object-position: right center;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   display: block;
@@ -65,11 +73,12 @@
 /* ── CENTER DIVIDER ── */
 .divider {
   position: absolute;
-  top: 0; bottom: 0;
+  top: 0;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 2px;
-  background: rgba(255,255,255,0.85);
+  width: 3px;
+  background: rgba(255, 255, 255, 0.85);
   z-index: 20;
   pointer-events: none;
 }
@@ -77,8 +86,8 @@
 /* ── TEXT LEFT ── */
 .textLeft {
   position: absolute;
-  left: clamp(32px, 6vw, 120px);
-  right: 52%;
+  /* left: clamp(32px, 6vw, 120px); */
+  right: 62%;
   top: clamp(28px, 8vh, 80px);
   z-index: 10;
   display: flex;
@@ -92,7 +101,7 @@
   font-size: clamp(0.75rem, 1.4vw, 1.2rem);
   line-height: 1.7;
   color: #1e0e00;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
   letter-spacing: 0.01em;
   margin: 0;
 }
@@ -126,30 +135,38 @@
   border: 2.5px solid #8b6a3a;
   box-shadow:
     0 -2px 0 0 #8b6a3a,
-    0  2px 0 0 #8b6a3a,
+    0 2px 0 0 #8b6a3a,
     -2px 0 0 0 #8b6a3a,
-     2px 0 0 0 #8b6a3a,
-    3px 3px 0 rgba(0,0,0,0.18);
+    2px 0 0 0 #8b6a3a,
+    3px 3px 0 rgba(0, 0, 0, 0.18);
   max-width: clamp(130px, 15vw, 210px);
   text-align: center;
   pointer-events: auto;
 }
-.speechBubble strong { color: #1a6b3a; }
-.bubbleHeart { color: #e74c3c; font-size: 0.9em; }
+.speechBubble strong {
+  color: #1a6b3a;
+}
+.bubbleHeart {
+  color: #e74c3c;
+  font-size: 0.9em;
+}
 .bubbleTail {
   position: absolute;
   left: -12px;
   bottom: 20px;
-  width: 0; height: 0;
+  width: 0;
+  height: 0;
   border-style: solid;
   border-width: 6px 12px 6px 0;
   border-color: transparent #8b6a3a transparent transparent;
 }
 .bubbleTail::after {
-  content: '';
+  content: "";
   position: absolute;
-  left: 3px; top: -4px;
-  width: 0; height: 0;
+  left: 3px;
+  top: -4px;
+  width: 0;
+  height: 0;
   border-style: solid;
   border-width: 4px 9px 4px 0;
   border-color: transparent #fdf6e3 transparent transparent;
@@ -160,15 +177,15 @@
 */
 .platform {
   position: absolute;
-  bottom: 0;
-  left: 50%;
+  bottom: -20px;
+  left: 49.5%;
   transform: translateX(-50%);
   width: var(--plat-w);
   height: var(--plat-h);
   z-index: 12;
   pointer-events: none;
-  background-repeat: repeat-x;
-  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-size: auto 120%;
   background-position: center top;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -179,7 +196,7 @@
 */
 .char {
   position: absolute;
-  bottom: var(--plat-h);
+  bottom: calc(var(--plat-h) - 30px);
   height: var(--char-h);
   width: auto;
   object-fit: contain;
@@ -189,30 +206,30 @@
   z-index: 13;
   pointer-events: none;
   display: block;
-  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.25));
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.25));
 }
-.char1 { right: calc(50% + 8px); }
-.char2 { left:  calc(50% + 8px); transform: scaleX(-1); }
+.char1 {
+  right: calc(50% + 8px);
+}
+.char2 {
+  left: calc(50% + 8px);
+}
 
 /* ── HEART ── */
 .heart {
   position: absolute;
   bottom: calc(var(--plat-h) + var(--char-h) + 10px);
-  left: 50%;
+  left: 49.9%;
   transform: translateX(-50%);
   width: clamp(48px, 6.5vw, 84px);
   height: auto;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  z-index: 15;
+  z-index: 20;
   pointer-events: none;
   display: block;
-  filter:
-    drop-shadow(1px 0 0 #fff)
-    drop-shadow(-1px 0 0 #fff)
-    drop-shadow(0 1px 0 #fff)
-    drop-shadow(0 -1px 0 #fff)
-    drop-shadow(2px 2px 0 rgba(0,0,0,0.25));
+  filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff)
+    drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff);
 }
 
 /* ── PARTICLES ── */
@@ -236,11 +253,17 @@
     height: 60vw;
     min-height: 260px;
   }
-  .textLeft { left: var(--space-3); right: 52%; top: var(--space-4); }
+  .textLeft {
+    left: var(--space-3);
+    right: 52%;
+    top: var(--space-4);
+  }
   .speechBubble {
     left: 53%;
     top: var(--space-4);
     max-width: 44vw;
   }
-  .divider { display: none; }
+  .divider {
+    display: none;
+  }
 }
