@@ -159,19 +159,6 @@ export default function TimelineSection() {
           </div>
         ))}
       </div>
-
-      {/* <motion.div
-        className={styles.continueWrap}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <a href="/our-journey" className={styles.continueBtn}>
-          CONTINUE THE STORY...
-          <span className={styles.continueSub}>Many more levels to come ♡</span>
-        </a>
-      </motion.div> */}
     </section>
   );
 }

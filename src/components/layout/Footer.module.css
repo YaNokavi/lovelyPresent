@@ -6,7 +6,7 @@
 ─────────────────────────────────────── */
 .footer {
   position: relative; /* контейнер для абсолютных детей */
-  overflow: visible;   /* даём пейзажу вылезть вверх */
+  overflow: visible; /* даём пейзажу вылезть вверх */
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -23,10 +23,10 @@
 */
 .scenery {
   position: absolute;
-  bottom: 0;             /* прижать к низу */
-  height: 280px;         /* фиксированная высота — стабильно */
-  width: auto;           /* ширина по пропорциям */
-  max-width: 300px;      /* не шире определённого */
+  bottom: 0; /* прижать к низу */
+  height: 380px; /* фиксированная высота — стабильно */
+  width: auto; /* ширина по пропорциям */
+  max-width: 400px; /* не шире определённого */
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   pointer-events: none;
@@ -53,12 +53,14 @@
   color: rgba(255, 255, 255, 0.38);
   letter-spacing: 0.1em;
   max-width: none;
+  margin-top: 5px;
 }
 
 .heart {
   color: var(--color-heart, #e85555);
   animation: heart-pulse 1.5s ease-in-out infinite;
   display: inline-block;
+  padding-bottom: 10px;
 }
 
 .leaf {
@@ -67,14 +69,25 @@
 }
 
 @keyframes heart-pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.25); }
+  0%,
+  100% {
+    transform: scale(2);
+  }
+  50% {
+    transform: scale(2.25);
+  }
 }
 
 @media (max-width: 900px) {
-  .scenery { height: 200px; max-width: 220px; }
+  .scenery {
+    height: 200px;
+    max-width: 220px;
+  }
 }
 
 @media (max-width: 600px) {
-  .scenery { height: 140px; max-width: 140px; }
+  .scenery {
+    height: 140px;
+    max-width: 140px;
+  }
 }

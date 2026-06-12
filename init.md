@@ -9,12 +9,14 @@
 **lovelyPresent** — личный веб-сайт-подарок для девушки, выполненный в стиле пиксельной RPG-игры. Наша история — приключение двух персонажей из разных миров. Каждый этап отношений — уровень игры.
 
 ### Визуальная идея (референс — скриншот в корне репозитория `fd9ae9de...jpg`)
-- **Hero-секция:** экран разделён на две части — слева тёплый мир (вулканы, огонь, оранжевые тона), справа зелёный мир (лес, трава, природа). По центру два пиксельных персонажа рядом, между ними пиксельное сердце. Слоган: *"Two different worlds. One beautiful adventure."*
+
+- **Hero-секция:** экран разделён на две части — слева тёплый мир (вулканы, огонь, оранжевые тона), справа зелёный мир (лес, трава, природа). По центру два пиксельных персонажа рядом, между ними пиксельное сердце. Слоган: _"Two different worlds. One beautiful adventure."_
 - **Timeline "Our Adventure":** горизонтальная прокрутка уровней (Level 1 → ... → Final Level), каждый уровень — дата и событие из реальной жизни пары.
 - **Power-ups секция:** три колонки — слева "Power-ups" (Passion, Growth, Trust, Laughter), центр — тёмная карточка с цитатой, справа "Extras" (Gallery, Letters, About Us).
 - **Footer:** `MADE WITH ♥ BY US, FOR US` + иконки Instagram, Spotify, Email.
 
 ### Навигация
+
 `HOME | OUR JOURNEY | GALLERY | LETTERS | ABOUT US` + иконки музыки (♪) и настроек (⚙).
 
 ---
@@ -23,19 +25,19 @@
 
 ### Стек технологий
 
-| Слой | Технология | Статус |
-|------|-----------|--------|
-| Frontend framework | React 19 + TypeScript | ✅ настроен |
-| Build tool | Vite 8 | ✅ настроен |
-| Routing | React Router v6 | ✅ реализован |
-| Аутентификация | React Context (`authStore.ts`) | ✅ реализована |
-| Carousel/Gallery | @blossom-carousel/react 1.1.1 | ✅ установлен |
-| Анимации | Framer Motion + CSS @keyframes | ✅ в auth |
-| Pixel-шрифт | Press Start 2P (Google Fonts) | ✅ подключён |
-| Body-шрифт | Satoshi (Fontshare) | ✅ подключён |
-| Стилизация | CSS Modules + CSS Variables | ✅ реализована |
-| Хостинг | Amvera / Vercel / Netlify | ⬜ не задеплоен |
-| Расширенный стек | GSAP + PixiJS | ⬜ не начат |
+| Слой               | Технология                     | Статус          |
+| ------------------ | ------------------------------ | --------------- |
+| Frontend framework | React 19 + TypeScript          | ✅ настроен     |
+| Build tool         | Vite 8                         | ✅ настроен     |
+| Routing            | React Router v6                | ✅ реализован   |
+| Аутентификация     | React Context (`authStore.ts`) | ✅ реализована  |
+| Carousel/Gallery   | @blossom-carousel/react 1.1.1  | ✅ установлен   |
+| Анимации           | Framer Motion + CSS @keyframes | ✅ в auth       |
+| Pixel-шрифт        | Press Start 2P (Google Fonts)  | ✅ подключён    |
+| Body-шрифт         | Satoshi (Fontshare)            | ✅ подключён    |
+| Стилизация         | CSS Modules + CSS Variables    | ✅ реализована  |
+| Хостинг            | Amvera / Vercel / Netlify      | ⬜ не задеплоен |
+| Расширенный стек   | GSAP + PixiJS                  | ⬜ не начат     |
 
 ### Структура папок (актуальная)
 
@@ -95,20 +97,24 @@ lovelyPresent/
 ### Концепция: "Two Worlds Login"
 
 **Сценарий входа (реализован):**
+
 1. Экран загружается: два персонажа стоят по разные стороны. Разделитель по центру. Оба персонажа делают idle-bob (CSS `@keyframes idle-bob`, работает на **внутреннем div**, не конфликтует с Framer Motion).
 2. Вводится логин → `auth.login()` проверяет без изменения `isAuthenticated` → при успехе `setPhase('password')`, персонажи делают первый шаг навстречу через `useAnimation` (Framer Motion по оси X).
 3. Вводится пароль → `auth.authenticate()` проверяет, **не трогает** `isAuthenticated` → при успехе `setPhase('success')`.
 4. Фаза `success`: персонажи сходятся (второй шаг), через 500ms появляется сердце ❤️ + частицы, через **2400ms** вызывается `auth.confirmAuth()` — только тогда `isAuthenticated = true` → роутер переходит на `/home`.
 
 **Важный архитектурный паттерн (исправлен баг):**
+
 ```ts
 // authStore.ts
-authenticate(password)  // только проверяет → return true/false, НЕ меняет isAuthenticated
-confirmAuth()           // ставит isAuthenticated=true — вызывать ТОЛЬКО после анимации
+authenticate(password); // только проверяет → return true/false, НЕ меняет isAuthenticated
+confirmAuth(); // ставит isAuthenticated=true — вызывать ТОЛЬКО после анимации
 ```
+
 Роутер в `App.tsx` смотрит только на `isAuthenticated`. Если вызвать `confirmAuth()` до анимации — роутер моментально перекинет на `/home`.
 
 **Хранение credentials:**
+
 ```
 .env.local   (в .gitignore)
 VITE_AUTH_LOGIN=<личное>
@@ -128,22 +134,26 @@ VITE_AUTH_PASSWORD=<личное>
 ```css
 :root {
   /* Шрифты */
-  --font-pixel: 'Press Start 2P', monospace;
-  --font-body:  'Satoshi', 'Inter', sans-serif;
+  --font-pixel: "Press Start 2P", monospace;
+  --font-body: "Satoshi", "Inter", sans-serif;
 
   /* Миры */
-  --fire-primary: #e67e22;   --fire-dark: #a04000;   --fire-light: #f5a623;
-  --nature-primary: #27ae60; --nature-dark: #1a6b3a;  --nature-light: #52d68a;
+  --fire-primary: #e67e22;
+  --fire-dark: #a04000;
+  --fire-light: #f5a623;
+  --nature-primary: #27ae60;
+  --nature-dark: #1a6b3a;
+  --nature-light: #52d68a;
 
   /* UI поверхности */
-  --color-bg: #f5ede0;           /* светлый пергамент */
-  --color-bg-dark: #1e1208;      /* тёмный фон (auth, footer) */
+  --color-bg: #f5ede0; /* светлый пергамент */
+  --color-bg-dark: #32221a; /* тёмный фон (auth, footer) */
   --color-bg-dark-card: #2a1c10; /* тёмная карточка */
   --color-bg-card: #fdf6ee;
 
   /* Текст */
-  --color-text: #2c1a0e;         /* тёмный на светлом */
-  --color-text-light: #f5ede0;   /* светлый на тёмном */
+  --color-text: #2c1a0e; /* тёмный на светлом */
+  --color-text-light: #f5ede0; /* светлый на тёмном */
 
   /* Пиксельные утилиты */
   --shadow-pixel: 4px 4px 0 var(--color-border-pixel);
@@ -160,10 +170,12 @@ VITE_AUTH_PASSWORD=<личное>
 ## 🖼 Ассеты — СГЕНЕРИРОВАНЫ ✅
 
 ### Персонажи (`src/assets/sprites/`)
+
 - **`char1_idle.png`** — огненный персонаж (рыжие волосы, оранжевый наряд, огненные мотивы)
 - **`char2_idle.png`** — природный персонаж (зелёные волосы с листиком, белый наряд с сердцем)
 
 ### Фоны (`src/assets/backgrounds/`)
+
 - **`bg_fire_world.png`** — вулканический пейзаж (лава, вулканы, оранжевое небо)
 - **`bg_nature_world.png`** — лесной пейзаж (деревья, холмы, мягкий зелёный)
 
@@ -174,23 +186,29 @@ VITE_AUTH_PASSWORD=<личное>
 ## 📄 Страницы и их содержимое
 
 ### `/` — AuthScreen ✅ реализован
+
 Экран входа с двумя персонажами и анимацией встречи.
 
 ### `/home` — Главная ⬜ заготовка
+
 - HeroSection — два мира, два персонажа (idle-анимация)
 - TimelineSection — горизонтальный скролл уровней
 - PowerUpsSection — три колонки
 
 ### `/our-journey` — Путешествие ⬜
+
 Развёрнутый вертикальный таймлайн. Данные из `src/data/timeline.ts`.
 
 ### `/gallery` — Галерея ⬜
+
 **BlossomCarousel** — основная библиотека. Данные из `src/data/gallery.ts`.
 
 ### `/letters` — Письма ⬜
+
 RPG-диалоговые окна, typewriter-эффект. Данные из `src/data/letters.ts`.
 
 ### `/about-us` — О нас ⬜
+
 RPG character sheets для обоих персонажей.
 
 ---
@@ -214,24 +232,26 @@ import "@blossom-carousel/core/style.css";
 ## 🎬 Анимационный стек
 
 ### Базовый — в работе
-| Анимация | Технология | Статус |
-|----------|-----------| ------|
-| Idle-bob персонажей | CSS `@keyframes idle-bob` на inner div | ✅ auth экран |
-| Auth walk (X-движение) | Framer Motion `useAnimation` на outer div | ✅ auth экран |
-| Auth heart + частицы | Framer Motion `AnimatePresence` | ✅ auth экран |
-| Переходы страниц | Framer Motion `AnimatePresence` + `pageVariants` | ✅ App.tsx |
-| Форма shake при ошибке | CSS `@keyframes form-shake` | ✅ auth экран |
-| Scroll reveal | Intersection Observer | ⬜ не начат |
-| Typewriter (Letters) | CSS / JS | ⬜ не начат |
-| Idle в Hero-секции | CSS `@keyframes` | ⬜ не начат |
+
+| Анимация               | Технология                                       | Статус        |
+| ---------------------- | ------------------------------------------------ | ------------- |
+| Idle-bob персонажей    | CSS `@keyframes idle-bob` на inner div           | ✅ auth экран |
+| Auth walk (X-движение) | Framer Motion `useAnimation` на outer div        | ✅ auth экран |
+| Auth heart + частицы   | Framer Motion `AnimatePresence`                  | ✅ auth экран |
+| Переходы страниц       | Framer Motion `AnimatePresence` + `pageVariants` | ✅ App.tsx    |
+| Форма shake при ошибке | CSS `@keyframes form-shake`                      | ✅ auth экран |
+| Scroll reveal          | Intersection Observer                            | ⬜ не начат   |
+| Typewriter (Letters)   | CSS / JS                                         | ⬜ не начат   |
+| Idle в Hero-секции     | CSS `@keyframes`                                 | ⬜ не начат   |
 
 ### Расширенный (Sprint 5)
-| Анимация | Технология | Статус |
-|----------|-----------|--------|
-| 2D спрайт-анимации | PixiJS + Spritesheet | ⬜ |
-| Параллакс фонов | GSAP ScrollTrigger | ⬜ |
-| Частицы-сердечки | PixiJS Particles | ⬜ |
-| Звук | Howler.js | ⬜ |
+
+| Анимация           | Технология           | Статус |
+| ------------------ | -------------------- | ------ |
+| 2D спрайт-анимации | PixiJS + Spritesheet | ⬜     |
+| Параллакс фонов    | GSAP ScrollTrigger   | ⬜     |
+| Частицы-сердечки   | PixiJS Particles     | ⬜     |
+| Звук               | Howler.js            | ⬜     |
 
 ---
 
@@ -254,6 +274,7 @@ import "@blossom-carousel/core/style.css";
 ## 🗓 План разработки (спринты)
 
 ### Sprint 1 — Основа ✅ ЗАВЕРШЁН
+
 - [x] React Router v6 настроен
 - [x] AuthScreen с анимацией персонажей
 - [x] ENV-переменные для логина/пароля
@@ -262,6 +283,7 @@ import "@blossom-carousel/core/style.css";
 - [x] Pixel UI классы (`pixel.css`)
 
 ### Sprint 2 — Главная страница ⬜ В РАБОТЕ
+
 - [ ] HeroSection — два мира, два персонажа (idle в hero)
 - [ ] TimelineSection — горизонтальный скролл уровней
 - [ ] PowerUpsSection — три колонки
@@ -270,18 +292,21 @@ import "@blossom-carousel/core/style.css";
 - [ ] Navbar + Footer компоненты
 
 ### Sprint 3 — Галерея и письма ⬜
+
 - [ ] Gallery с BlossomCarousel + реальные фото
 - [ ] Letters с typewriter-эффектом
 - [ ] About Us — RPG character sheets
 - [ ] `data/letters.ts`, `data/gallery.ts`
 
 ### Sprint 4 — Polish ⬜
+
 - [ ] Scroll reveal анимации (Intersection Observer)
 - [ ] Idle-анимация персонажей в HeroSection
 - [ ] Мобильная адаптация всех страниц
 - [ ] Звук (опционально — Howler.js)
 
 ### Sprint 5 — 2D анимация ⬜ (если останется время)
+
 - [ ] PixiJS setup
 - [ ] Spritesheet персонажей
 - [ ] Параллакс с GSAP ScrollTrigger
@@ -291,17 +316,17 @@ import "@blossom-carousel/core/style.css";
 
 ## 🔑 Ключевые файлы
 
-| Файл | Роль | Статус |
-|------|------|--------|
-| `src/App.tsx` | Корневой компонент, роутинг, AuthContext провайдер | ✅ |
-| `src/store/authStore.ts` | Auth state: login / authenticate / confirmAuth / logout | ✅ |
-| `src/components/auth/AuthScreen.tsx` | Экран входа, анимация персонажей | ✅ |
-| `src/styles/tokens.css` | Все CSS переменные проекта | ✅ |
-| `src/styles/pixel.css` | Pixel UI классы (btn-pixel, pixel-input и др.) | ✅ |
-| `src/data/timeline.ts` | Данные уровней (даты, события) | ⬜ создать |
-| `src/data/letters.ts` | Тексты писем | ⬜ создать |
-| `src/data/gallery.ts` | Пути к фото | ⬜ создать |
-| `.env.local` | `VITE_AUTH_LOGIN`, `VITE_AUTH_PASSWORD` | ⬜ создать локально |
+| Файл                                 | Роль                                                    | Статус              |
+| ------------------------------------ | ------------------------------------------------------- | ------------------- |
+| `src/App.tsx`                        | Корневой компонент, роутинг, AuthContext провайдер      | ✅                  |
+| `src/store/authStore.ts`             | Auth state: login / authenticate / confirmAuth / logout | ✅                  |
+| `src/components/auth/AuthScreen.tsx` | Экран входа, анимация персонажей                        | ✅                  |
+| `src/styles/tokens.css`              | Все CSS переменные проекта                              | ✅                  |
+| `src/styles/pixel.css`               | Pixel UI классы (btn-pixel, pixel-input и др.)          | ✅                  |
+| `src/data/timeline.ts`               | Данные уровней (даты, события)                          | ⬜ создать          |
+| `src/data/letters.ts`                | Тексты писем                                            | ⬜ создать          |
+| `src/data/gallery.ts`                | Пути к фото                                             | ⬜ создать          |
+| `.env.local`                         | `VITE_AUTH_LOGIN`, `VITE_AUTH_PASSWORD`                 | ⬜ создать локально |
 
 ---
 
@@ -319,5 +344,5 @@ import "@blossom-carousel/core/style.css";
 
 ---
 
-*Последнее обновление: июнь 2026, после завершения Sprint 1*
-*Репозиторий: https://github.com/YaNokavi/lovelyPresent*
+_Последнее обновление: июнь 2026, после завершения Sprint 1_
+_Репозиторий: https://github.com/YaNokavi/lovelyPresent_
