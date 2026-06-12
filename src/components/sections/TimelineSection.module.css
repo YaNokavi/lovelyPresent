@@ -28,7 +28,12 @@
 
 .progressBar {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-fire), var(--color-heart), var(--color-nature));
+  background: linear-gradient(
+    90deg,
+    var(--color-fire),
+    var(--color-heart),
+    var(--color-nature)
+  );
   border-radius: var(--radius-full);
   will-change: width;
 }
@@ -45,8 +50,12 @@
   min-height: 360px;
 }
 
-.track::-webkit-scrollbar { height: 5px; }
-.track::-webkit-scrollbar-track { background: transparent; }
+.track::-webkit-scrollbar {
+  height: 5px;
+}
+.track::-webkit-scrollbar-track {
+  background: transparent;
+}
 .track::-webkit-scrollbar-thumb {
   background: var(--color-heart);
   border-radius: var(--radius-full);
@@ -116,20 +125,26 @@
   box-shadow: var(--shadow-sm);
   /* Опацить CSS-классами, не inline-style */
   opacity: 0;
-  transition: opacity 0.5s ease, box-shadow 0.2s ease;
+  transition:
+    opacity 0.5s ease,
+    box-shadow 0.2s ease;
 }
 
 .card.cardVisible {
   opacity: 1;
 }
 
-.card:hover { box-shadow: var(--shadow-md); }
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
 
 .cardFinal {
   width: 240px;
   border-color: var(--color-gold);
-  background: var(--color-surface-2);
-  box-shadow: 0 0 28px rgba(209, 153, 0, 0.22), var(--shadow-md);
+
+  box-shadow:
+    0 0 28px rgba(209, 153, 0, 0.22),
+    var(--shadow-md);
 }
 
 .levelBadge {
@@ -141,7 +156,7 @@
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-sm);
   align-self: flex-start;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
 }
 
 .badgeFinal {
@@ -214,7 +229,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.05em;
   color: var(--color-text-dark);
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.12);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.12);
   line-height: 1.7;
 }
 
@@ -234,8 +249,13 @@
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .startBadge {
@@ -249,7 +269,7 @@
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
   letter-spacing: 0.1em;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
   white-space: nowrap;
 }
 
@@ -264,11 +284,28 @@
 }
 
 @media (max-width: 640px) {
-  .card { width: 185px; padding: var(--space-3); }
-  .cardFinal { width: 200px; }
-  .scene { height: 110px; }
-  .sceneImg { height: 85px; max-width: 70px; }
-  .connector { margin-top: calc(20px + var(--space-3) + 0.5rem); }
-  .track { padding: var(--space-6) var(--space-4) var(--space-10); min-height: 300px; }
-  .connectorLine { top: calc(20px + var(--space-3) + 55px); }
+  .card {
+    width: 185px;
+    padding: var(--space-3);
+  }
+  .cardFinal {
+    width: 200px;
+  }
+  .scene {
+    height: 110px;
+  }
+  .sceneImg {
+    height: 85px;
+    max-width: 70px;
+  }
+  .connector {
+    margin-top: calc(20px + var(--space-3) + 0.5rem);
+  }
+  .track {
+    padding: var(--space-6) var(--space-4) var(--space-10);
+    min-height: 300px;
+  }
+  .connectorLine {
+    top: calc(20px + var(--space-3) + 55px);
+  }
 }
