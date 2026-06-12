@@ -16,7 +16,7 @@ export default function PowerUpsSection() {
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
       >
-        <p className={styles.quote}>You're my favorite player two.</p>
+        <p className={styles.quote}>Ты мой любимый второй игрок!</p>
         <motion.div
           className={styles.heart}
           animate={{ scale: [1, 1.3, 1] }}
