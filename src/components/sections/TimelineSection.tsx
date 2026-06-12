@@ -106,31 +106,23 @@ export default function TimelineSection() {
         <motion.div className={styles.progressBar} style={{ width: progressWidth }} />
       </div>
 
-      {/* trackWrap — relative-контейнер для линии и скролла */}
-      <div className={styles.trackWrap}>
-        {/* Линия рисуется ЗДЕСЬ — она сестра .track, не внутри него.
-            position:absolute относится к .trackWrap.
-            z-index:0, а карточки не создают stacking context (нет transform на .card). */}
-        <div className={styles.connectorLine} aria-hidden />
-
-        <div ref={trackRef} className={styles.track} role="list" aria-label="Relationship timeline">
-          <div className={styles.trackInner}>
-            {timelineEvents.map((event, i) => (
-              <div key={event.id} role="listitem" className={styles.cardWrapper}>
-                <LevelCard event={event} index={i} />
-                {i < timelineEvents.length - 1 && (
-                  <div className={styles.connector} aria-hidden>
-                    <motion.span
-                      animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
-                    >
-                      ♥
-                    </motion.span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+      <div ref={trackRef} className={styles.track} role="list" aria-label="Relationship timeline">
+        <div className={styles.trackInner}>
+          {timelineEvents.map((event, i) => (
+            <div key={event.id} role="listitem" className={styles.cardWrapper}>
+              <LevelCard event={event} index={i} />
+              {i < timelineEvents.length - 1 && (
+                <div className={styles.connector} aria-hidden>
+                  <motion.span
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+                  >
+                    ♥
+                  </motion.span>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -18,25 +18,6 @@
   margin-bottom: var(--space-3);
 }
 
-.subtitle {
-  font-family: var(--font-pixel);
-  font-size: clamp(0.5rem, 1vw, 0.65rem);
-  color: var(--color-text-muted);
-  letter-spacing: 0.06em;
-  margin-bottom: var(--space-2);
-}
-
-.heart {
-  color: var(--color-heart);
-  font-size: 1rem;
-  animation: heartbeat 1.4s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.22); }
-}
-
 .progressTrack {
   height: 4px;
   background: var(--color-divider);
@@ -52,39 +33,7 @@
   will-change: width;
 }
 
-/*
-  trackWrap — relative-обёртка.
-  .connectorLine — absolute внутри неё, z-index:0.
-  .track — скролл-контейнер, z-index:1 (выше линии).
-  .card — обычный div без transform/will-change => нет stacking context,
-          поэтому background карточки перекрывает линию физически.
-*/
-.trackWrap {
-  position: relative;
-}
-
-.connectorLine {
-  position: absolute;
-  /* Вертикаль: badge(22px) + gap(12px) + scene(130px)/2 */
-  top: calc(var(--space-10) + 22px + 12px + 65px);
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: repeating-linear-gradient(
-    to right,
-    var(--color-heart) 0px,
-    var(--color-heart) 12px,
-    transparent 12px,
-    transparent 24px
-  );
-  opacity: 0.35;
-  pointer-events: none;
-  z-index: 0;
-}
-
 .track {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: flex-start;
   padding: var(--space-10) var(--space-8) var(--space-12);
@@ -94,8 +43,6 @@
   scrollbar-width: thin;
   scrollbar-color: var(--color-heart) transparent;
   min-height: 360px;
-  /* Важно: background прозрачный, чтобы линия была видна */
-  background: transparent;
 }
 
 .track::-webkit-scrollbar { height: 5px; }
@@ -105,10 +52,27 @@
   border-radius: var(--radius-full);
 }
 
+/*
+  Линия рисуется через border-top на trackInner.
+  padding-top сдвигает содержимое ниже этой линии.
+  Никакого z-index, никакого absolute — линия просто
+  является верхней границей flex-контейнера и
+  физически находится ЗА всеми дочерними элементами.
+
+  Высота от верха .track до линии:
+    padding-top track (var(--space-10) = 40px)
+    + badge (22px) + gap (12px) + полсцены (65px) = 139px
+  Поэтому margin-top на trackInner = 139px,
+  а сам trackInner начинает рисоваться ровно на уровне линии.
+*/
 .trackInner {
   display: flex;
   align-items: flex-start;
-  position: relative;
+  /* Отступ сверху = badge + gap(card) + half-scene */
+  margin-top: calc(22px + var(--space-3) + 65px);
+  /* Пунктирная линия — просто border-top этого div */
+  border-top: 3px dashed color-mix(in srgb, var(--color-heart) 35%, transparent);
+  padding-top: calc(var(--space-3) + 65px);
 }
 
 .cardWrapper {
@@ -117,17 +81,12 @@
   align-items: flex-start;
   flex-shrink: 0;
   scroll-snap-align: center;
+  /* Поднимаем карточку вверх чтобы она перекрыла линию */
+  margin-top: calc(-1 * (var(--space-3) + 65px));
 }
 
-/*
-  КЛЮЧЕВОЕ: нет transform, нет will-change, нет isolation.
-  Без них div НЕ создаёт stacking context и не "вырывается" над линией.
-  background-clip: padding-box — фон физически закрывает линию, которая
-  проходит под карточкой через .trackWrap.
-*/
 .card {
   background: var(--color-surface);
-  background-clip: padding-box;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-4) var(--space-4) var(--space-5);
@@ -138,7 +97,7 @@
   position: relative;
   cursor: default;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
 }
 
 .card:hover { box-shadow: var(--shadow-md); }
@@ -147,7 +106,6 @@
   width: 240px;
   border-color: var(--color-gold);
   background: var(--color-surface-2);
-  background-clip: padding-box;
   box-shadow: 0 0 28px rgba(209, 153, 0, 0.22), var(--shadow-md);
 }
 
@@ -277,7 +235,8 @@
   color: var(--color-heart);
   padding: 0 var(--space-3);
   flex-shrink: 0;
-  margin-top: calc(16px + 22px + 12px + 55px);
+  /* Центрируем сердечко по высоте линии */
+  margin-top: calc(22px + var(--space-3) - 0.5rem);
   line-height: 1;
   align-self: flex-start;
 }
@@ -287,7 +246,13 @@
   .cardFinal { width: 200px; }
   .scene { height: 110px; }
   .sceneImg { height: 85px; max-width: 70px; }
-  .connector { margin-top: calc(12px + 22px + 10px + 45px); }
   .track { padding: var(--space-6) var(--space-4) var(--space-10); min-height: 300px; }
-  .connectorLine { top: calc(var(--space-6) + 22px + 10px + 55px); }
+  .trackInner {
+    margin-top: calc(20px + var(--space-3) + 55px);
+    padding-top: calc(var(--space-3) + 55px);
+  }
+  .cardWrapper {
+    margin-top: calc(-1 * (var(--space-3) + 55px));
+  }
+  .connector { margin-top: calc(20px + var(--space-3) - 0.5rem); }
 }
